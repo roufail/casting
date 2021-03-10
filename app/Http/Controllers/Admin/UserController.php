@@ -1,0 +1,190 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Yajra\Datatables\Datatables;
+use App\Models\User;
+use App\Models\Service;
+Use Alert,Storage;
+use App\Http\Requests\Admin\User\UserRequest;
+
+
+class UserController extends Controller
+{
+
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        return view('admin.users.index');
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create(User $user)
+    {
+        $services = Service::get(['id','title']);
+        return view('admin.users.form',compact('user','services'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(UserRequest $request)
+    {
+        $validated = $request->validated();
+
+        if($request->image) {
+            $validated['image'] = $request->image->store("/","users");
+        }
+
+        if($request->active) {
+            $validated['active'] = true;
+        }else {
+            $validated['active'] = false;
+        }
+        $validated['password'] = bcrypt($validated['password']);
+
+
+        if($user = User::create($validated)){
+            $user->services()->delete();
+            $user->services()->createMany($validated['services']);
+            Alert::toast('<h4>تم انشاء المستخدم بنجاح</h4>','success');
+        }else{
+            Alert::toast('<h4>حدث خطأ ما , يرجي المحاوله لاحقاً</h4>','error');
+        }
+        return redirect()->route('admin.users.index');
+    }
+
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(User $user)
+    {
+        $services = Service::get(['id','title']);
+        $user->load('services');
+        return view('admin.users.form',compact('user','services'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(UserRequest $request, User $user)
+    {
+        $validated = $request->validated();
+        unset($validated['password_confirmation']);
+
+        if($request->image) {
+            Storage::disk('users')->delete($user->image);
+            $validated['image'] = $request->image->store("/","users");
+        }
+        if($validated['password'] == null)
+        {
+            unset($validated['password']);
+        }else{
+            $validated['password'] = bcrypt($validated['password']);
+        }
+
+        if($request->active) {
+            $validated['active'] = true;
+        }else {
+            $validated['active'] = false;
+        }
+
+        if($user->update($validated)){
+            $user->services()->delete();
+            $user->services()->createMany($validated['services']);
+            Alert::toast('<h4>تم تحديث المستخدم بنجاح</h4>','success');
+        }else{
+            Alert::toast('<h4>حدث خطأ ما , يرجي المحاوله لاحقاً</h4>','error');
+        }
+        return redirect()->back();
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(User $user)
+    {
+
+        Storage::disk('users')->delete($users->image);
+        if($user->delete()){
+            Alert::toast('<h4>تم حذف المستخدم بنجاح</h4>','success');
+            return redirect(route('admin.users.index'));
+        }
+        Alert::toast('<h4>حدث خطأ ما , يرجي المحاوله لاحقاً</h4>','error');
+        return redirect(route('admin.users.index'));
+    }
+
+
+
+    public function ajaxData()
+    {
+        return Datatables::of(User::query())
+        ->addColumn('image', function ($user) {
+            if($user->image && $user->image != ""){
+                return '<img src="'.\Storage::disk("users")->url($user->image).'" border="0" width="100px" height="100px" class="img-rounded" align="center" />';
+            }else {
+                return '<img src="'.url("imgs/no-user.png").'" border="0" width="100px" height="100px" class="img-rounded" align="center" />';
+            } 
+        })->addColumn('action', function ($user) {
+            return '
+            <a  style="float:right" href="'.route('admin.users.edit',$user->id).'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> تعديل</a>
+            <form method="post" action="'.route('admin.users.destroy',$user->id).'">
+             '.csrf_field().method_field("delete").'
+             <button style="float:right" type="submit" class="delete-record btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash"></i> حذف</a>
+             </form>';
+        })
+        ->rawColumns(['image', 'action'])
+        ->make(true);
+    }
+
+    public function delete_image(Request $request) {
+        if($request->ajax()){
+            $user = User::findOrFail($request->id);
+            Storage::disk('users')->delete($user->image);
+            $user->update(['image' => null]);
+            return true;
+        }
+    }
+
+
+
+    public function upload_images(Request $request) {
+        if($request->ajax()){
+            $name = $request->file->store("/","dropzone");
+            return response()->json(['name' => $name]);
+        }
+    }
+
+    public function remove_dropzone_image(Request $request) {
+        Storage::disk('dropzone')->delete($request->image);
+        return response()->json(['success' => true]);
+
+    }
+
+
+}
