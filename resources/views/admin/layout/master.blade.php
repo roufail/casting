@@ -30,6 +30,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
 
+    <link rel="stylesheet" href="{{ asset('admin-files/css/toastr.css') }}">
+
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -67,7 +70,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <!-- Messages: style can be found in dropdown.less-->
               <li class="dropdown messages-menu">
                 <!-- Menu toggle button -->
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                {{-- <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <i class="fa fa-envelope-o"></i>
                   <span class="label label-success">4</span>
                 </a>
@@ -95,20 +98,20 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   </li>
                   <li class="footer"><a href="#">See All Messages</a></li>
                 </ul>
-              </li><!-- /.messages-menu -->
+              </li><!-- /.messages-menu --> --}}
 
               <!-- Notifications Menu -->
               <li class="dropdown notifications-menu">
                 <!-- Menu toggle button -->
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <i class="fa fa-bell-o"></i>
-                  <span class="label label-warning">10</span>
+                  <span class="label label-danger count-pupple">0</span>
                 </a>
                 <ul class="dropdown-menu">
-                  <li class="header">You have 10 notifications</li>
+                  <li class="header">You have <span class="count">0</span> notifications</li>
                   <li>
                     <!-- Inner Menu: contains the notifications -->
-                    <ul class="menu">
+                    <ul class="notifications-dropdown-menu menu">
                       <li><!-- start notification -->
                         <a href="#">
                           <i class="fa fa-users text-aqua"></i> 5 new members joined today
@@ -120,7 +123,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </ul>
               </li>
               <!-- Tasks Menu -->
-              <li class="dropdown tasks-menu">
+              {{-- <li class="dropdown tasks-menu">
                 <!-- Menu Toggle Button -->
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <i class="fa fa-flag-o"></i>
@@ -153,7 +156,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <a href="#">View all tasks</a>
                   </li>
                 </ul>
-              </li>
+              </li> --}}
               <!-- User Account Menu -->
               <li class="dropdown user user-menu">
                 <!-- Menu Toggle Button -->
@@ -161,7 +164,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   <!-- The user image in the navbar-->
                   <img src="{{ asset('admin-files/img/user2-160x160.jpg') }}" class="user-image" alt="User Image">
                   <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                  <span class="hidden-xs">Alexander Pierce</span>
+                  <span class="hidden-xs">{{ auth("admin")->user()->name}}</span>
                 </a>
                 <ul class="dropdown-menu">
                   <!-- The user image in the menu -->
@@ -300,6 +303,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <!-- REQUIRED JS SCRIPTS -->
 
+    <script src="{{ asset('js/app.js') }}"></script>
     <!-- jQuery 2.1.4 -->
     <script src="{{ asset('admin-files/js/jQuery-2.1.4.min.js')}}"></script>
     <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
@@ -307,6 +311,23 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="{{ asset('admin-files/js/bootstrap.min.js')}}"></script>
     <!-- AdminLTE App -->
     <script src="{{ asset('admin-files/js/app.min.js') }}"></script>
+    <script src="{{ asset('admin-files/js/toastr.js') }}"></script>
+
+
+    <script>
+      Echo.private("admin.{{auth()->user()->id}}")
+          .notification((notification) => {
+              toastr.success(notification.notification)
+              let count = parseInt($('.notifications-menu .count-pupple').text()) + 1;
+              $('.notifications-menu .count-pupple').text(count);
+              $('.notifications-menu .count').text(count);
+              $('.notifications-dropdown-menu').append($('<li>').text(notification.notification));
+          });
+  
+    </script>
+
+
+
     @stack('js-files')
     <!-- Optionally, you can add Slimscroll and FastClick plugins.
          Both of these plugins are recommended to enhance the

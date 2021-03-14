@@ -16,6 +16,8 @@
         "laravel/passport": "^10.1",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.2",
+        "predis/predis": "^1.1",
+        "pusher/pusher-php-server": "^5.0",
         "realrashid/sweet-alert": "^3.2",
         "yajra/laravel-datatables-buttons": "^4.10",
         "yajra/laravel-datatables-oracle": "^9.15"
@@ -42,7 +44,6 @@
         "files": [
             "app/helpers/forms.php"
         ],
-    
         "psr-4": {
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",

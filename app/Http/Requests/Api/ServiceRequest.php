@@ -24,11 +24,12 @@ class ServiceRequest extends FormRequest
     public function rules()
     {
         $rules =  [
-            'title'                 => 'required|string|unique:user_services,id',
+            // 'title'                 => 'required|string|unique:user_services,id',
             'price'                 => 'nullable|numeric',
             'work_type'             => 'required|string',
             'category_id'           => 'required|numeric|exists:categories,id',
-            'service_id'            => 'required|numeric|exists:services,id'
+            'service_id'            => 'required|numeric|exists:services,id',
+            'active'                => 'nullable'
         ];
         return $rules;    
     }

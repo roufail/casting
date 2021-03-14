@@ -8,8 +8,9 @@ use App\Http\Resources\Order\OrderResource;
 use App\Models\UserService;
 
 use App\Http\Requests\Order\OrderRequest;
-
-
+use App\Jobs\Payer\ServiceRequestJob;
+use App\Jobs\Client\OrderStatusUpdateJob;
+use App\Jobs\Admin\AdminPaymentJob;
 class OrderController extends BaseController
 {
     public function myorders($status=null){
@@ -22,10 +23,12 @@ class OrderController extends BaseController
     }
 
     public function updatemyorders($id,$status) {
-        $order = auth()->user()->orders()->findOrFail($id);
-        if(in_array($status,get_status())) {
+        $order = auth()->user()->orders()->find($id);
+        if($order && in_array($status,get_status())) {
             $order->update(['status' => $status]);
             // send notification to the customer
+            // your order [] status changed to []  by []
+            OrderStatusUpdateJob::dispatch($order);
             return  $this->success($order,'Order updated successfully');
         }else {
             return  $this->error([],'Something went wrong');
@@ -49,13 +52,25 @@ class OrderController extends BaseController
         $payment = true;
 
         if($payment){
-            // send notification to the payer
-
-            // make payment to the website
             
-            $order->update([
-                'status' => 'paid'
-            ]);
+            
+            
+
+            
+                $updated = $order->update([
+                    'status' => 'paid'
+                ]);
+                
+                if($updated){
+                    
+                // send notification to the the site
+                AdminPaymentJob::dispatch($order);
+
+                // send notification to the payer
+                ServiceRequestJob::dispatch(auth('client-api')->user(),$userService->user,$userService->service);
+            }
+
+
             return  $this->success(new OrderResource($order),'Order created successfully');
         } else {
             $order->update([

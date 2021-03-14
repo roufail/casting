@@ -119,6 +119,7 @@ class CategoryController extends Controller
              <button style="float:right" type="submit" class="delete-record btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash"></i> حذف</a>
              </form>';
         })
+        ->rawColumns(['image', 'action'])
         ->make(true);
     }
 

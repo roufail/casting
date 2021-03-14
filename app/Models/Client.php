@@ -21,6 +21,10 @@ class Client extends Authenticatable
     ];
     public function orders() {
         return $this->hasMany(Order::class);
-     }
+    }
+
+    public function receivesBroadcastNotificationsOn() {
+        return 'client.'.$this->id;
+    }
 
 }

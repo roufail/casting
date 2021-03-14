@@ -27,6 +27,7 @@ class UserServiceFactory extends Factory
             "price"           => $this->faker->numberBetween($min = 1500, $max = 6000),
             "work_type"       => 'hour',
             "category_id"     =>  \App\Models\Category::inRandomOrder()->first()->id,
+            "active"          => $this->faker->boolean,
         ];
     }
 }

@@ -20,4 +20,13 @@
         </div>
     </div>
 </div>
+
+<script>
+    Echo.private('payer.'+{{auth()->user()->id}})
+        .notification((notification) => {
+            console.log(notification);
+        });
+
+</script>
+
 @endsection

@@ -9,4 +9,9 @@ use Illuminate\Notifications\Notifiable;
 class Admin extends Authenticatable
 {
     use HasFactory,Notifiable;
+
+    public function receivesBroadcastNotificationsOn() {
+        return 'admin.'.$this->id;
+    }
+
 }

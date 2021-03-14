@@ -36,6 +36,12 @@ Route::group(['namespace' => 'Admin','as'=>'admin.'],function(){
         Route::resource('services', 'ServiceController');
 
 
+        Route::get('userservices/ajax_data', 'UserServiceController@ajaxData')->name('userservices.ajax_data');
+        Route::get('userservices/delete_image', 'UserServiceController@delete_image')->name('userservices.delete_image');
+        Route::resource('userservices', 'UserServiceController');
+
+
+
         Route::get('clients/ajax_data', 'ClientController@ajaxData')->name('clients.ajax_data');
         Route::get('clients/delete_image', 'ClientController@delete_image')->name('clients.delete_image');
         Route::resource('clients', 'ClientController');

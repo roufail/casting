@@ -54,9 +54,18 @@
         <li class="{{ Route::is('admin.services.index') ? 'active' : '' }}">
           <a href="{{ route('admin.services.index') }}">
             <i class="fa fa-taxi"></i> 
-            <span>الخدمات</span>
+            <span>الخدمات الرئيسية</span>
           </a>
         </li>
+
+        <li class="{{ Route::is('admin.userservices.index') ? 'active' : '' }}">
+          <a href="{{ route('admin.userservices.index') }}">
+            <i class="fa fa-taxi"></i> 
+            <span>خدمات المستخدمين</span>
+          </a>
+        </li>
+
+
 
         <li class="{{ Route::is('admin.clients.index') ? 'active' : '' }}">
           <a href="{{ route('admin.clients.index') }}">
