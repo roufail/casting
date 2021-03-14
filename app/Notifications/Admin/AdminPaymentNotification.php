@@ -55,7 +55,7 @@ class AdminPaymentNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            'notification'     => $this->order->client->name." make a payment to ".$this->order->userservice->service->name." costs ".$this->order->price,
+            'notification'     => $this->order->client->name." make a payment to ".$this->order->userservice->service->title." costs ".$this->order->price,
             'not_id'           => $this->order->id,
             'not_type'         => 'order',
             'notifiable_id'    => $notifiable->id
@@ -66,7 +66,7 @@ class AdminPaymentNotification extends Notification
     public function toBroadcast($notifiable)
     {
         return (
-            new OrderPaymentEvent($notifiable->id,$this->order->client->name." make a payment to ".$this->order->userservice->service->name." costs ".$this->order->price,$this->order->id,'order')
+            new OrderPaymentEvent($notifiable->id,$this->order->client->name." make a payment to ".$this->order->userservice->service->title." costs ".$this->order->price,$this->order->id,'order')
         );
     }
 

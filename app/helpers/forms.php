@@ -6,6 +6,13 @@ if(!function_exists('old_value')) {
     }
 }
 
+if(!function_exists('get_status')){
+    function get_status(){
+        return ['paid','failed','processing','cancelled','done','received','pending'];
+    }
+
+}
+
 if(!function_exists('arabic_country_array')) {
     function arabic_country_array(): Array{
         return array(
@@ -259,11 +266,5 @@ if(!function_exists('arabic_country_array')) {
     }
 
 
-    if(!function_exists('get_status')){
-        function get_status(){
-            return ['paid','failed','processing','cancelled','done','received','pending'];
-        }
-
-    }
 }
 

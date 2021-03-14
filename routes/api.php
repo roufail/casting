@@ -29,7 +29,7 @@ Route::post('client/register', 'API\ClientController@register')->name('client.re
 
 Route::group(['middleware' => 'auth:api','prefix' => 'payer','as' => 'payer.'],function(){
     
-    Route::get('myorders/update/{id}/{status}', 'API\OrderController@updatemyorders')->name('updatemyorders');
+    Route::get('myorders/update/{id}/{status}', 'API\OrderController@payer_updatemyorders')->name('updatemyorders');
     Route::get('myorders/{status?}', 'API\OrderController@myorders')->name('myorders');
     Route::post('profile', 'API\UserController@updatemyprofile')->name('updatemyprofile');
 
@@ -41,4 +41,5 @@ Route::group(['middleware' => 'auth:api','prefix' => 'payer','as' => 'payer.'],f
 
 Route::group(['middleware' => 'auth:client-api','prefix' => 'client','as' => 'client.'],function(){
     Route::post('place_order', 'API\OrderController@place_order')->name('place_order');
+    Route::get('myorders/update/{id}/{status}', 'API\OrderController@client_updatemyorders')->name('updatemyorders');
 });

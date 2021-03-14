@@ -22,9 +22,9 @@ class OrderController extends BaseController
         return  $this->success(new OrderCollection($orders),'Orders Retrived Successfully');
     }
 
-    public function updatemyorders($id,$status) {
+    public function payer_updatemyorders($id,$status) {
         $order = auth()->user()->orders()->find($id);
-        if($order && in_array($status,get_status())) {
+        if($order && in_array($status,['processing','cancelled'])) {
             $order->update(['status' => $status]);
             // send notification to the customer
             // your order [] status changed to []  by []
@@ -51,12 +51,7 @@ class OrderController extends BaseController
         // pay to website
         $payment = true;
 
-        if($payment){
-            
-            
-            
-
-            
+        if($payment){    
                 $updated = $order->update([
                     'status' => 'paid'
                 ]);
@@ -81,4 +76,35 @@ class OrderController extends BaseController
 
 
     }
+
+
+
+    public function client_updatemyorders($id,$status) {
+        $order = auth('client-api')->user()->orders()->find($id);
+        if($order && in_array($status,['done'])) {
+            $order->update(['status' => $status]);
+            // send notification to the customer
+            // your order [] status changed to []  by []
+            OrderStatusUpdateJob::dispatch($order);
+            return  $this->success($order,'Order updated successfully');
+        }else {
+            return  $this->error([],'Something went wrong');
+        }
+    }
+
+
+    public function rate_payer($id) {
+        $order = auth('client-api')->user()->orders()->find($id);
+        if($order && in_array($status,['done'])) {
+            $order->update(['status' => $status]);
+            // send notification to the customer
+            // your order [] status changed to []  by []
+            OrderStatusUpdateJob::dispatch($order);
+            return  $this->success($order,'Order updated successfully');
+        }else {
+            return  $this->error([],'Something went wrong');
+        }
+    }
+
+
 }
