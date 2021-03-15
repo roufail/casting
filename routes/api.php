@@ -24,8 +24,6 @@ Route::post('client/login', 'API\ClientController@login')->name('client.login');
 Route::post('client/register', 'API\ClientController@register')->name('client.register');
 
 
-// Route::get('services/catgories/{search?}', 'API\CategoryController@index')->name('user.catgories');
-
 
 Route::group(['middleware' => 'auth:api','prefix' => 'payer','as' => 'payer.'],function(){
     
@@ -42,4 +40,5 @@ Route::group(['middleware' => 'auth:api','prefix' => 'payer','as' => 'payer.'],f
 Route::group(['middleware' => 'auth:client-api','prefix' => 'client','as' => 'client.'],function(){
     Route::post('place_order', 'API\OrderController@place_order')->name('place_order');
     Route::get('myorders/update/{id}/{status}', 'API\OrderController@client_updatemyorders')->name('updatemyorders');
+    Route::post('rate/{order}', 'API\OrderController@rate_payer')->name('rate_payer');
 });

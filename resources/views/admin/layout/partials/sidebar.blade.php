@@ -96,6 +96,22 @@
           </a>
         </li>
 
+        <li class="{{ Route::is('admin.ratings.index') ? 'active' : '' }}">
+          <a href="{{ route('admin.ratings.index') }}">
+            <i class="fa fa-star" aria-hidden="true"></i>
+            <span>التقيمات</span>
+          </a>
+        </li>
+
+
+        <li class="{{ Route::is('admin.settings.index') ? 'active' : '' }}">
+          <a href="{{ route('admin.settings.index') }}">
+            <i class="fa fa-cogs" aria-hidden="true"></i>
+            <span>الاعدادات</span>
+          </a>
+        </li>
+
+
         {{-- <li><a href="#"><i class="fa fa-link"></i> <span>Another Link</span></a></li>
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Multilevel</span> <i class="fa fa-angle-left pull-right"></i></a>

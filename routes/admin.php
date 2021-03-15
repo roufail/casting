@@ -59,6 +59,13 @@ Route::group(['namespace' => 'Admin','as'=>'admin.'],function(){
         Route::get('outgoings/pay/{order}', 'OutgoingController@pay')->name('outgoings.pay');
         Route::resource('outgoings', 'OutgoingController');
 
+        Route::get('ratings/ajax_data', 'RatingController@ajaxData')->name('ratings.ajax_data');
+        Route::resource('ratings', 'RatingController');
+        
+        
+        Route::get('settings/delete_image', 'SettingController@delete_image')->name('settings.delete_image');
+        Route::resource('settings', 'SettingController');
+
     });
 });
 

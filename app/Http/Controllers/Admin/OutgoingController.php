@@ -17,7 +17,7 @@ class OutgoingController extends Controller
      */
     public function index()
     {
-        return view('admin.outgoing.index');
+        return view('admin.outgoings.index');
     }
 
 

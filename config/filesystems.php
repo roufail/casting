@@ -65,6 +65,12 @@ return [
             'url' => env('APP_URL').'/storage/categories',
             'visibility' => 'public',
         ],
+        'settings' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/settings'),
+            'url' => env('APP_URL').'/storage/settings',
+            'visibility' => 'public',
+        ],
         'dropzone' => [
             'driver' => 'local',
             'root' => storage_path('app/public/dropzone'),

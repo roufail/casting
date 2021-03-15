@@ -6,11 +6,14 @@ use Illuminate\Http\Request;
 use App\Http\Resources\Order\OrderCollection;
 use App\Http\Resources\Order\OrderResource;
 use App\Models\UserService;
+use App\Models\Rate;
 
 use App\Http\Requests\Order\OrderRequest;
 use App\Jobs\Payer\ServiceRequestJob;
 use App\Jobs\Client\OrderStatusUpdateJob;
 use App\Jobs\Admin\AdminPaymentJob;
+use App\Http\Requests\Api\RateRequest;
+
 class OrderController extends BaseController
 {
     public function myorders($status=null){
@@ -93,17 +96,21 @@ class OrderController extends BaseController
     }
 
 
-    public function rate_payer($id) {
-        $order = auth('client-api')->user()->orders()->find($id);
-        if($order && in_array($status,['done'])) {
-            $order->update(['status' => $status]);
-            // send notification to the customer
-            // your order [] status changed to []  by []
-            OrderStatusUpdateJob::dispatch($order);
-            return  $this->success($order,'Order updated successfully');
-        }else {
+    public function rate_payer(RateRequest $request,$order) {
+        $order = auth('client-api')->user()->orders()->where('status','done')->where('id',$order)->first();
+        if($order) {
+            $rate = Rate::create([
+                'service_id'      => $order->service_id,
+                'user_service_id' => $order->user_service_id,
+                'client_id'       => $order->client_id,
+                'rate'            => $request->rate,
+                'feedback'        => $request->feedback,
+            ]);
+            return  $this->success($rate,'Rate created successfully');
+        }else{
             return  $this->error([],'Something went wrong');
         }
+        // make magic here
     }
 
 
