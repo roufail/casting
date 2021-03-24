@@ -7,6 +7,8 @@ use App\Http\Resources\Order\OrderCollection;
 use App\Http\Resources\Order\OrderResource;
 use App\Models\UserService;
 use App\Models\Rate;
+use App\Models\Outgoing;
+use App\Models\Setting;
 
 use App\Http\Requests\Order\OrderRequest;
 use App\Jobs\Payer\ServiceRequestJob;
@@ -29,8 +31,6 @@ class OrderController extends BaseController
         $order = auth()->user()->orders()->find($id);
         if($order && in_array($status,['processing','cancelled'])) {
             $order->update(['status' => $status]);
-            // send notification to the customer
-            // your order [] status changed to []  by []
             OrderStatusUpdateJob::dispatch($order);
             return  $this->success($order,'Order updated successfully');
         }else {
@@ -55,16 +55,11 @@ class OrderController extends BaseController
         $payment = true;
 
         if($payment){    
-                $updated = $order->update([
-                    'status' => 'paid'
-                ]);
-                
-                if($updated){
-                    
-                // send notification to the the site
+            $updated = $order->update([
+                'status' => 'paid'
+            ]);
+            if($updated){
                 AdminPaymentJob::dispatch($order);
-
-                // send notification to the payer
                 ServiceRequestJob::dispatch(auth('client-api')->user(),$userService->user,$userService->service);
             }
 
@@ -86,9 +81,18 @@ class OrderController extends BaseController
         $order = auth('client-api')->user()->orders()->find($id);
         if($order && in_array($status,['done'])) {
             $order->update(['status' => $status]);
-            // send notification to the customer
-            // your order [] status changed to []  by []
+            $order->load('incoming');
             OrderStatusUpdateJob::dispatch($order);
+
+            $settings = Setting::pluck('setting_value','setting_key')->toArray();
+            $fees = (($order->price * $settings['percentage']) / 100);
+            Outgoing::updateOrCreate(['order_id' => $order->id],[
+                'order_id'    => $order->id,
+                'incoming_id' => $order->incoming->id,
+                'fees'        => $fees,
+                'total'       => $order->price - $fees
+            ]);
+            // send notification to the admin
             return  $this->success($order,'Order updated successfully');
         }else {
             return  $this->error([],'Something went wrong');
@@ -110,7 +114,6 @@ class OrderController extends BaseController
         }else{
             return  $this->error([],'Something went wrong');
         }
-        // make magic here
     }
 
 

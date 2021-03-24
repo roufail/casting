@@ -39,7 +39,24 @@ class CategoryController extends Controller
      */
     public function store(CategoryRequest $request)
     {
-        //
+        $validated = $request->validated();
+        if($request->image) {
+            $validated['image'] = $request->image->store("/","categories");
+        }
+ 
+        if($request->active) {
+            $validated['active'] = true;
+        }else {
+            $validated['active'] = false;
+        }
+
+
+        if(Category::create($validated)){
+            Alert::toast('<h4>تم اضافه التصنيف بنجاح</h4>','success');
+        }else{
+            Alert::toast('<h4>حدث خطأ ما , يرجي المحاوله لاحقاً</h4>','error');
+        }
+        return redirect()->route('admin.categories.index');   
     }
 
 
@@ -82,7 +99,8 @@ class CategoryController extends Controller
         }else{
             Alert::toast('<h4>حدث خطأ ما , يرجي المحاوله لاحقاً</h4>','error');
         }
-        return redirect()->back();    }
+        return redirect()->back();    
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -113,10 +131,10 @@ class CategoryController extends Controller
             } 
         })->addColumn('action', function ($category) {
             return '
-            <a  style="float:right" href="'.route('admin.categories.edit',$category->id).'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> تعديل</a>
+            <a  style="float:right" href="'.route('admin.categories.edit',$category->id).'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i>'.__('admin/categories.list.edit').'</a>
             <form method="post" action="'.route('admin.categories.destroy',$category->id).'">
              '.csrf_field().method_field("delete").'
-             <button style="float:right" type="submit" class="delete-record btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash"></i> حذف</a>
+             <button style="float:right" type="submit" class="delete-record btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash"></i> '.__('admin/categories.list.delete').'</a>
              </form>';
         })
         ->rawColumns(['image', 'action'])

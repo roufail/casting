@@ -27,4 +27,9 @@ class Order extends Model
     public function client(){
         return $this->belongsTo(Client::class);
     }
+
+    public function incoming(){
+        return $this->hasOne(Incoming::class);
+    }
+
 }

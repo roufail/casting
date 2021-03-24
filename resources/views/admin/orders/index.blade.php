@@ -3,7 +3,9 @@
 @section('content')
 <div class="box">
     <div class="box-header">
-      <h3 class="box-title">الخدمات</h3>
+      <h3 class="box-title">
+            @lang('admin/orders.list.orders')
+      </h3>
     </div><!-- /.box-header -->
 
 
@@ -14,11 +16,11 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>الخدمه</th>
-                    <th>البائع</th>
-                    <th>العميل</th>
-                    <th>السعر</th>
-                    <th>الحاله</th>
+                    <th>@lang('admin/orders.list.service')</th>
+                    <th>@lang('admin/orders.list.payer')</th>
+                    <th>@lang('admin/orders.list.client')</th>
+                    <th>@lang('admin/orders.list.price')</th>
+                    <th>@lang('admin/orders.list.status')</th>
                 </tr>
             </thead>
         </table>
@@ -46,25 +48,7 @@
 
         });
     
-        $('#orders-table').on("click",".delete-record",function(e){
-            e.preventDefault();
-            var form =  $(this).closest("form");
-
-            swal({
-                    title: `هل تريد حقا حذف هذا الطلب ؟`,
-                    text: "هذا الاجراء لايمكن التراجع عنه ",
-                    icon: "warning",
-                    buttons: true,
-                    dangerMode: true,
-                    buttons: ['لا', 'نعم']
-
-                })
-                .then((willDelete) => {
-                    if (willDelete) {
-                    form.submit();
-                    }
-                });
-        });
+     
     
     });
 

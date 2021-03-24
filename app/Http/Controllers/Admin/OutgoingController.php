@@ -83,7 +83,7 @@ class OutgoingController extends Controller
         })
         ->addColumn('action', function ($outgoings) {
             if($outgoings->order->status == "done"){
-                return '<a href="'.route('admin.outgoings.pay',$outgoings->order->id).'" style="float:right"  class="send-money btn btn-xs btn-success"><i class="glyphicon glyphicon-euro"></i> ارسال</a>';
+                return '<a href="'.route('admin.outgoings.pay',$outgoings->order->id).'" style="float:right"  class="send-money btn btn-xs btn-success"><i class="glyphicon glyphicon-euro"></i> '.__("admin/outgoings.list.send").'</a>';
             }
         })->make(true);
     }

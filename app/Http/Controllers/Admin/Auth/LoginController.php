@@ -27,7 +27,8 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    protected $redirectTo;
+    protected $redirectAfterLogout;
 
     /**
      * Create a new controller instance.
@@ -38,6 +39,7 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
         $this->redirectTo = route('admin.dashboard');
+        $this->redirectAfterLogout = route('admin.login');
     }
 
 
@@ -63,7 +65,10 @@ class LoginController extends Controller
     }
 
 
-    protected function loggedOut() {
-        return redirect()->route('admin.login');
+    public function logout()
+    {
+        Auth::guard('admin')->logout();
+        return redirect(property_exists($this, 'redirectAfterLogout') ? $this->redirectAfterLogout : '/');
     }
+
 }

@@ -34,7 +34,7 @@ class RatingController extends Controller
             return '
             <form method="post" action="'.route('admin.ratings.destroy',$rating->id).'">
              '.csrf_field().method_field("delete").'
-             <button style="float:right" type="submit" class="delete-record btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash"></i> حذف</a>
+             <button style="float:right" type="submit" class="delete-record btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash"></i> '.__("admin/ratings.list.delete").'</a>
              </form>';
         })->make(true);
     }

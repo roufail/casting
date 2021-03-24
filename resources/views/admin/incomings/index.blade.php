@@ -3,7 +3,7 @@
 @section('content')
 <div class="box">
     <div class="box-header">
-      <h3 class="box-title">الخدمات</h3>
+      <h3 class="box-title">@lang("admin/incomings.list.incomings")</h3>
     </div><!-- /.box-header -->
 
 
@@ -14,14 +14,14 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>الخدمه</th>
-                    <th>البائع</th>
-                    <th>العميل</th>
-                    <th>السعر</th>
-                    <th>الحاله</th>
-                    <th>تم الاستلام</th>
-                    <th>تم التسليم</th>
-                    <th>تاريخ التسليم</th>
+                    <th>@lang("admin/incomings.list.service")</th>
+                    <th>@lang("admin/incomings.list.payer")</th>
+                    <th>@lang("admin/incomings.list.client")</th>
+                    <th>@lang("admin/incomings.list.price")</th>
+                    <th>@lang("admin/incomings.list.status")</th>
+                    <th>@lang("admin/incomings.list.received")</th>
+                    <th>@lang("admin/incomings.list.delivered")</th>
+                    <th>@lang("admin/incomings.list.deliver_date")</th>
                 </tr>
             </thead>
         </table>

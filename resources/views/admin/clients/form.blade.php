@@ -8,7 +8,7 @@
 @section('content')
 <div class="box">
     <div class="box-header">
-      <h3 class="box-title">@if($client->id) تعديل {{$client->name}}@else مستخدم جديد @endif</h3>
+      <h3 class="box-title">@if($client->id) @lang("admin/clients.form.edit_client") {{$client->name}}@else @lang("admin/clients.form.new_client") @endif</h3>
     </div><!-- /.box-header -->
 
 
@@ -22,27 +22,27 @@
                 @method('put')  
               @endif
             <div class="form-group">
-                <label for="exampleInputEmail1">الاسم</label>
+                <label for="exampleInputEmail1">@lang("admin/clients.form.name")</label>
                 <input type="text" name="name" class="form-control" value="{{old_value('name',$client)}}">
             </div>
 
               <div class="form-group">
-                <label for="exampleInputEmail1">البريد الالكتروني</label>
+                <label for="exampleInputEmail1">@lang("admin/clients.form.email")</label>
                 <input type="email" name="email" class="form-control"  value="{{old_value('email',$client)}}" placeholder="Enter email">
               </div>
 
               <div class="form-group">
-                <label for="exampleInputPassword1">كلمه السر</label>
+                <label for="exampleInputPassword1">@lang("admin/clients.form.password")</label>
                 <input type="password" name="password" class="form-control"  placeholder="Password">
               </div>
 
               <div class="form-group">
-                <label for="exampleInputPassword1">تأكيد كلمه السر</label>
+                <label for="exampleInputPassword1">@lang("admin/clients.form.re_password")</label>
                 <input type="password" name="password_confirmation" class="form-control"  placeholder="Password Conformation">
               </div>
 
               <div class="form-group">
-                <label>الدوله</label>
+                <label>@lang("admin/clients.form.country")</label>
                 <select dir="rtl" name="country" class="form-control select2">
                   @foreach (arabic_country_array() as $key => $item)
                      <option value="{{  $item }}" @if($item == $client->country) selected @endif>{{ $item }}</option>
@@ -53,19 +53,19 @@
 
 
               <div class="form-group">
-                <label>الصوره</label>
+                <label>@lang("admin/clients.form.image")</label>
                 @if($client->image != "")
                 <div class="image_holder">
                   <i class="remove_image fa fa-times-circle"></i>
                   <img src="{{ \Storage::disk("clients")->url($client->image)}}" width="100px" height="100px" class="img-rounded" align="center" />
                 </div>
                 @endif
-                <input type="file" name="image" class="form-control"  placeholder="صوره">
+                <input type="file" name="image" class="form-control"  placeholder="@lang("admin/clients.form.image")">
               </div>
 
               <div class="checkbox">
                 <label>
-                  <input name="active" type="checkbox" @if($client->active || old('active')) checked @endif> مفعل
+                  <input name="active" type="checkbox" @if($client->active || old('active')) checked @endif> @lang("admin/clients.form.active")
                 </label>
               </div>
 
@@ -77,7 +77,7 @@
             </div><!-- /.box-body -->
 
             <div class="box-footer">
-              <button type="submit" class="btn btn-primary">Submit</button>
+              <button type="submit" class="btn btn-primary">@lang('admin/clients.form.submit')</button>
             </div>
           </form>
 

@@ -26,7 +26,7 @@ class SettingRequest extends FormRequest
         $rules =  [
             'settings'   => 'required|array',
             'settings.*' => 'required',
-            'settings.logo' => 'required',
+            // 'settings.logo' => 'required',
         ];
         return $rules;
     }

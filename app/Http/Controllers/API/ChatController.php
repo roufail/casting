@@ -1,0 +1,98 @@
+<?php
+
+namespace App\Http\Controllers\API;
+
+use Illuminate\Http\Request;
+use App\Models\Client;
+use App\Models\Chat;
+use App\Models\Order;
+use App\Events\Message;
+
+
+class ChatController extends BaseController
+{
+    public function message_to_client(Request $request , $order){
+        $request->validate([
+            'message' => 'required|string',
+        ]);
+
+        $order = Order::find($order);
+        if(!$order){
+            return $this->error([],'somthing went wrong!');
+        }
+
+        $chat = Chat::firstOrCreate([
+         'order_id' => $order->id
+        ],[
+            'order_id'  => $order->id,
+            'user_id'   => auth()->user()->id,
+            'client_id' => $order->client_id
+        ]);
+
+        $chat->messages()->create([
+            'user_id'     =>  auth()->user()->id,
+            'user_type'   => 'payer',
+            'message'     =>  $request->message,
+        ]);
+
+        // fire the event
+        broadcast(new Message($order->client_id,$request->message,$order->id,'client'));
+        return $this->success($request->message, 'message send successfully');
+    }
+
+    public function message_to_payer(Request $request , $order){
+        $request->validate([
+            'message' => 'required|string',
+        ]);
+        $order = Order::find($order);
+        if(!$order){
+            return $this->error([],'somthing went wrong!');
+        }
+
+        $chat = Chat::firstOrCreate([
+         'order_id' => $order->id
+        ],[
+            'order_id'  => $order->id,
+            'user_id'   => auth()->user()->id,
+            'client_id' => $order->client_id
+        ]);
+
+        $chat->messages()->create([
+            'user_id'     =>  auth()->user()->id,
+            'user_type'   => 'client',
+            'message'     =>  $request->message,
+        ]);
+
+        // fire the event
+        broadcast(new Message($order->client_id,$request->message,$order->id,'payer'));
+
+        return $this->success($request->message, 'message send successfully');
+    }
+
+    public function load_chat($order){
+        $chat = Chat::where("order_id",$order)->first();
+        if(!$chat){
+            return $this->error([],'somthing went wrong!');
+        }
+
+        return $this->success($chat->load('messages'), 'chat loaded successfully');
+
+    }
+
+    public function test_socket() {
+        $socket = stream_socket_client('tcp://127.0.0.1:4444');
+        if ($socket) {
+            $sent = stream_socket_sendto($socket, 'message');
+            if ($sent > 0) {
+                $server_response = fread($socket, 4096);
+                echo $server_response;
+            }
+        } else {
+            echo 'Unable to connect to server';
+        }
+        stream_socket_shutdown($socket, STREAM_SHUT_RDWR);
+        
+    }
+
+
+}

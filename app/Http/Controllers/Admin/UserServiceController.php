@@ -121,10 +121,10 @@ class UserServiceController extends Controller
         })
         ->addColumn('action', function ($userservice) {
             return '
-            <a  style="float:right" href="'.route('admin.userservices.edit',$userservice->id).'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> تعديل</a>
+            <a  style="float:right" href="'.route('admin.userservices.edit',$userservice->id).'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> '.__('admin/userservice.list.edit').'</a>
             <form method="post" action="'.route('admin.userservices.destroy',$userservice->id).'">
              '.csrf_field().method_field("delete").'
-             <button style="float:right" type="submit" class="delete-record btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash"></i> حذف</a>
+             <button style="float:right" type="submit" class="delete-record btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash"></i> '.__('admin/userservice.list.delete').'</a>
              </form>';
         })
         ->rawColumns(['image', 'action'])

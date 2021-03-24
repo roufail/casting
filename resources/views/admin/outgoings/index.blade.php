@@ -14,14 +14,14 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>الخدمه</th>
-                    <th>البائع</th>
-                    <th>العميل</th>
-                    <th>السعر</th>
-                    <th>الرسوم</th>
-                    <th>الاجمالي</th>
-                    <th>الحاله</th>
-                    <th>تعديل</th>
+                    <th>@lang("admin/outgoings.list.service")</th>
+                    <th>@lang("admin/outgoings.list.payer")</th>
+                    <th>@lang("admin/outgoings.list.client")</th>
+                    <th>@lang("admin/outgoings.list.price")</th>
+                    <th>@lang("admin/outgoings.list.fees")</th>
+                    <th>@lang("admin/outgoings.list.total")</th>
+                    <th>@lang("admin/outgoings.list.status")</th>
+                    <th>@lang("admin/outgoings.list.edit")</th>
                 </tr>
             </thead>
         </table>
@@ -52,26 +52,7 @@
             "order": [[ 0, "desc" ]]
 
         });
-    
-        $('#orders-table').on("click",".delete-record",function(e){
-            e.preventDefault();
-            var form =  $(this).closest("form");
 
-            swal({
-                    title: `هل تريد حقا حذف هذا الطلب ؟`,
-                    text: "هذا الاجراء لايمكن التراجع عنه ",
-                    icon: "warning",
-                    buttons: true,
-                    dangerMode: true,
-                    buttons: ['لا', 'نعم']
-
-                })
-                .then((willDelete) => {
-                    if (willDelete) {
-                    form.submit();
-                    }
-                });
-        });
     
     });
 

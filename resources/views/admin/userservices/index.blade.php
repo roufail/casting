@@ -16,10 +16,10 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>الخدمه</th>
-                    <th>السعر</th>
-                    <th>نوع العمل</th>
-                    <th>تعديل</th>
+                    <th>@lang('admin/userservice.list.service')</th>
+                    <th>@lang('admin/userservice.list.price')</th>
+                    <th>@lang('admin/userservice.list.work_type')</th>
+                    <th>@lang('admin/userservice.list.edit')</th>
                 </tr>
             </thead>
         </table>
@@ -52,13 +52,12 @@
             var form =  $(this).closest("form");
 
             swal({
-                    title: `هل تريد حقا حذف هذه الخدمه ؟`,
-                    text: "هذا الاجراء لايمكن التراجع عنه ",
+                title: "@lang('admin/userservice.swal.delete_title')",
+                    text: "@lang('admin/userservice.swal.delete_body')",
                     icon: "warning",
                     buttons: true,
                     dangerMode: true,
-                    buttons: ['لا', 'نعم']
-
+                    buttons: ["@lang('admin/userservice.swal.no')", "@lang('admin/userservice.swal.yes')"]
                 })
                 .then((willDelete) => {
                     if (willDelete) {

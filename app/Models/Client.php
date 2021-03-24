@@ -19,6 +19,9 @@ class Client extends Authenticatable
         'image',
         'active',
     ];
+
+    protected $hidden = ['password'];
+    
     public function orders() {
         return $this->hasMany(Order::class);
     }

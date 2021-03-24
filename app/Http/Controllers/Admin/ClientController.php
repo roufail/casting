@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
-use App\Models\CLient;
+use App\Models\Client;
 use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 Use Alert,Storage;
@@ -116,7 +116,8 @@ class ClientController extends Controller
         }else{
             Alert::toast('<h4>حدث خطأ ما , يرجي المحاوله لاحقاً</h4>','error');
         }
-        return redirect()->back();    }
+        return redirect()->back();    
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -149,10 +150,10 @@ class ClientController extends Controller
             } 
         })->addColumn('action', function ($client) {
             return '
-            <a  style="float:right" href="'.route('admin.clients.edit',$client->id).'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> تعديل</a>
+            <a  style="float:right" href="'.route('admin.clients.edit',$client->id).'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> '.__("admin/clients.list.edit").'</a>
             <form method="post" action="'.route('admin.clients.destroy',$client->id).'">
              '.csrf_field().method_field("delete").'
-             <button style="float:right" type="submit" class="delete-record btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash"></i> حذف</a>
+             <button style="float:right" type="submit" class="delete-record btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash"></i> '.__("admin/clients.list.delete").'</a>
              </form>';
         })
         ->rawColumns(['image', 'action'])

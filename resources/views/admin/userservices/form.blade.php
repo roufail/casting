@@ -7,7 +7,7 @@
 @section('content')
 <div class="box">
     <div class="box-header">
-      <h3 class="box-title">@if($userservice->id) تعديل {{$userservice->name}}@else مستخدم جديد @endif</h3>
+      <h3 class="box-title">@if($userservice->id) @lang("admin/userservice.form.edit_service") {{$userservice->name}}@else @lang("admin/userservice.form.new_service") @endif</h3>
     </div><!-- /.box-header -->
 
 
@@ -23,7 +23,7 @@
 
 
               <div class="form-group">
-                <label>التصنيف</label>
+                <label>@lang("admin/userservice.form.category")</label>
                 <select dir="rtl" name="user_id" class="form-control select2">
                   @foreach ($users as $key => $user)
                      <option value="{{  $key }}" @if($key == $userservice->user_id) selected @endif>{{ $user }}</option>
@@ -34,19 +34,19 @@
   
   
               <div class="form-group">
-                <label for="exampleInputEmail1">السعر</label>
+                <label for="exampleInputEmail1">@lang("admin/userservice.form.price")</label>
                 <input type="text" name="price" class="form-control" value="{{old_value('price',$userservice)}}">
             </div>
 
             <div class="form-group">
-              <label for="exampleInputEmail1">نوع العمل</label>
+              <label for="exampleInputEmail1">@lang("admin/userservice.form.work_type")</label>
               <input type="text" name="work_type" class="form-control" value="{{old_value('work_type',$userservice)}}">
           </div>
 
 
 
             <div class="form-group">
-              <label>التصنيف</label>
+              <label>@lang("admin/userservice.form.service")</label>
               <select dir="rtl" name="service_id" class="form-control select2">
                 @foreach ($services as $key => $item)
                    <option value="{{  $key }}" @if($key == $userservice->service_id) selected @endif>{{ $item }}</option>
@@ -58,13 +58,13 @@
 
               <div class="checkbox">
                 <label>
-                  <input name="active" type="checkbox" @if($userservice->active || old('active')) checked @endif> مفعل
+                  <input name="active" type="checkbox" @if($userservice->active || old('active')) checked @endif> @lang("admin/userservice.form.service")
                 </label>
               </div>
             </div><!-- /.box-body -->
 
             <div class="box-footer">
-              <button type="submit" class="btn btn-primary">حفظ</button>
+              <button type="submit" class="btn btn-primary">@lang("admin/userservice.form.save")</button>
             </div>
           </form>
       </div><!-- /.box-body -->

@@ -19,7 +19,7 @@ class CreateUserServicesTable extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBiginteger('service_id');
             $table->foreign('service_id')->references('id')->on('services')->onDelete('cascade');
-            $table->unsignedBiginteger('category_id');
+            $table->unsignedBiginteger('category_id')->nullable();
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->double('price');
             $table->string('work_type');

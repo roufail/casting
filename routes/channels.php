@@ -17,13 +17,11 @@ use Illuminate\Support\Facades\Broadcast;
 //     return (int) $user->id === (int) $id;
 // });
 
-
 Broadcast::channel('payer.{payer_id}', function ($user, $payer_id) {
     return (int) $user->id === (int) $payer_id;
 });
 
-Broadcast::channel('admin.{admin_id}', function ($user, $admin_id) {
-    return true;
-    return (int) $user->id === (int) $admin_id;
-});
+Broadcast::channel('admin.{admin_id}', function ($admin, $admin_id) {
+    return (int) $admin->id === (int) $admin_id;
+},['guards' => ['admin']]);
 

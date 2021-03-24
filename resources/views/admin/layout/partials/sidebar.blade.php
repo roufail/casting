@@ -36,7 +36,7 @@
         <li class="{{ Route::is('admin.users.index') ? 'active' : '' }}">
           <a href="{{ route('admin.users.index') }}">
             <i class="fa fa-users"></i> 
-            <span>البائعين</span>
+            <span>@lang("admin/sidebar.menu.payers")</span>
           </a>
         </li>
 
@@ -45,7 +45,7 @@
         <li class="{{ Route::is('admin.categories.index') ? 'active' : '' }}">
           <a href="{{ route('admin.categories.index') }}">
             <i class="fa fa-list-alt" aria-hidden="true"></i>
-            <span>التصنيفات</span>
+            <span>@lang("admin/sidebar.menu.categories")</span>
           </a>
         </li>
 
@@ -54,14 +54,14 @@
         <li class="{{ Route::is('admin.services.index') ? 'active' : '' }}">
           <a href="{{ route('admin.services.index') }}">
             <i class="fa fa-taxi"></i> 
-            <span>الخدمات الرئيسية</span>
+            <span>@lang("admin/sidebar.menu.services")</span>
           </a>
         </li>
 
         <li class="{{ Route::is('admin.userservices.index') ? 'active' : '' }}">
           <a href="{{ route('admin.userservices.index') }}">
             <i class="fa fa-taxi"></i> 
-            <span>خدمات المستخدمين</span>
+            <span>@lang("admin/sidebar.menu.user_services")</span>
           </a>
         </li>
 
@@ -70,7 +70,7 @@
         <li class="{{ Route::is('admin.clients.index') ? 'active' : '' }}">
           <a href="{{ route('admin.clients.index') }}">
             <i class="fa fa-users"></i> 
-            <span>العملاء</span>
+            <span>@lang("admin/sidebar.menu.clients")</span>
           </a>
         </li>
 
@@ -78,28 +78,28 @@
         <li class="{{ Route::is('admin.orders.index') ? 'active' : '' }}">
           <a href="{{ route('admin.orders.index') }}">
             <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-            <span>الطلبات</span>
+            <span>@lang("admin/sidebar.menu.orders")</span>
           </a>
         </li>
 
         <li class="{{ Route::is('admin.incomings.index') ? 'active' : '' }}">
           <a href="{{ route('admin.incomings.index') }}">
             <i class="fa fa-money" aria-hidden="true"></i>
-            <span>الواردات</span>
+            <span>@lang("admin/sidebar.menu.incomings")</span>
           </a>
         </li>
 
         <li class="{{ Route::is('admin.outgoings.index') ? 'active' : '' }}">
           <a href="{{ route('admin.outgoings.index') }}">
             <i class="fa fa-money" aria-hidden="true"></i>
-            <span>الصادرات</span>
+            <span>@lang("admin/sidebar.menu.outgoings")</span>
           </a>
         </li>
 
         <li class="{{ Route::is('admin.ratings.index') ? 'active' : '' }}">
           <a href="{{ route('admin.ratings.index') }}">
             <i class="fa fa-star" aria-hidden="true"></i>
-            <span>التقيمات</span>
+            <span>@lang("admin/sidebar.menu.ratings")</span>
           </a>
         </li>
 
@@ -107,7 +107,21 @@
         <li class="{{ Route::is('admin.settings.index') ? 'active' : '' }}">
           <a href="{{ route('admin.settings.index') }}">
             <i class="fa fa-cogs" aria-hidden="true"></i>
-            <span>الاعدادات</span>
+            <span>@lang("admin/sidebar.menu.settings")</span>
+          </a>
+        </li>
+
+        <li class="{{ Route::is('admin.admins.index') ? 'active' : '' }}">
+          <a href="{{ route('admin.admins.index') }}">
+            <i class="fas users-cog" aria-hidden="true"></i>
+            <span>@lang("admin/sidebar.menu.admins")</span>
+          </a>
+        </li>
+
+        <li>
+          <a href="{{ route('admin.logout') }}">
+            <i class="fa fa-sign-out" aria-hidden="true"></i>
+            <span>@lang("admin/sidebar.menu.logout")</span>
           </a>
         </li>
 

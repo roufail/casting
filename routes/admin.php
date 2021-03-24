@@ -2,14 +2,14 @@
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/', function () {
-    return 'admin';
-});
+// Route::get('/', function () {
+//     return 'admin';
+// });
 
 
 Route::group(['namespace' => 'Admin','as'=>'admin.'],function(){
-    Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
-    Route::post('register', 'Auth\RegisterController@register')->name('register.post');
+    // Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
+    // Route::post('register', 'Auth\RegisterController@register')->name('register.post');
     Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
     Route::post('login', 'Auth\LoginController@Login')->name('login.post');
 
@@ -17,6 +17,8 @@ Route::group(['namespace' => 'Admin','as'=>'admin.'],function(){
         Route::get('/', 'DashboardController@index')->name('dashboard');
         Route::get('home', 'DashboardController@index')->name('dashboard'); 
         Route::get('dashboard', 'DashboardController@index')->name('dashboard'); 
+        Route::get('logout', 'Auth\LoginController@logout')->name('logout');
+
         Route::get('users/ajax_data', 'UserController@ajaxData')->name('users.ajax_data');
         Route::get('users/delete_image', 'UserController@delete_image')->name('users.delete_image');
         Route::post('users/upload_images', 'UserController@upload_images')->name('users.upload_images');
@@ -65,6 +67,11 @@ Route::group(['namespace' => 'Admin','as'=>'admin.'],function(){
         
         Route::get('settings/delete_image', 'SettingController@delete_image')->name('settings.delete_image');
         Route::resource('settings', 'SettingController');
+        
+        
+        Route::get('admins/ajax_data', 'AdminController@ajaxData')->name('admins.ajax_data');
+        Route::resource('admins', 'AdminController');
+
 
     });
 });

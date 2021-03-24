@@ -130,7 +130,7 @@ class UserController extends Controller
     public function destroy(User $user)
     {
 
-        Storage::disk('users')->delete($users->image);
+        Storage::disk('users')->delete($user->image);
         if($user->delete()){
             Alert::toast('<h4>تم حذف المستخدم بنجاح</h4>','success');
             return redirect(route('admin.users.index'));
@@ -152,10 +152,10 @@ class UserController extends Controller
             } 
         })->addColumn('action', function ($user) {
             return '
-            <a  style="float:right" href="'.route('admin.users.edit',$user->id).'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> تعديل</a>
+            <a  style="float:right" href="'.route('admin.users.edit',$user->id).'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> '.__('admin/users.list.edit').'</a>
             <form method="post" action="'.route('admin.users.destroy',$user->id).'">
              '.csrf_field().method_field("delete").'
-             <button style="float:right" type="submit" class="delete-record btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash"></i> حذف</a>
+             <button style="float:right" type="submit" class="delete-record btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash"></i>'.__('admin/users.list.delete').'</a>
              </form>';
         })
         ->rawColumns(['image', 'action'])
@@ -176,14 +176,15 @@ class UserController extends Controller
     public function upload_images(Request $request) {
         if($request->ajax()){
             $name = $request->file->store("/","dropzone");
-            return response()->json(['name' => $name]);
+            return response()->json(['name' => Storage::disk('dropzone')->url($name)]);
         }
     }
 
     public function remove_dropzone_image(Request $request) {
-        Storage::disk('dropzone')->delete($request->image);
+        $image_arr = explode("/",$request->image);
+        $image     = end($image_arr);
+        Storage::disk('dropzone')->delete($image);
         return response()->json(['success' => true]);
-
     }
 
 

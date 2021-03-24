@@ -7,7 +7,7 @@
 @section('content')
 <div class="box">
     <div class="box-header">
-      <h3 class="box-title">@if($category->id) تعديل {{$category->name}}@else مستخدم جديد @endif</h3>
+      <h3 class="box-title">@if($category->id) @lang('admin/categories.form.edit_user') {{$category->name}}@else @lang('admin/categories.form.new_user') @endif</h3>
     </div><!-- /.box-header -->
 
 
@@ -21,12 +21,12 @@
                 @method('put')  
               @endif
               <div class="form-group">
-                <label for="exampleInputEmail1">العنوان</label>
+                <label for="exampleInputEmail1">@lang('admin/categories.form.title')</label>
                 <input type="text" name="title" class="form-control" value="{{old_value('title',$category)}}">
             </div>
 
             <div class="form-group">
-                <label for="exampleInputEmail1">الوصف</label>
+                <label for="exampleInputEmail1">@lang('admin/categories.form.description')</label>
                 <textarea type="text" name="description" class="form-control">{{old_value('description',$category)}}</textarea>  
             </div>
 
@@ -35,27 +35,27 @@
 
 
               <div class="form-group">
-                <label>الصوره</label>
+                <label>@lang('admin/categories.form.image')</label>
                 @if($category->image != "")
                 <div class="image_holder">
                   <i class="remove_image fa fa-times-circle"></i>
                   <img src="{{ \Storage::disk("categories")->url($category->image)}}" width="100px" height="100px" class="img-rounded" align="center" />
                 </div>
                 @endif
-                <input type="file" name="image" class="form-control"  placeholder="صوره">
+                <input type="file" name="image" class="form-control"  placeholder="@lang('admin/categories.form.image')">
               </div>
 
 
 
               <div class="checkbox">
                 <label>
-                  <input name="active" type="checkbox" @if($category->active || old('active')) checked @endif> مفعل
+                  <input name="active" type="checkbox" @if($category->active || old('active')) checked @endif> @lang('admin/categories.form.active')
                 </label>
               </div>
             </div><!-- /.box-body -->
 
             <div class="box-footer">
-              <button type="submit" class="btn btn-primary">حفظ</button>
+              <button type="submit" class="btn btn-primary">@lang('admin/categories.form.save')</button>
             </div>
           </form>
       </div><!-- /.box-body -->

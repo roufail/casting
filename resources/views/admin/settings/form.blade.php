@@ -8,7 +8,7 @@
 @section('content')
 <div class="box">
     <div class="box-header">
-      <h3 class="box-title">اعدادات الموقع</h3>
+      <h3 class="box-title">@lang("admin/settings.label")</h3>
     </div><!-- /.box-header -->
 
 
@@ -20,12 +20,12 @@
               @csrf
           
            <div class="form-group">
-              <label for="exampleInputEmail1">عنوان الموقع</label>
+              <label for="exampleInputEmail1">@lang("admin/settings.form.site_title")</label>
               <input type="text" name="settings[title]" class="form-control" value="{{old('settings[title]') ? old('settings[title]') : (isset($settings['title']) ? $settings['title'] : '') }}">
           </div>
           
           <div class="form-group">
-            <label for="exampleInputEmail1">نسبه الموقع</label>
+            <label for="exampleInputEmail1">%@lang("admin/settings.form.site_fees")</label>
             <input type="text" name="settings[percentage]" class="form-control" value="{{old('settings[percentage]') ? old('settings[percentage]') : (isset($settings['percentage']) ? $settings['percentage'] : '') }}">
           </div>
 
@@ -33,14 +33,14 @@
 
 
               <div class="form-group">
-                <label>الشعار</label>
+                <label>@lang("admin/settings.form.site_logo")</label>
                 @if(isset($settings['logo']) && $settings['logo']  != "")
                 <div class="image_holder">
                   <i class="remove_image fa fa-times-circle"></i>
                   <img src="{{ $settings['logo'] }}" width="100px" height="100px" class="img-rounded" align="center" />
                 </div>
                 @endif
-                <input type="file" name="settings[logo]" class="form-control"  placeholder="صوره">
+                <input type="file" name="settings[logo]" class="form-control"  placeholder="@lang("admin/settings.form.site_logo")">
               </div>
 
 
@@ -51,7 +51,7 @@
             </div><!-- /.box-body -->
 
             <div class="box-footer">
-              <button type="submit" class="btn btn-primary">Submit</button>
+              <button type="submit" class="btn btn-primary">@lang("admin/settings.form.save")</button>
             </div>
           </form>
 

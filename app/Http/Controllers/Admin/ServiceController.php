@@ -139,10 +139,10 @@ class ServiceController extends Controller
         })
         ->addColumn('action', function ($service) {
             return '
-            <a  style="float:right" href="'.route('admin.services.edit',$service->id).'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> تعديل</a>
+            <a  style="float:right" href="'.route('admin.services.edit',$service->id).'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> '.__("admin/services.list.edit").'</a>
             <form method="post" action="'.route('admin.services.destroy',$service->id).'">
              '.csrf_field().method_field("delete").'
-             <button style="float:right" type="submit" class="delete-record btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash"></i> حذف</a>
+             <button style="float:right" type="submit" class="delete-record btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash"></i> '.__("admin/services.list.delete").'</a>
              </form>';
         })
         ->rawColumns(['image', 'action'])

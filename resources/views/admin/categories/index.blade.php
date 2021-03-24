@@ -16,9 +16,9 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>الصوره</th>
-                    <th>العنوان</th>
-                    <th>تعديل</th>
+                    <th>@lang('admin/categories.list.image')</th>
+                    <th>@lang('admin/categories.list.title')</th>
+                    <th>@lang('admin/categories.list.edit')</th>
                 </tr>
             </thead>
         </table>
@@ -50,12 +50,13 @@
             var form =  $(this).closest("form");
 
             swal({
-                    title: `هل تريد حقا حذف هذا التصنيف ؟`,
-                    text: "هذا الاجراء لايمكن التراجع عنه ",
+                title: "@lang('admin/categories.swal.delete_title')",
+                    text: "@lang('admin/categories.swal.delete_body')",
                     icon: "warning",
                     buttons: true,
                     dangerMode: true,
-                    buttons: ['لا', 'نعم']
+                    buttons: ["@lang('admin/categories.swal.no')", "@lang('admin/categories.swal.yes')"]
+
 
                 })
                 .then((willDelete) => {

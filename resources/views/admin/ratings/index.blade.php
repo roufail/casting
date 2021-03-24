@@ -14,12 +14,12 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>الخدمه</th>
-                    <th>البائع</th>
-                    <th>العميل</th>
-                    <th>التقييم</th>
-                    <th>التعليق</th>
-                    <th>تعديل</th>
+                    <th>@lang("admin/ratings.list.service")</th>
+                    <th>@lang("admin/ratings.list.payer")</th>
+                    <th>@lang("admin/ratings.list.client")</th>
+                    <th>@lang("admin/ratings.list.rate")</th>
+                    <th>@lang("admin/ratings.list.feedback")</th>
+                    <th>@lang("admin/ratings.list.edit")</th>
                 </tr>
             </thead>
         </table>

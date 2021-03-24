@@ -16,11 +16,11 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>الصوره</th>
-                    <th>الاسم</th>
-                    <th>البريد الالكتروني</th>
-                    <th>الدوله</th>
-                    <th>تعديل</th>
+                    <th>@lang('admin/users.list.image')</th>
+                    <th>@lang('admin/users.list.name')</th>
+                    <th>@lang('admin/users.list.email')</th>
+                    <th>@lang('admin/users.list.country')</th>
+                    <th>@lang('admin/users.list.edit')</th>
                 </tr>
             </thead>
         </table>
@@ -54,12 +54,12 @@
             var form =  $(this).closest("form");
 
             swal({
-                    title: `هل تريد حقا حذف هذا المستخدم ؟`,
-                    text: "هذا الاجراء لايمكن التراجع عنه ",
+                    title: "@lang('admin/admins.swal.delete_title')",
+                    text: "@lang('admin/admins.swal.delete_body')",
                     icon: "warning",
                     buttons: true,
                     dangerMode: true,
-                    buttons: ['لا', 'نعم']
+                    buttons: ["@lang('admin/admins.swal.no')", "@lang('admin/admins.swal.yes')"]
 
                 })
                 .then((willDelete) => {

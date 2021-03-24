@@ -16,10 +16,10 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>الصوره</th>
-                    <th>العنوان</th>
-                    <th>التصنيف</th>
-                    <th>تعديل</th>
+                    <th>@lang("admin/services.list.image")</th>
+                    <th>@lang("admin/services.list.title")</th>
+                    <th>@lang("admin/services.list.category")</th>
+                    <th>@lang("admin/services.list.edit")</th>
                 </tr>
             </thead>
         </table>
@@ -52,12 +52,12 @@
             var form =  $(this).closest("form");
 
             swal({
-                    title: `هل تريد حقا حذف هذه الخدمه ؟`,
-                    text: "هذا الاجراء لايمكن التراجع عنه ",
+                    title: `@lang("admin/services.swal.delete_title")`,
+                    text: `@lang("admin/services.swal.delete_body")`,
                     icon: "warning",
                     buttons: true,
                     dangerMode: true,
-                    buttons: ['لا', 'نعم']
+                    buttons: ['@lang("admin/services.swal.no")', '@lang("admin/services.swal.yes")']
 
                 })
                 .then((willDelete) => {

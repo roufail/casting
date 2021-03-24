@@ -21,12 +21,15 @@
     </div>
 </div>
 
-<script>
-    Echo.private('payer.'+{{auth()->user()->id}})
-        .notification((notification) => {
-            console.log(notification);
-        });
 
+
+
+<script>
+    Echo.private('chat-channel.1')
+        .listen(('.message') => {
+            console.log(message);
+    });
 </script>
+
 
 @endsection
