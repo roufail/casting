@@ -30,12 +30,14 @@ Route::post('client/login', 'API\ClientController@login')->name('client.login');
 Route::post('client/activate', 'API\ClientController@activate')->name('client.activate');
 Route::post('client/register', 'API\ClientController@register')->name('client.register');
 Route::post('client/password-recovery', 'API\ClientController@password_recovery')->name('client.password_recovery');
+Route::post('client/reset-password', 'API\ClientController@reset_password')->name('client.reset_password');
 
 
 Route::post('payer/login', 'API\UserController@login')->name('payer.login');
 Route::post('payer/activate', 'API\UserController@activate')->name('payer.activate');
 Route::post('payer/register', 'API\UserController@register')->name('payer.register');
 Route::post('payer/password-recovery', 'API\UserController@password_recovery')->name('payer.password_recovery');
+Route::post('payer/reset-password', 'API\UserController@reset_password')->name('payer.reset_password');
 
 
 Route::group(['middleware' => ['auth:payer-api','payer.activated'],'prefix' => 'payer','as' => 'payer.'],function(){

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRatesTable extends Migration
+class CreatePasswordRecoveryTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,12 @@ class CreateRatesTable extends Migration
      */
     public function up()
     {
-        Schema::create('rates', function (Blueprint $table) {
+        Schema::create('password_recovery', function (Blueprint $table) {
             $table->id();
-            $table->integer('service_id');
-            $table->integer('user_service_id');
-            $table->integer('client_id');
-            $table->integer('user_id');
-            $table->integer('rate');
-            $table->longText('feedback');
+            $table->unsignedBigInteger("user_id");
+            $table->foreign("user_id")->references("id")->on("users")->onDelete("cascade");
+            $table->enum("user_type",["client","payer"]);
+            $table->integer("code")->length(11);
             $table->timestamps();
         });
     }
@@ -32,6 +30,6 @@ class CreateRatesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('rates');
+        Schema::dropIfExists('password_recovery');
     }
 }

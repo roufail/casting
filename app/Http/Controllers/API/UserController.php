@@ -125,25 +125,59 @@ class UserController extends BaseController
 
 
 
-    public function password_recovery(PayerRecoveryRequest $request){
+
+
+
+
+    public function password_recovery(Request $request){
+        $request->validate([
+            "phone" => "required"
+        ]);
         $phone = $request->only('phone');
         if ($payer = User::where('phone',$phone)->first()) {
             if(!$payer->active){
                 return $this->error([],'payer not activated');
             }
 
-            if($request->code == 1111) {
+            // generete code
+            $code = rand(1111,9999);
+            $payer->password_recovery()->updateOrCreate([
+                "user_type" => "payer"
+            ],[
+                "code" => $code,
+                "user_type" => "payer"
+            ]);
+
+            return $this->success(["code" => $code],'Recovery code sent successfully');
+        }
+        return $this->error([],'something went wrong');
+
+    }
+
+
+    public function reset_password(PayerRecoveryRequest $request){
+        $phone = $request->only('phone');
+        if ($payer = User::where('phone',$phone)->first()) {
+            if(!$payer->active){
+                return $this->error([],'payer not activated');
+            }
+
+            $code = "";
+            if($payer->password_recovery){
+                $code =  $payer->password_recovery->code;
+            } else {
+                return $this->error([],'something went wrong');
+            }
+
+
+            if($request->code ==  $code ) {
                 $payer->update(["password" => bcrypt($request->password)]);
                 return $this->success(['reset' => true], 'password rest successfully');
             }else {
                 return $this->error([],'code is wrong');
             }
-
-
-            
         }
         return $this->error([],'something went wrong');
-
     }
 
 

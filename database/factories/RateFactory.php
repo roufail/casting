@@ -28,6 +28,7 @@ class RateFactory extends Factory
             'service_id'      => $order->service_id,
             'user_service_id' => $order->user_service_id,
             'client_id'       => $order->client_id,
+            'user_id'         => $order->user_id,
             'rate'            => rand(1,5),
             'feedback'        => $this->faker->paragraph(3),
         ];

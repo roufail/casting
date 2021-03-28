@@ -47,7 +47,7 @@ class ClientController extends BaseController
 
 
     public function activate(ClientActivateRequest $request){
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->only('phone', 'password');
 
         if(auth('client')->attempt($credentials)){
             $client = auth('client')->user();
@@ -75,21 +75,56 @@ class ClientController extends BaseController
         }
     }
 
-    public function password_recovery(ClientRecoveryRequest $request){
+    public function password_recovery(CRequest $request){
+        $request->validate([
+            "phone" => "required"
+        ]);
         $phone = $request->only('phone');
         if ($client = Client::where('phone',$phone)->first()) {
             if(!$client->active){
                 return $this->error([],'client not activated');
             }
-            if($request->code == 1111) {
-                $client->update(["password" => $request->password]);
+
+            // generete code
+            $code = rand(1111,9999);
+            $client->password_recovery()->updateOrCreate([
+                "user_type" => "client"
+            ],[
+                "code" => $code,
+                "user_type" => "client"
+            ]);
+
+            return $this->success(["code" => $code],'Recovery code sent successfully');
+        }
+        return $this->error([],'something went wrong');
+
+    }
+
+
+    public function reset_password(ClientRecoveryRequest $request){
+        $phone = $request->only('phone');
+        if ($client = Client::where('phone',$phone)->first()) {
+            if(!$client->active){
+                return $this->error([],'client not activated');
+            }
+
+
+            $code = "";
+            if($client->password_recovery){
+                $code =  $client->password_recovery->code;
+            } else {
+                return $this->error([],'something went wrong');
+            }
+
+
+            if($request->code ==  $code ) {
+                $client->update(["password" => bcrypt($request->password)]);
                 return $this->success(['reset' => true], 'password rest successfully');
             }else {
                 return $this->error([],'code is wrong');
             }
         }
         return $this->error([],'something went wrong');
-
     }
 
 }

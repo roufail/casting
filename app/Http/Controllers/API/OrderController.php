@@ -23,7 +23,7 @@ class OrderController extends BaseController
         if($status){
             $orders = $orders->where('status' , $status);
         }
-        $orders = $orders->paginate(10);
+        $orders = $orders->paginate(15);
         return  $this->success(new OrderCollection($orders),'Orders Retrived Successfully');
     }
 

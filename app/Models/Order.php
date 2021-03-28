@@ -32,4 +32,8 @@ class Order extends Model
         return $this->hasOne(Incoming::class);
     }
 
+    public function outgoing(){
+        return $this->hasOne(Outgoing::class);
+    }
+
 }

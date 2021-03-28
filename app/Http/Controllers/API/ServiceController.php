@@ -59,13 +59,13 @@ class ServiceController extends BaseController
             }
         }
 
-        $services = $services->paginate(10);
+        $services = $services->with("user")->paginate(15);
         return $this->success(new ServiceCollection($services),'Services Retrived successfully');
     }
 
 
     public function myservices($search=null){
-        $services = auth()->user()->services()->paginate(10);
+        $services = auth()->user()->services()->paginate(15);
         return $this->success(new ServiceCollection($services),'Services Retrived successfully');
     }
 
@@ -186,13 +186,21 @@ class ServiceController extends BaseController
     public function payer_images(User $user)
     {
         $images = $user->work_images;
-        return $this->success(PayerImagesResource::collection($images),'Payer images retrived successfully');
+        if($images){
+            return $this->success(PayerImagesResource::collection($images),'Payer images retrived successfully');
+        }
+        return $this->error([],'this user has no images');
+
     }
 
     public function payer_video(User $user)
     {
-        $videos = $user->work_video;
-        return $this->success(new PayerVideoResource($videos),'Payer video retrived successfully');
+        $video = $user->work_video;
+        if($video){
+            return $this->success(new PayerVideoResource($video),'Payer video retrived successfully');
+        }
+        return $this->error([],'this user has no videos');
+
     }
 
     public function service_reviews(UserService $UserService) {
