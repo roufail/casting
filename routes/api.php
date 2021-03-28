@@ -19,18 +19,31 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
-Route::get('services/{search?}', 'API\ServiceController@index')->name('services');
+Route::get('services', 'API\ServiceController@index')->name('services');
+Route::get('service/{UserService}', 'API\ServiceController@service')->name('service');
+Route::get('service/{UserService}/reviews', 'API\ServiceController@service_reviews')->name('service_reviews');
+Route::get('payer-images/{user}', 'API\ServiceController@payer_images')->name('payer_images');
+Route::get('payer-video/{user}', 'API\ServiceController@payer_video')->name('payer_video');
+Route::get('categories', 'API\ServiceController@categories')->name('categories');
+
 Route::post('client/login', 'API\ClientController@login')->name('client.login');
 Route::post('client/activate', 'API\ClientController@activate')->name('client.activate');
 Route::post('client/register', 'API\ClientController@register')->name('client.register');
+Route::post('client/password-recovery', 'API\ClientController@password_recovery')->name('client.password_recovery');
 
 
+Route::post('payer/login', 'API\UserController@login')->name('payer.login');
+Route::post('payer/activate', 'API\UserController@activate')->name('payer.activate');
+Route::post('payer/register', 'API\UserController@register')->name('payer.register');
+Route::post('payer/password-recovery', 'API\UserController@password_recovery')->name('payer.password_recovery');
 
-Route::group(['middleware' => ['auth:api','payer.activated'],'prefix' => 'payer','as' => 'payer.'],function(){
+
+Route::group(['middleware' => ['auth:payer-api','payer.activated'],'prefix' => 'payer','as' => 'payer.'],function(){
     
     Route::get('myorders/update/{id}/{status}', 'API\OrderController@payer_updatemyorders')->name('updatemyorders');
     Route::get('myorders/{status?}', 'API\OrderController@myorders')->name('myorders');
     Route::post('profile', 'API\UserController@updatemyprofile')->name('updatemyprofile');
+    Route::post('update-my-data', 'API\UserController@update_my_data')->name('update_my_data');
 
     Route::get('myservices', 'API\ServiceController@myservices')->name('myservice');
     Route::post('mainservice', 'API\ServiceController@create_main_service')->name('createmainservice');

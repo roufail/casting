@@ -25,7 +25,8 @@ class User extends Authenticatable
         'image',
         'active',
         'bio',
-        'dob'
+        'dob',
+        'phone'
     ];
 
     /**
@@ -49,16 +50,31 @@ class User extends Authenticatable
 
     public function services() {
         return $this->hasMany(UserService::class);
-     }
-     public function orders() {
+    }
+    public function orders() {
         return $this->hasMany(Order::class);
-     }
+    }
+    public function payer_data() {
+        return $this->hasOne(PayerData::class,"payer_id","id");
+    }
+    public function work_images() {
+        return $this->hasMany(WorkImage::class,"payer_id","id");
+    }
+    public function work_video() {
+        return $this->hasOne(WorkVideo::class,"payer_id","id");
+    }
 
 
 
-     public function receivesBroadcastNotificationsOn() {
+    public function receivesBroadcastNotificationsOn() {
         return 'payer.'.$this->id;
     }
+
+
+    public function findForPassport($username) {
+        return $this->where('phone', $username)->first();
+    }
+
 
 
  }

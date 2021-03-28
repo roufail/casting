@@ -77,7 +77,18 @@ return [
             'url' => env('APP_URL').'/storage/dropzone',
             'visibility' => 'public',
         ],
-
+        'work_images' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/work_images'),
+            'url' => env('APP_URL').'/storage/work_images',
+            'visibility' => 'public',
+        ],
+        'work_videos' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/work_videos'),
+            'url' => env('APP_URL').'/storage/work_videos',
+            'visibility' => 'public',
+        ],
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

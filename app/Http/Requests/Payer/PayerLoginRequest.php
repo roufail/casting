@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Client;
+namespace App\Http\Requests\Payer;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ClientLoginRequest extends FormRequest
+class PayerLoginRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

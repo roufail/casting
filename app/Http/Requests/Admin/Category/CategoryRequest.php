@@ -26,7 +26,7 @@ class CategoryRequest extends FormRequest
         $rules =  [
             'title'       => 'required|string|unique:categories,id',
             'description' => 'required|string',
-            'image'       => "nullable|mimes:jpeg,jpg,png|max:512",
+            'image'       => "nullable|mimes:svg|max:512",
         ];
         if($this->category){
             $rules['title'] = 'required|string|unique:categories,id,'.$this->category->id;

@@ -6,7 +6,10 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Client\ClientLoginRequest;
 use App\Http\Requests\Client\ClientRegisterRequest;
 use App\Http\Requests\Client\ClientActivateRequest;
+use App\Http\Requests\Client\ClientRecoveryRequest;
+
 use App\Models\Client;
+use App\Http\Resources\ClientResource;
 class ClientController extends BaseController
 {
 
@@ -23,19 +26,19 @@ class ClientController extends BaseController
         ]);
 
         $client = Client::create($request->all());
-        return $this->success($client, 'client loggedin successfully');
+        return $this->success(new ClientResource($client), 'client loggedin successfully');
     }
 
 
 
     public function login(ClientLoginRequest $request){
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->only('phone', 'password');
         if (auth('client')->attempt($credentials)) {
             $client = auth('client')->user();
             if(!$client->active){
                 return $this->error([],'client not activated');
             }
-            $success['client'] =  $client;
+            $success['client'] =  new ClientResource($client);
             $success['token'] =  $client->createToken('client')->accessToken;
             return $this->success($success, 'client loggedin successfully');
         }
@@ -59,7 +62,7 @@ class ClientController extends BaseController
                 ]);
 
                 if($updated) {
-                    $success['client'] =  $client;
+                    $success['client'] =  new ClientResource($client);
                     $success['token'] =  $client->createToken('client')->accessToken;
                     return $this->success($success, 'account activated successfully');
                 }
@@ -70,9 +73,22 @@ class ClientController extends BaseController
         }else {
             return $this->error([],'credentials is wrong');
         }
+    }
 
-
-
+    public function password_recovery(ClientRecoveryRequest $request){
+        $phone = $request->only('phone');
+        if ($client = Client::where('phone',$phone)->first()) {
+            if(!$client->active){
+                return $this->error([],'client not activated');
+            }
+            if($request->code == 1111) {
+                $client->update(["password" => $request->password]);
+                return $this->success(['reset' => true], 'password rest successfully');
+            }else {
+                return $this->error([],'code is wrong');
+            }
+        }
+        return $this->error([],'something went wrong');
 
     }
 

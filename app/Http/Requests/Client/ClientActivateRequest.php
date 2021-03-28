@@ -24,7 +24,7 @@ class ClientActivateRequest extends FormRequest
     public function rules()
     {
         return [
-            'email'    => 'required',
+            'phone'    => 'required',
             'password' => 'required',
             'code'     => 'required',
         ];

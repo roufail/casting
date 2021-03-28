@@ -1,9 +1,9 @@
 <?php
 
 namespace App\Http\Resources\Service;
-
+use App\Http\Resources\Service\RatingResource;
 use Illuminate\Http\Resources\Json\JsonResource;
-
+use App\Http\Resources\PayerResource;
 class ServiceResource extends JsonResource
 {
     /**
@@ -20,6 +20,8 @@ class ServiceResource extends JsonResource
             'price'         => $this->price,
             'work_type'     => $this->work_type,
             'category_id'   => $this->service->category_id,
+            'payer'         => new PayerResource($this->whenLoaded('user')),
+            // 'rating'        => $this->ratings->load("client"),
         ];
     }
 }

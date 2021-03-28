@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
             OrderSeeder::class,
             IncomingSeeder::class,
             OutgoingSeeder::class,
-            RatingSeeder::class,
+            RateSeeder::class,
         ]);    
     }
 }

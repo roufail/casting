@@ -4,7 +4,7 @@ namespace App\Http\Requests\Client;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ClientLoginRequest extends FormRequest
+class ClientRecoveryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,10 @@ class ClientLoginRequest extends FormRequest
     public function rules()
     {
         return [
-            'phone'    => 'required',
-            'password' => 'required',
+            'phone'             => 'required',
+            'code'              => 'required',
+            'password'          => 'required',
+            'confirm_password'  => 'required|same:password',
         ];
     }
 }

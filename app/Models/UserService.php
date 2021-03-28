@@ -16,5 +16,14 @@ class UserService extends Model
     public function user(){
         return $this->belongsTo(User::class);
     }
+
+    public function ratings(){
+        return $this->hasMany(Rate::class);
+    }
+    
+    public function orders(){
+        return $this->hasMany(Order::class);
+    }
+
  
 }
