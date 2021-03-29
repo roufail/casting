@@ -17,11 +17,11 @@ class ServiceResource extends JsonResource
         return [
             'id'            => $this->id,
             'title'         => $this->service->title,
-            'price'         => $this->price,
+            'min_price'     => $this->user->services()->min("price"),
+            'service_price' => $this->price,
             'work_type'     => $this->work_type,
             'category_id'   => $this->service->category_id,
             'payer'         => new PayerResource($this->whenLoaded('user')),
-            // 'rating'        => $this->ratings->load("client"),
         ];
     }
 }
