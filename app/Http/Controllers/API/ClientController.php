@@ -75,7 +75,7 @@ class ClientController extends BaseController
         }
     }
 
-    public function password_recovery(CRequest $request){
+    public function password_recovery(Request $request){
         $request->validate([
             "phone" => "required"
         ]);
