@@ -42,6 +42,13 @@ Route::post('payer/register', 'API\UserController@register')->name('payer.regist
 Route::post('payer/password-recovery', 'API\UserController@password_recovery')->name('payer.password_recovery');
 Route::post('payer/reset-password', 'API\UserController@reset_password')->name('payer.reset_password');
 
+Route::get('settings',function(){
+    return [
+        "terms_and_conditions" => route("terms_and_conditions"),
+        "privacy_policy"       => route("privacy_policy"),
+    ];
+});
+
 
 Route::group(['middleware' => ['auth:payer-api','payer.activated'],'prefix' => 'payer','as' => 'payer.'],function(){
     

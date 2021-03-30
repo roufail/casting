@@ -47,6 +47,18 @@
               
 
 
+              <div class="form-group">
+                <label for="privacy_policy">@lang("admin/settings.form.privacy_policy")</label>
+                <textarea type="text" name="settings[privacy_policy]" class="form-control">{{old('settings[privacy_policy]') ? old('settings[privacy_policy]') : (isset($settings['privacy_policy']) ? $settings['privacy_policy'] : '') }}</textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="privacy_policy">@lang("admin/settings.form.terms_and_conditions")</label>
+              <textarea type="text" name="settings[terms_and_conditions]" class="form-control">{{old('settings[terms_and_conditions]') ? old('settings[terms_and_conditions]') : (isset($settings['terms_and_conditions']) ? $settings['terms_and_conditions'] : '') }}</textarea>
+          </div>
+
+          
+
 
             </div><!-- /.box-body -->
 

@@ -15,9 +15,7 @@ class SettingsComposer
             $this->settings = Setting::pluck('setting_value','setting_key')->toArray();
             session(['settings' => $this->settings]);
         }
-
         return $view->with('settings',$this->settings);
-
     }
 }
 
