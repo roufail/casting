@@ -181,6 +181,20 @@ class UserController extends BaseController
     }
 
 
+    public function work_duration()
+    {
+        return $this->success(['durations' => [
+            'hourly','daily','weekly'
+        ]], 'Work duration retrived successfully');  
+    }
+
+    public function notifications(){
+        $notifications = [];
+        foreach (auth()->user()->notifications as $key => $notification) {
+            $notifications[] = load_notification($notification);
+        }
+        return $this->success($notifications, 'notifications retrived successfully');
+    }
 
 
 }

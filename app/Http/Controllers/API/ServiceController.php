@@ -165,7 +165,7 @@ class ServiceController extends BaseController
     {
         $service = Service::create($request->all());
         if($service){
-            return $this->success(new MainServiceResource($service),'Service created successfully');
+            return $this->success(new MainServiceResource($service),'Service retrived successfully');
         } else {
             return $this->error([],'Something went wrong');
         }
@@ -175,12 +175,18 @@ class ServiceController extends BaseController
     public function categories(Request $request)
     {
         $categories = Category::all();
-        return $this->success(CategoryResource::collection($categories),'Service created successfully');
+        return $this->success(CategoryResource::collection($categories),'categories successfully');
+    }
+    public function category(Category $category)
+    {
+        return $this->success(new CategoryResource($category->load("services")),'categories successfully');
     }
 
     public function service(Request $request,UserService $UserService)
     {
-        return $this->success(new ServiceResource($UserService->load(['user.services','user.work_video'])),'Service retrived successfully');
+        return $this->success(new ServiceResource($UserService->load(['user.services' => function($services) {
+            $services->orderBy("price","asc");
+        },'user.work_video'])),'Service retrived successfully');
     }
 
     public function payer_images(User $user)
@@ -206,6 +212,11 @@ class ServiceController extends BaseController
     public function service_reviews(UserService $UserService) {
         $rating = $UserService->ratings->load("client:id,name,image");
         return $this->success(RatingResource::collection($rating),'ratings retrived successfully');
+    }
+
+    public function service_categories(){
+        $rating = $UserService->ratings->load("client:id,name,image");
+        return $this->success(RatingResource::collection($rating),'ratings retrived successfully');  
     }
 
 }

@@ -25,6 +25,9 @@ Route::get('service/{UserService}/reviews', 'API\ServiceController@service_revie
 Route::get('payer-images/{user}', 'API\ServiceController@payer_images')->name('payer_images');
 Route::get('payer-video/{user}', 'API\ServiceController@payer_video')->name('payer_video');
 Route::get('categories', 'API\ServiceController@categories')->name('categories');
+Route::get('category/{category}', 'API\ServiceController@category')->name('category');
+
+Route::get('payer/work-durations','API\UserController@work_duration')->name('work_duration');
 
 Route::post('client/login', 'API\ClientController@login')->name('client.login');
 Route::post('client/activate', 'API\ClientController@activate')->name('client.activate');
@@ -53,15 +56,18 @@ Route::group(['middleware' => ['auth:payer-api','payer.activated'],'prefix' => '
     // chat routes
     Route::post('chat/message/{client}', 'API\ChatController@message_to_client')->name('messagetoclient');
     Route::get('chat/load-chat/{order}', 'API\ChatController@load_chat')->name('load_chat');
+    Route::get('notifications', 'API\UserController@notifications')->name('notifications');
 
 
 });
 
 Route::group(['middleware' => ['auth:client-api','client.activated'],'prefix' => 'client','as' => 'client.'],function(){
-    Route::post('place_order', 'API\OrderController@place_order')->name('place_order');
+    Route::post('place-order', 'API\OrderController@place_order')->name('place_order');
     Route::get('myorders/update/{id}/{status}', 'API\OrderController@client_updatemyorders')->name('updatemyorders');
     Route::post('rate/{order}', 'API\OrderController@rate_payer')->name('rate_payer');
     // chat routes
     Route::post('chat/message/{payer}', 'API\ChatController@message_to_payer')->name('messagetopayer');
     Route::get('chat/load-chat/{order}', 'API\ChatController@load_chat')->name('load_chat');
+    Route::post('update-profile', 'API\ClientController@update_profile')->name('update_profile');
+    Route::post('update-password', 'API\ClientController@update_password')->name('update_password');
 });

@@ -19,6 +19,7 @@ class CreateChatMessagesTable extends Migration
             $table->integer('user_id');
             $table->enum('user_type',['client','payer']);
             $table->longText('message');
+            $table->string('message_type');
             $table->boolean('seen')->default(0);
             $table->timestamps();
         });

@@ -59,7 +59,9 @@ class ServiceRequest extends Notification implements ShouldQueue
             'notification'     => $this->client->name." asked for ".$this->service->title,
             'not_id'           => $this->service->id,
             'not_type'         => 'service',
-            'notifiable_id'    => $notifiable->id
+            'notifiable_id'    => $notifiable->id,
+            'reported_id'      => $this->client->id,
+            'reported_type'    => 'client'
         ];
     }
 

@@ -13,4 +13,13 @@ class Chat extends Model
     public function messages() {
         return $this->hasMany(ChatMessages::class);
     }
+    public function payer() {
+        return $this->belongsTo(User::class,"user_id");
+    }
+    public function client() {
+        return $this->belongsTo(Client::class);
+    }
+    public function order() {
+        return $this->belongsTo(Order::class);
+    }
 }

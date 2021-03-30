@@ -24,6 +24,9 @@ class UserService extends Model
     public function orders(){
         return $this->hasMany(Order::class);
     }
+    public function category(){
+        return $this->belongsTo(Category::class);
+    }
 
  
 }

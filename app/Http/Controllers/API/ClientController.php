@@ -7,9 +7,13 @@ use App\Http\Requests\Client\ClientLoginRequest;
 use App\Http\Requests\Client\ClientRegisterRequest;
 use App\Http\Requests\Client\ClientActivateRequest;
 use App\Http\Requests\Client\ClientRecoveryRequest;
-
+use App\Http\Requests\Api\UpdatePasswordRequest;
 use App\Models\Client;
 use App\Http\Resources\ClientResource;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\Hash;
+
+use Storage;
 class ClientController extends BaseController
 {
 
@@ -41,6 +45,8 @@ class ClientController extends BaseController
             $success['client'] =  new ClientResource($client);
             $success['token'] =  $client->createToken('client')->accessToken;
             return $this->success($success, 'client loggedin successfully');
+        }else{
+            return $this->error([],'credentials wrong');
         }
         return $this->error([],'something went wrong');
     }
@@ -126,5 +132,53 @@ class ClientController extends BaseController
         }
         return $this->error([],'something went wrong');
     }
+
+
+    public function update_profile(Request $request){
+        $image = "";
+        $client = auth('client-api')->user();
+
+        if($request->hasFile('imageFile')){
+            Storage::disk('clients')->delete($client->image);
+            $image = $request->imageFile->store("/","clients");
+            $request->request->remove('image');
+            $request->merge([
+                'image'    => $image,
+            ]);
+        }
+
+        $client->update($request->all());
+        return $this->success(new ClientResource($client), 'client updated successfully');    
+    }
+
+    public function update_password(UpdatePasswordRequest $request){
+        $client = auth('client-api')->user();
+        if(!Hash::check($request->old_password,$client->password)){
+            throw new HttpResponseException(
+                response()->json([
+                  'message' =>'validation errors',
+                  'errors'  => ["Old password not correct"]
+                ], 422)
+              );       
+        }
+
+        if($client->update(["password" => bcrypt($request->password)])){
+            return $this->success([], 'password updated successfully');
+
+        }
+        return $this->error([],'something went wrong');
+
+    }
+
+
+
+    public function notifications(){
+        $notifications = [];
+        foreach (auth('client-api')->user()->notifications as $key => $notification) {
+            $notifications[] = load_notification($notification);
+        }
+        return $this->success($notifications, 'notifications retrived successfully');
+    }
+
 
 }

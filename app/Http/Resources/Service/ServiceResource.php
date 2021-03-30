@@ -20,7 +20,8 @@ class ServiceResource extends JsonResource
             'min_price'     => $this->user->services()->min("price"),
             'service_price' => $this->price,
             'work_type'     => $this->work_type,
-            'category_id'   => $this->service->category_id,
+            'category_id'   => $this->service->category->id,
+            'category'      => $this->service->category->title,
             'payer'         => new PayerResource($this->whenLoaded('user')),
         ];
     }

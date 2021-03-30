@@ -9,11 +9,15 @@ use App\Models\Order;
 use App\Events\Message;
 
 
+use App\Http\Resources\Chat\ChatResource;
+
+use Storage;
 class ChatController extends BaseController
 {
     public function message_to_client(Request $request , $order){
         $request->validate([
             'message' => 'required|string',
+            'message_type' => 'required|string',
         ]);
 
         $order = Order::find($order);
@@ -29,20 +33,31 @@ class ChatController extends BaseController
             'client_id' => $order->client_id
         ]);
 
-        $chat->messages()->create([
-            'user_id'     =>  auth()->user()->id,
-            'user_type'   => 'payer',
-            'message'     =>  $request->message,
+        $message = $chat->messages()->create([
+            'user_id'      =>  auth()->user()->id,
+            'user_type'    => 'payer',
+            'message'      =>  $request->message,
+            'message_type' =>  $request->message_type,
         ]);
 
         // fire the event
         broadcast(new Message($order->client_id,$request->message,$order->id,'client'));
-        return $this->success($request->message, 'message send successfully');
+        $response = [
+            "message"       => $request->message,
+            "message_type"  => $request->message_type,
+            "order_id"      => $order->id,
+            "sender_avatar" => auth()->user()->image && auth()->user()->image != "" ? Storage::disk("users")->url(auth()->user()->image): null,
+            "sender_type"   => 'payer',
+            "created_at"    => $message->created_at,
+        ];
+
+        return $this->success($response, 'message send successfully');
     }
 
     public function message_to_payer(Request $request , $order){
         $request->validate([
             'message' => 'required|string',
+            'message_type' => 'required|string',
         ]);
         $order = Order::find($order);
         if(!$order){
@@ -57,17 +72,25 @@ class ChatController extends BaseController
             'client_id' => $order->client_id
         ]);
 
-        $chat->messages()->create([
-            'user_id'     =>  auth()->user()->id,
-            'user_type'   => 'client',
-            'message'     =>  $request->message,
+        $message = $chat->messages()->create([
+            'user_id'      =>  auth()->user()->id,
+            'user_type'    => 'client',
+            'message'      =>  $request->message,
+            'message_type' =>  $request->message_type,
         ]);
 
         // fire the event
         broadcast(new Message($order->client_id,$request->message,$order->id,'payer'));
+        $response = [
+            "message"       => $request->message,
+            "message_type"  => $request->message_type,
+            "order_id"      => $order->id,
+            "sender_avatar" => auth("client-api")->user()->image && auth("client-api")->user()->image != "" ? Storage::disk("clients")->url(auth()->user()->image): null,
+            "sender_type"   => 'client',
+            "created_at"    => $message->created_at,
+        ];
 
-        return $this->success($request->message, 'message send successfully');
-    }
+        return $this->success($response, 'message send successfully');    }
 
     public function load_chat($order){
         $chat = Chat::where("order_id",$order)->first();
@@ -75,7 +98,7 @@ class ChatController extends BaseController
             return $this->error([],'somthing went wrong!');
         }
 
-        return $this->success($chat->load('messages'), 'chat loaded successfully');
+        return $this->success(new ChatResource($chat->load('messages')), 'chat loaded successfully');
 
     }
 

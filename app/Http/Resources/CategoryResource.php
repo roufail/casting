@@ -3,7 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-
+use App\Http\Resources\Service\ServiceResource;
 class CategoryResource extends JsonResource
 {
     /**
@@ -15,9 +15,10 @@ class CategoryResource extends JsonResource
     public function toArray($request)
     {
         return [
-            "id"    => $this->id,
-            "title" => $this->title,
-            "image" => $this->image ? \Storage::disk("categories")->url($this->image) : null
+            "id"       => $this->id,
+            "title"    => $this->title,
+            "image"    => $this->image ? \Storage::disk("categories")->url($this->image) : null,
+            "services" => ServiceResource::collection($this->whenLoaded("services")),
         ];
     }
 }
