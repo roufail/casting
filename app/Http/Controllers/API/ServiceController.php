@@ -8,6 +8,7 @@ use App\Models\Service;
 use App\Models\Category;
 use App\Models\User;
 use App\Models\UserService;
+use App\Models\Setting;
 use App\Http\Resources\Service\ServiceCollection;
 use App\Http\Resources\Service\ServiceResource;
 use App\Http\Resources\Service\RatingResource;
@@ -217,6 +218,10 @@ class ServiceController extends BaseController
     public function service_categories(){
         $rating = $UserService->ratings->load("client:id,name,image");
         return $this->success(RatingResource::collection($rating),'ratings retrived successfully');  
+    }
+
+    public function fees(){
+        return $this->success(Setting::where('setting_key','percentage')->pluck('setting_value','setting_key')->toArray(),'fees retrived successfully');  
     }
 
 }

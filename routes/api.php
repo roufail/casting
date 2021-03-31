@@ -50,12 +50,16 @@ Route::get('settings',function(){
 });
 
 
+
+
 Route::group(['middleware' => ['auth:payer-api','payer.activated'],'prefix' => 'payer','as' => 'payer.'],function(){
     
     Route::get('myorders/update/{id}/{status}', 'API\OrderController@payer_updatemyorders')->name('updatemyorders');
     Route::get('myorders/{status?}', 'API\OrderController@myorders')->name('myorders');
     Route::post('profile', 'API\UserController@updatemyprofile')->name('updatemyprofile');
     Route::post('update-my-data', 'API\UserController@update_my_data')->name('update_my_data');
+    Route::get('fees', 'API\ServiceController@fees')->name('fees');
+
 
     Route::get('myservices', 'API\ServiceController@myservices')->name('myservice');
     Route::post('mainservice', 'API\ServiceController@create_main_service')->name('createmainservice');
