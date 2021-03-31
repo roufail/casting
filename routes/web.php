@@ -23,3 +23,6 @@ Route::get('/terms-and-conditions', [App\Http\Controllers\HomeController::class,
 
 Route::get("/test-socket",[App\Http\Controllers\API\ChatController::class,'test_socket']);
 
+Route::get('/symlink_create', function () {
+    Artisan::call('storage:link');
+});

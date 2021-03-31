@@ -11,7 +11,7 @@ class ServiceResource extends JsonResource
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array
-     */
+     */ 
     public function toArray($request)
     {
         return [
@@ -22,7 +22,7 @@ class ServiceResource extends JsonResource
             'work_type'     => $this->work_type,
             'category_id'   => $this->service->category->id,
             'category'      => $this->service->category->title,
-            'payer'         => new PayerResource($this->whenLoaded('user')),
+            'payer'         => $this->when($this->load_payer || !isset($this->load_payer),new PayerResource($this->whenLoaded('user'))),
         ];
     }
 }

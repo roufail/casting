@@ -81,4 +81,6 @@ Route::group(['middleware' => ['auth:client-api','client.activated'],'prefix' =>
     Route::get('chat/load-chat/{order}', 'API\ChatController@load_chat')->name('load_chat');
     Route::post('update-profile', 'API\ClientController@update_profile')->name('update_profile');
     Route::post('update-password', 'API\ClientController@update_password')->name('update_password');
+    Route::get('notifications', 'API\ClientController@notifications')->name('notifications');
+
 });

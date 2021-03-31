@@ -17,7 +17,7 @@ use App\Http\Resources\MainService\MainServiceCollection;
 use App\Http\Resources\MainService\MainServiceResource;
 
 use App\Http\Resources\CategoryResource;
-
+use App\Http\Resources\CategoryCollection;
 use App\Http\Resources\PayerImagesResource;
 use App\Http\Resources\PayerVideoResource;
 
@@ -104,7 +104,7 @@ class ServiceController extends BaseController
     {
         $service = auth()->user()->services()->find($id);
         if($service){
-            return $this->success(new ServiceResource($service),'Service created successfully');
+            return $this->success(new ServiceResource($service),'Service retrived successfully');
         } else {
             return $this->error([],'Something went wrong');
         }
@@ -175,8 +175,8 @@ class ServiceController extends BaseController
     
     public function categories(Request $request)
     {
-        $categories = Category::all();
-        return $this->success(CategoryResource::collection($categories),'categories successfully');
+        $categories = Category::paginate(15);
+        return $this->success(new CategoryCollection($categories),'categories successfully');
     }
     public function category(Category $category)
     {
@@ -185,9 +185,11 @@ class ServiceController extends BaseController
 
     public function service(Request $request,UserService $UserService)
     {
-        return $this->success(new ServiceResource($UserService->load(['user.services' => function($services) {
-            $services->orderBy("price","asc");
-        },'user.work_video'])),'Service retrived successfully');
+        // return $this->success(new ServiceResource($UserService->load(['user.services' => function($services) {
+        //     $services->orderBy("price","asc");
+        // },'user.work_video'])),'Service retrived successfully');
+        $UserService->load_payer = false;
+        return $this->success(new ServiceResource($UserService),'Service retrived successfully');
     }
 
     public function payer_images(User $user)

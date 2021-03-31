@@ -40,7 +40,7 @@ class OrderController extends BaseController
 
 
     public function place_order(OrderRequest $request){
-        $userService = UserService::findOrFail($request->user_service_id);
+        $userService = UserService::findOrFail($request->payer_service_id);
 
         // make payment 
         $order = auth('client-api')->user()->orders()->create([

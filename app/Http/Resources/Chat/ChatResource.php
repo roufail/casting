@@ -30,7 +30,7 @@ class ChatResource extends JsonResource
             "order_id"   => $this->order_id,
             // "created_at" => $this->created_at,
             // "updated_at" => $this->updated_at,
-            "messages"   => ChatMessageResource::collection($this->whenLoaded("messages"))
+            "messages"   => $this->when($this->load_messages || !isset($this->load_messages),new ChatMessageCollection($this->messages()->paginate(15)))
         ];
     }
 }

@@ -97,9 +97,8 @@ class ChatController extends BaseController
         if(!$chat){
             return $this->error([],'somthing went wrong!');
         }
-
-        return $this->success(new ChatResource($chat->load('messages')), 'chat loaded successfully');
-
+        $chat->load_messages = true;
+        return $this->success(new ChatResource($chat), 'chat loaded successfully');
     }
 
     public function test_socket() {

@@ -26,8 +26,8 @@ class ChatMessageResource extends JsonResource
             ],
             "message"      =>  $this->message,
             "message_type" =>  $this->message_type,
-            "seen"         => $this->seen,
-            "created_at"   => $this->created_at->format("d-m-Y h:i:s"),
+            "seen"         =>  $this->seen,
+            "created_at"   =>  $this->created_at->format("d-m-Y h:i:s"),
         ];
     }
 }

@@ -72,10 +72,10 @@
               </div>
 
 
-              <div class="form-group">
+              {{-- <div class="form-group">
                 <label for="exampleInputEmail1">@lang('admin/users.form.bio')</label>
                 <textarea type="text" name="bio" class="form-control">{{old_value('bio',$user)}}</textarea>  
-              </div>
+              </div> --}}
 
               @if($services->count() > 0)
               <div class="form-group">

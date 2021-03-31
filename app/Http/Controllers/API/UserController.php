@@ -116,10 +116,16 @@ class UserController extends BaseController
         }
 
         if($request->prev_work_video) {
-            Storage::disk("work_videos")->delete($payer->work_video->video_url);
-            $video = ["video_url" => $prev_work_image->store("/","work_videos")];
+            if($payer->work_video){
+                Storage::disk("work_videos")->delete($payer->work_video->video_url);
+            }
+            $video = ["video_url" => $request->prev_work_video->store("/","work_videos")];
             $payer->work_video()->updateOrcreate(["payer_id" => $payer->id],$video);
         }
+        
+
+        return $this->success(new PayerResource($payer->refresh()->load('payer_data')),'Profile updated successfully');
+
     }
 
 
