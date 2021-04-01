@@ -28,7 +28,7 @@ class UserController extends BaseController
         ]);
 
         $payer = User::create($request->all());
-        return $this->success(new PayerResource($payer), 'payer loggedin successfully');
+        return $this->success(new PayerResource($payer), 'payer registered successfully');
     }
 
 
@@ -43,6 +43,8 @@ class UserController extends BaseController
             $success['payer'] =  new PayerResource($payer->load(['payer_data','work_images','work_video']));
             $success['token'] =  $payer->createToken('payer')->accessToken;
             return $this->success($success, 'payer loggedin successfully');
+        }else{
+            return $this->error([],'Check username and password',401);
         }
         return $this->error([],'something went wrong');
     }
@@ -54,7 +56,7 @@ class UserController extends BaseController
         if(auth()->attempt($credentials)){
             $payer = auth()->user();
             if($payer->active){
-                return $this->error([],'this payer already activated');
+                return $this->error([],'this payer already activated',422);
             }
 
             // mobile activation logic
@@ -73,7 +75,7 @@ class UserController extends BaseController
             }
 
         }else {
-            return $this->error([],'credentials is wrong');
+            return $this->error([],'Check username and password',401);
         }
 
 
@@ -172,7 +174,7 @@ class UserController extends BaseController
             if($payer->password_recovery){
                 $code =  $payer->password_recovery->code;
             } else {
-                return $this->error([],'something went wrong');
+                return $this->error([],'something went wrong',401);
             }
 
 
@@ -180,7 +182,7 @@ class UserController extends BaseController
                 $payer->update(["password" => bcrypt($request->password)]);
                 return $this->success(['reset' => true], 'password rest successfully');
             }else {
-                return $this->error([],'code is wrong');
+                return $this->error([],'code is wrong',401);
             }
         }
         return $this->error([],'something went wrong');

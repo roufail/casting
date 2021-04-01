@@ -30,7 +30,7 @@ class ClientController extends BaseController
         ]);
 
         $client = Client::create($request->all());
-        return $this->success(new ClientResource($client), 'client loggedin successfully');
+        return $this->success(new ClientResource($client), 'client registered successfully');
     }
 
 
@@ -40,13 +40,13 @@ class ClientController extends BaseController
         if (auth('client')->attempt($credentials)) {
             $client = auth('client')->user();
             if(!$client->active){
-                return $this->error([],'client not activated');
+                return $this->error([],'client not activated',422);
             }
             $success['client'] =  new ClientResource($client);
             $success['token'] =  $client->createToken('client')->accessToken;
             return $this->success($success, 'client loggedin successfully');
         }else{
-            return $this->error([],'credentials wrong');
+            return $this->error([],'credentials wrong',401);
         }
         return $this->error([],'something went wrong');
     }
@@ -73,11 +73,11 @@ class ClientController extends BaseController
                     return $this->success($success, 'account activated successfully');
                 }
             }else {
-                return $this->error([],'activation code is wrong');
+                return $this->error([],'activation code is wrong',422);
             }
 
         }else {
-            return $this->error([],'credentials is wrong');
+            return $this->error([],'credentials is wrong',401);
         }
     }
 
@@ -88,7 +88,7 @@ class ClientController extends BaseController
         $phone = $request->only('phone');
         if ($client = Client::where('phone',$phone)->first()) {
             if(!$client->active){
-                return $this->error([],'client not activated');
+                return $this->error([],'client not activated',422);
             }
 
             // generete code
@@ -111,7 +111,7 @@ class ClientController extends BaseController
         $phone = $request->only('phone');
         if ($client = Client::where('phone',$phone)->first()) {
             if(!$client->active){
-                return $this->error([],'client not activated');
+                return $this->error([],'client not activated',422);
             }
 
 
@@ -127,7 +127,7 @@ class ClientController extends BaseController
                 $client->update(["password" => bcrypt($request->password)]);
                 return $this->success(['reset' => true], 'password rest successfully');
             }else {
-                return $this->error([],'code is wrong');
+                return $this->error([],'code is wrong',422);
             }
         }
         return $this->error([],'something went wrong');

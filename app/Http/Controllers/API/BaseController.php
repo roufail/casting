@@ -16,7 +16,7 @@ class BaseController extends Controller
 
 
 
-    public function error($data,$message,$code=500){
+    public function error($data,$message,$code=400){
     	$response = [
             'success' => false,
             'message' => $message,
