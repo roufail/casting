@@ -19,71 +19,10 @@ class OrderController extends Controller
         return view('admin.orders.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    public function chat(Order $order) {
+        $order->load('chat.messages');
+        return view('admin.orders.chat',compact('order'));
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Order  $order
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Order $order)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Order  $order
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Order $order)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Order  $order
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Order $order)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Order  $order
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Order $order)
-    {
-    }
-
 
     public function ajaxData()
     {
@@ -98,7 +37,10 @@ class OrderController extends Controller
         ->addColumn('client', function ($order) {
             return $order->client ? $order->client->name : '------';
         })
-        ->rawColumns(['image', 'action'])
+        ->addColumn('chat', function ($order) {
+            return '<a href="'.route('admin.orders.chat',$order->id).'" class="btn"><i class="fa fa-comments"></i></a>';
+        })
+        ->rawColumns(['image', 'action','chat'])
         ->make(true);
     }
 }

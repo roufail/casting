@@ -17,6 +17,10 @@ use Storage;
 class ClientController extends BaseController
 {
 
+    public function client() {
+        return $this->success(new ClientResource(auth('client-api')->user()), 'client data retrived successfully');
+    }
+
     public function register(ClientRegisterRequest $request){
         $image = "";
         if($request->hasFile('imageFile')){

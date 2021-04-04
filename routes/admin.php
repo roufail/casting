@@ -50,7 +50,8 @@ Route::group(['namespace' => 'Admin','as'=>'admin.'],function(){
 
 
         Route::get('orders/ajax_data', 'OrderController@ajaxData')->name('orders.ajax_data');
-        Route::resource('orders', 'OrderController');
+        Route::get('orders/{order}/chat', 'OrderController@chat')->name('orders.chat');
+        Route::resource('orders', 'OrderController')->only('index');
 
 
 

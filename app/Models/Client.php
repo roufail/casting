@@ -18,6 +18,7 @@ class Client extends Authenticatable
         'country',
         'image',
         'active',
+        'phone'    
     ];
 
     protected $hidden = ['password'];

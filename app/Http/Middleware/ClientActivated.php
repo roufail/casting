@@ -19,7 +19,7 @@ class ClientActivated
         if(!auth("client-api")->check()){
             return response()->json(['error' => 'Unauthorized.'], 401);
         }elseif(!auth("client-api")->user()->active){
-            return response()->json(['error' => 'account not activated.'], 500);
+            return response()->json(['error' => 'account not activated.'], 422);
         }
         return $next($request);
     }

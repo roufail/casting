@@ -15,6 +15,10 @@ use App\Http\Resources\PayerResource;
 use Storage;
 class UserController extends BaseController
 {
+    public function payer() {
+        return $this->success(new PayerResource(auth()->user()), 'payer data retrived successfully');
+    }
+
     public function register(PayerRegisterRequest $request){
         $image = "";
         if($request->hasFile('imageFile')){

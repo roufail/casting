@@ -36,4 +36,8 @@ class Order extends Model
         return $this->hasOne(Outgoing::class);
     }
 
+    public function chat(){
+        return $this->hasOne(Chat::class);
+    }
+
 }
