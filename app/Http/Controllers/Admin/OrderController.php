@@ -38,7 +38,7 @@ class OrderController extends Controller
             return $order->client ? $order->client->name : '------';
         })
         ->addColumn('chat', function ($order) {
-            return '<a href="'.route('admin.orders.chat',$order->id).'" class="btn"><i class="fa fa-comments"></i></a>';
+            return $order->chat ? '<a href="'.route('admin.orders.chat',$order->id).'" class="btn"><i class="fa fa-comments"></i></a>' : '';
         })
         ->rawColumns(['image', 'action','chat'])
         ->make(true);
