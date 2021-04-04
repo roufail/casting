@@ -185,4 +185,13 @@ class ClientController extends BaseController
     }
 
 
+    public function logout(){
+        auth('client-api')->user()->tokens()->where('name','client')->each(function ($token, $key) {
+            $token->delete();
+        });
+        return $this->success([], 'client logged out successfully');
+    }
+
+
+
 }

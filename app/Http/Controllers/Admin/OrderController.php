@@ -20,6 +20,9 @@ class OrderController extends Controller
     }
 
     public function chat(Order $order) {
+        if(!$order->chat){
+            abort(404);
+        }
         $order->load('chat.messages');
         return view('admin.orders.chat',compact('order'));
     }
@@ -38,9 +41,9 @@ class OrderController extends Controller
             return $order->client ? $order->client->name : '------';
         })
         ->addColumn('chat', function ($order) {
-            return $order->chat ? '<a href="'.route('admin.orders.chat',$order->id).'" class="btn"><i class="fa fa-comments"></i></a>' : '';
+            return $order->chat ? '<a href="'.route('admin.orders.chat',$order->id).'" class="btn"><i class="fa fa-comments"></i></a>' : '----';
         })
-        ->rawColumns(['image', 'action','chat'])
+        ->rawColumns(['action','chat'])
         ->make(true);
     }
 }

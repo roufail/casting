@@ -208,5 +208,11 @@ class UserController extends BaseController
         return $this->success($notifications, 'notifications retrived successfully');
     }
 
+    public function logout(){
+        auth()->user()->tokens()->where('name','payer')->each(function ($token, $key) {
+            $token->delete();
+        });
+        return $this->success([], 'payer logged out successfully');
+    }
 
 }

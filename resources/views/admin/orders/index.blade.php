@@ -44,7 +44,7 @@
                 { data: 'client', name: 'client', searchable: true },
                 { data: 'price', name: 'price' },
                 { data: 'status', name: 'status' },
-                { data: 'chat', name: 'chat', orderable: false, searchable: false}
+                { data: 'chat', name: 'chat'}
 
             ],
             "order": [[ 0, "desc" ]]

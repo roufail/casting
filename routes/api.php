@@ -55,6 +55,7 @@ Route::get('settings',function(){
 Route::group(['middleware' => ['auth:payer-api','payer.activated'],'prefix' => 'payer','as' => 'payer.'],function(){
     
     Route::get('/', 'API\UserController@payer')->name('payer');
+    Route::post('logout', 'API\UserController@logout')->name('payer.logout');
 
     Route::get('myorders/update/{id}/{status}', 'API\OrderController@payer_updatemyorders')->name('updatemyorders');
     Route::get('myorders/{status?}', 'API\OrderController@myorders')->name('myorders');
@@ -77,6 +78,7 @@ Route::group(['middleware' => ['auth:payer-api','payer.activated'],'prefix' => '
 Route::group(['middleware' => ['auth:client-api','client.activated'],'prefix' => 'client','as' => 'client.'],function(){
     
     Route::get('/', 'API\ClientController@client')->name('client');
+    Route::post('logout', 'API\ClientController@logout')->name('client.logout');
 
     Route::post('place-order', 'API\OrderController@place_order')->name('place_order');
     Route::get('myorders/update/{id}/{status}', 'API\OrderController@client_updatemyorders')->name('updatemyorders');
