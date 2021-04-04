@@ -16,11 +16,12 @@ class ChatController extends BaseController
 {
     public function message_to_client(Request $request , $order){
         $request->validate([
-            'message' => 'required|string',
-            'message_type' => 'required|string',
+            'message' => 'required',
+            'message_type' => 'required|string|in:text,image',
         ]);
 
         $order = Order::find($order);
+        
         if(!$order){
             return $this->error([],'somthing went wrong!');
         }
@@ -32,6 +33,13 @@ class ChatController extends BaseController
             'user_id'   => auth()->user()->id,
             'client_id' => $order->client_id
         ]);
+
+        if($request->message_type == "image" && $request->hasFile('message')) {
+            $request->message = Storage::disk('messages')->url($request->message->store("/","messages"));
+        }else {
+            $request->message_type = "text";
+        }
+
 
         $message = $chat->messages()->create([
             'user_id'      =>  auth()->user()->id,
@@ -56,8 +64,8 @@ class ChatController extends BaseController
 
     public function message_to_payer(Request $request , $order){
         $request->validate([
-            'message' => 'required|string',
-            'message_type' => 'required|string',
+            'message' => 'required',
+            'message_type' => 'required|string|in:text,image',
         ]);
         $order = Order::find($order);
         if(!$order){
@@ -71,6 +79,13 @@ class ChatController extends BaseController
             'user_id'   => auth()->user()->id,
             'client_id' => $order->client_id
         ]);
+
+
+        if($request->message_type == "image" && $request->hasFile('message')) {
+            $request->message = Storage::disk('messages')->url($request->message->store("/","messages"));
+        }else {
+            $request->message_type = "text";
+        }
 
         $message = $chat->messages()->create([
             'user_id'      =>  auth()->user()->id,
@@ -90,7 +105,9 @@ class ChatController extends BaseController
             "created_at"    => $message->created_at,
         ];
 
-        return $this->success($response, 'message send successfully');    }
+        return $this->success($response, 'message send successfully');    
+    }
+
 
     public function load_chat($order){
         $chat = Chat::where("order_id",$order)->first();

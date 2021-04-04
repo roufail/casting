@@ -65,6 +65,12 @@ return [
             'url' => env('APP_URL').'/storage/categories',
             'visibility' => 'public',
         ],
+        'messages' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/messages'),
+            'url' => env('APP_URL').'/storage/messages',
+            'visibility' => 'public',
+        ],
         'settings' => [
             'driver' => 'local',
             'root' => storage_path('app/public/settings'),
