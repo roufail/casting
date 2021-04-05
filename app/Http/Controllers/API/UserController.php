@@ -44,6 +44,13 @@ class UserController extends BaseController
             // if(!$payer->active){
             //     return $this->error([],'payer not activated');
             // }
+
+            if($request->firebase_token) {
+                $payer->update([
+                    'firebase_token' => $request->firebase_token
+                ]);
+            }
+
             $success['payer'] =  new PayerResource($payer->load(['payer_data','work_images','work_video']));
             $success['token'] =  $payer->createToken('payer')->accessToken;
             return $this->success($success, 'payer loggedin successfully');
@@ -77,6 +84,13 @@ class UserController extends BaseController
             }else {
                 return $this->error([],'activation code is wrong');
             }
+
+            if($request->firebase_token) {
+                $payer->update([
+                    'firebase_token' => $request->firebase_token
+                ]);
+            }
+
 
         }else {
             return $this->error([],'Check username and password',401);

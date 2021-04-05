@@ -18,7 +18,8 @@ class Client extends Authenticatable
         'country',
         'image',
         'active',
-        'phone'    
+        'phone',
+        'firebase_token'   
     ];
 
     protected $hidden = ['password'];

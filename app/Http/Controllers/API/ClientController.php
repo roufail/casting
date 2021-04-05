@@ -46,6 +46,13 @@ class ClientController extends BaseController
             // if(!$client->active){
             //     return $this->error([],'client not activated',422);
             // }
+
+            if($request->firebase_token) {
+                $client->update([
+                    'firebase_token' => $request->firebase_token
+                ]);
+            }
+
             $success['client'] =  new ClientResource($client);
             $success['token'] =  $client->createToken('client')->accessToken;
             return $this->success($success, 'client loggedin successfully');
@@ -79,6 +86,13 @@ class ClientController extends BaseController
             }else {
                 return $this->error([],'activation code is wrong',422);
             }
+
+            if($request->firebase_token) {
+                $client->update([
+                    'firebase_token' => $request->firebase_token
+                ]);
+            }
+
 
         }else {
             return $this->error([],'credentials is wrong',401);

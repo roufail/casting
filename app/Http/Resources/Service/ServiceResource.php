@@ -18,6 +18,7 @@ class ServiceResource extends JsonResource
             'id'            => $this->id,
             'title'         => $this->service->title,
             'min_price'     => $this->user->services()->min("price"),
+            'user_id'       => $this->user_id,
             'service_price' => $this->price,
             'work_type'     => $this->work_type,
             'category_id'   => $this->service->category->id,

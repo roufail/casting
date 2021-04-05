@@ -15,12 +15,13 @@ class ClientResource extends JsonResource
     public function toArray($request)
     {
         return [
-            "email"    => $this->email,
-            "country"  => $this->country,
-            "image"    => $this->image ? \Storage::disk("clients")->url($this->image) : null,
-            "name"     => $this->name,
-            "country"  => $this->country,
-            "active"   => $this->active,
+            "email"          => $this->email,
+            "country"        => $this->country,
+            "image"          => $this->image ? \Storage::disk("clients")->url($this->image) : null,
+            "name"           => $this->name,
+            "country"        => $this->country,
+            "active"         => $this->active,
+            "firebase_token" => $this->firebase_token,
         ];
     }
 }

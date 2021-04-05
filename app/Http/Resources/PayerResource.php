@@ -25,6 +25,7 @@ class PayerResource extends JsonResource
             "payer_data"     => new PayerDataResource($this->payer_data),
             "video_url"      => new PayerVideoResource($this->whenLoaded("work_video")), 
             "rating"         => $this->rating_stars(),
+            "firebase_token" => $this->firebase_token,
             "age"            => date_diff(date_create($this->dob), date_create('now'))->y,
             //"services"     => ServiceResource::collection($this->services()->where("active",1)->get()),
             "services"       => ServiceResource::collection($this->whenLoaded("services")),

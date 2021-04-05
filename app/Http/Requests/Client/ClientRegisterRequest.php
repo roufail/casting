@@ -24,13 +24,14 @@ class ClientRegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'      => 'required',
-            'email'     => 'required|unique:clients,email',
-            'country'   => 'required',
-            'password'  => 'required',
+            'name'              => 'required',
+            'email'             => 'required|unique:clients,email',
+            'country'           => 'required',
+            'password'          => 'required',
             'confirm_password'  => 'required|same:password',
-            'image'     => 'nullable',
-            'phone'     => 'required|unique:clients,phone',
+            'image'             => 'nullable',
+            'phone'             => 'required|unique:clients,phone',
+            'firebase_token'    => 'nullable',
         ];
     }
 }

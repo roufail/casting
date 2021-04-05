@@ -22,6 +22,7 @@ class CreateCLientsTable extends Migration
             $table->string('country');
             $table->string('password');
             $table->string('image')->nullable();
+            $table->string('firebase_token')->nullable();
             $table->boolean('active')->default(0);
             $table->rememberToken();
             $table->timestamps();

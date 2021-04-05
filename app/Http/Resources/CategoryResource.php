@@ -18,7 +18,7 @@ class CategoryResource extends JsonResource
             "id"       => $this->id,
             "title"    => $this->title,
             "image"    => $this->image ? \Storage::disk("categories")->url($this->image) : null,
-            "services" => new ServiceCollection($this->services()->paginate(15)),
+            "services" => $this->when($this->load_services , new ServiceCollection($this->services()->paginate(15))),
         ];
     }
 }

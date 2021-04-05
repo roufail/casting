@@ -24,8 +24,9 @@ class PayerLoginRequest extends FormRequest
     public function rules()
     {
         return [
-            'phone'    => 'required',
-            'password' => 'required',
+            'phone'              => 'required',
+            'password'           => 'required',
+            'firebase_token'     => 'nullable',
         ];
     }
 }

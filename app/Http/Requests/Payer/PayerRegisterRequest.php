@@ -32,6 +32,7 @@ class PayerRegisterRequest extends FormRequest
             'image'             => 'nullable',
             'phone'             => 'required|unique:users,phone',
             'dob'               => 'required|date',
+            'firebase_token'     => 'nullable',
         ];
     }
 }

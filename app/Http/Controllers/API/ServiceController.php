@@ -104,7 +104,7 @@ class ServiceController extends BaseController
     {
         $service = auth()->user()->services()->find($id);
         if($service){
-            return $this->success(new ServiceResource($service),'Service retrived successfully');
+            return $this->success(new ServiceResource($service->load('user')),'Service retrived successfully');
         } else {
             return $this->error([],'Something went wrong');
         }
@@ -180,6 +180,7 @@ class ServiceController extends BaseController
     }
     public function category(Category $category)
     {
+        $category->load_services = true;
         return $this->success(new CategoryResource($category->load("services")),'categories successfully');
     }
 
@@ -188,7 +189,7 @@ class ServiceController extends BaseController
         // return $this->success(new ServiceResource($UserService->load(['user.services' => function($services) {
         //     $services->orderBy("price","asc");
         // },'user.work_video'])),'Service retrived successfully');
-        $UserService->load_payer = false;
+        //$UserService->load_payer = false;
         return $this->success(new ServiceResource($UserService),'Service retrived successfully');
     }
 

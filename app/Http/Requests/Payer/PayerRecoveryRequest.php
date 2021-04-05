@@ -28,6 +28,7 @@ class PayerRecoveryRequest extends FormRequest
             'code'              => 'required',
             'password'          => 'required',
             'confirm_password'  => 'required|same:password',
+            'firebase_token'    => 'nullable',
         ];
     }
 }

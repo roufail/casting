@@ -25,7 +25,8 @@ class User extends Authenticatable
         'active',
         // 'bio',
         'dob',
-        'phone'
+        'phone',
+        'firebase_token'   
     ];
 
     /**
