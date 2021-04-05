@@ -43,9 +43,9 @@ class ClientController extends BaseController
         $credentials = $request->only('phone', 'password');
         if (auth('client')->attempt($credentials)) {
             $client = auth('client')->user();
-            if(!$client->active){
-                return $this->error([],'client not activated',422);
-            }
+            // if(!$client->active){
+            //     return $this->error([],'client not activated',422);
+            // }
             $success['client'] =  new ClientResource($client);
             $success['token'] =  $client->createToken('client')->accessToken;
             return $this->success($success, 'client loggedin successfully');

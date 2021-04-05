@@ -3,7 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Http\Resources\Service\ServiceResource;
+use App\Http\Resources\Service\ServiceCollection;
 class CategoryResource extends JsonResource
 {
     /**
@@ -18,7 +18,7 @@ class CategoryResource extends JsonResource
             "id"       => $this->id,
             "title"    => $this->title,
             "image"    => $this->image ? \Storage::disk("categories")->url($this->image) : null,
-            "services" => ServiceResource::collection($this->whenLoaded("services")),
+            "services" => new ServiceCollection($this->services()->paginate(15)),
         ];
     }
 }

@@ -41,9 +41,9 @@ class UserController extends BaseController
         $credentials = $request->only('phone', 'password');
         if (auth()->attempt($credentials)) {
             $payer = auth()->user();
-            if(!$payer->active){
-                return $this->error([],'payer not activated');
-            }
+            // if(!$payer->active){
+            //     return $this->error([],'payer not activated');
+            // }
             $success['payer'] =  new PayerResource($payer->load(['payer_data','work_images','work_video']));
             $success['token'] =  $payer->createToken('payer')->accessToken;
             return $this->success($success, 'payer loggedin successfully');

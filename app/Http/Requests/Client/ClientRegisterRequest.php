@@ -30,7 +30,7 @@ class ClientRegisterRequest extends FormRequest
             'password'  => 'required',
             'confirm_password'  => 'required|same:password',
             'image'     => 'nullable',
-            'phone'     => 'required',
+            'phone'     => 'required|unique:clients,phone',
         ];
     }
 }
