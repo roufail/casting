@@ -60,13 +60,13 @@ class ServiceController extends BaseController
             }
         }
 
-        $services = $services->with("user")->paginate(15);
+        $services = $services->with("user")->paginate(15)->appends(request()->query());
         return $this->success(new ServiceCollection($services),'Services Retrived successfully');
     }
 
 
     public function myservices($search=null){
-        $services = auth()->user()->services()->paginate(15);
+        $services = auth()->user()->services()->paginate(15)->appends(request()->query());
         return $this->success(new ServiceCollection($services),'Services Retrived successfully');
     }
 

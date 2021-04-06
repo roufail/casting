@@ -57,6 +57,7 @@ class OrderStatusUpdate extends Notification
     {
         return [
             'notification'     => $this->order->user->name." changed your order ".$this->order->userservice->service->name." status to ".$this->order->status,
+            'title'            => 'order status changed',
             'not_id'           => $this->order->id,
             'not_type'         => 'order',
             'notifiable_id'    => $notifiable->id
@@ -68,6 +69,7 @@ class OrderStatusUpdate extends Notification
     {
         return (
             new OrderStatusUpdateEvent($notifiable->id,
+            'order status changed',
             $this->order->user->name." changed your order ".$this->order->userservice->service->name." status to ".$this->order->status,
             $this->order->id
            ,

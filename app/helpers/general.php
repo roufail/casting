@@ -5,6 +5,7 @@ if(!function_exists('load_notification')){
         $class = 'App\\Models\\' . $class_name;
         $reported        = $class::find($notification['data']['reported_id']);
         return [
+            "title"          => $notification['data']['title'],
             "notification"   => $notification['data']['notification'],
             "type"           => $notification['data']['not_type'],
             "read_at"        => $notification->read_at,

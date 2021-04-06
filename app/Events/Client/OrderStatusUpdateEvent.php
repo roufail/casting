@@ -20,10 +20,11 @@ class OrderStatusUpdateEvent
      *
      * @return void
      */
-    public function __construct($notifiable_id,$notification,$service_id,$type)
+    public function __construct($notifiable_id,$title,$notification,$service_id,$type)
     {
         $this->data['object_id']     = $notifiable_id;
         $this->data['notification']  = $notification;
+        $this->data['title']         = $title;
         $this->data['not_id']        = $service_id;
         $this->data['not_type']      = $type;
     }

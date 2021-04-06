@@ -57,6 +57,7 @@ class ServiceRequest extends Notification implements ShouldQueue
     {
         return [
             'notification'     => $this->client->name." asked for ".$this->service->title,
+            'title'            => 'new service request',
             'not_id'           => $this->service->id,
             'not_type'         => 'service',
             'notifiable_id'    => $notifiable->id,
@@ -68,7 +69,7 @@ class ServiceRequest extends Notification implements ShouldQueue
 
     public function toBroadcast($notifiable)
     {
-        return (new PayerRequestEvent($notifiable->id,$this->client->name." asked for ".$this->service->title,$this->service->id,'service'));
+        return (new PayerRequestEvent($notifiable->id,'new service request',$this->client->name." asked for ".$this->service->title,$this->service->id,'service'));
     }
 
 
