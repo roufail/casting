@@ -52,20 +52,20 @@
 
               <div class="form-group">
                 <label for="exampleInputEmail1">@lang('admin/users.form.job_title')</label>
-                <input  type="text" name="job_title" class="form-control"  value="{{old('job_title')}}" placeholder="@lang('admin/users.form.job_title')">
+                <input  type="text" name="job_title" class="form-control"  value="{{old('job_title') ? old('job_title') : ( $user->payer_data ? $user->payer_data->job_title : "")}}" placeholder="@lang('admin/users.form.job_title')">
               </div>
 
 
               <div class="form-group">
                 <label for="exampleInputEmail1">@lang('admin/users.form.prev_work')</label>
-                <input  type="text" name="prev_work" class="form-control" placeholder="@lang('admin/users.form.prev_work')" value="{{old('prev_work')}}">
+                <input  type="text" name="prev_work" class="form-control" placeholder="@lang('admin/users.form.prev_work')" value="{{old('prev_work') ? old('prev_work') : ( $user->payer_data ? $user->payer_data->prev_work : "")}}">
                 <small class="text-muted">@lang('admin/users.form.prev_work_help')</small>
               </div>
 
 
               <div class="form-group">
                 <label for="exampleInputEmail1">@lang('admin/users.form.bio')</label>
-                <textarea  name="bio" class="form-control" placeholder="@lang('admin/users.form.bio')">{{old('bio')}}</textarea>
+                <textarea  name="bio" class="form-control" placeholder="@lang('admin/users.form.bio')">{{old('bio') ? old('bio') : ( $user->payer_data ? $user->payer_data->bio : "")}}</textarea>
               </div>
 
 
