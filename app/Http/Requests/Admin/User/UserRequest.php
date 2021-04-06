@@ -30,10 +30,14 @@ class UserRequest extends FormRequest
             'country'               => 'required|string',
             'dob'                   => 'date_format:Y-m-d|before:5 years ago|nullable',
             'image'                 => "nullable|mimes:jpeg,jpg,png|max:512",
+            'job_title'             => "nullable",
+            'prev_work'             => "nullable",
             'bio'                   => "nullable",
             'services'              => "nullable|array",
             'services.*.service_id' => "required|numeric|exists:services,id",
             'services.*.price'      => "required|numeric",
+            'work_images'          => "nullable|array",
+            'work_images.*'        => "required|String",
             'services.*.work_type'  => "string"
         ];
         if(!$this->user){

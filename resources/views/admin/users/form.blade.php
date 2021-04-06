@@ -5,6 +5,15 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/min/dropzone.min.css">
 @endpush
 
+@section("extra-css")
+  <style>
+  .dropzone .dz-preview .dz-image img {
+      width: 100% !important;
+      height: 100% !important;
+  }
+  </style>
+@endsection
+
 @section('content')
 <div class="box">
     <div class="box-header">
@@ -36,6 +45,29 @@
                 <label for="exampleInputEmail1">@lang('admin/users.form.birthday')</label>
                 <input dir="ltr" type="date" name="dob" class="form-control"  value="{{old_value('dob',$user)}}" placeholder="@lang('admin/users.form.birthday')">
               </div>
+
+
+
+
+
+              <div class="form-group">
+                <label for="exampleInputEmail1">@lang('admin/users.form.job_title')</label>
+                <input  type="text" name="job_title" class="form-control"  value="{{old('job_title')}}" placeholder="@lang('admin/users.form.job_title')">
+              </div>
+
+
+              <div class="form-group">
+                <label for="exampleInputEmail1">@lang('admin/users.form.prev_work')</label>
+                <input  type="text" name="prev_work" class="form-control" placeholder="@lang('admin/users.form.prev_work')" value="{{old('prev_work')}}">
+                <small class="text-muted">@lang('admin/users.form.prev_work_help')</small>
+              </div>
+
+
+              <div class="form-group">
+                <label for="exampleInputEmail1">@lang('admin/users.form.bio')</label>
+                <textarea  name="bio" class="form-control" placeholder="@lang('admin/users.form.bio')">{{old('bio')}}</textarea>
+              </div>
+
 
 
 
@@ -181,6 +213,7 @@
 
 
 
+
               <div class="checkbox">
                 <label>
                   <input name="active" type="checkbox" @if($user->active || old('active')) checked @endif>
@@ -189,7 +222,17 @@
               </div>
 
 
-              
+              <div class="payer-images">
+                @foreach ($user->work_images as $image)
+                  <input type="hidden" name="work_images[]" value="{{ $image->image_url }}" /> 
+                @endforeach
+              </div>
+
+              <div class="payer-video">
+                @if ($user->work_video)
+                  <input type="hidden" name="work_video" value="{{ $user->work_video->video_url }}" /> 
+                @endif
+              </div>
 
 
 
@@ -202,7 +245,31 @@
           <form method="post" action="{{route('admin.users.upload_images')}}" enctype="multipart/form-data" 
           class="dropzone" id="dropzone">
             @csrf
-          </form>   
+          </form>  
+          
+          
+
+          @if ($user->work_video)
+            <div class="video_holder">
+              <i class="remove_video fa fa-times-circle"></i>
+              <video width="300px" height="200px" autoplay  controls="true" src="{{ \Storage::disk("work_videos")->url($user->work_video->video_url) }}"> </video>
+            </div>
+          @endif
+
+
+          <form id="video_form" method="POST" action="{{ route('admin.users.video.upload') }}" enctype="multipart/form-data">
+            @csrf
+            <div class="form-group">
+                <label for="video">@lang('admin/users.form.video')</label>    
+                <input accept=".mp4" name="video" id="video" type="file" class="form-control"><br/>
+                <div class="progress">
+                    <div class="bar"></div >
+                    <div class="percent">0%</div >
+                </div>
+                <input type="submit"  value="@lang('admin/users.form.submit')" class="btn btn-success">
+            </div>
+        </form>    
+
 
 
       </div><!-- /.box-body -->
@@ -226,9 +293,26 @@
                 dataType: 'json',
                 success: function( data ) {
                   $('.image_holder').remove();
+                  $('.payer-video input').remove();
                 }
             })
     });
+
+    $(".remove_video").click(function(e){
+      $.ajax({
+                url: '{{ route("admin.users.delete_video") }}',
+                type: 'GET',
+                data: { 
+                  '_token': '{{ csrf_token() }}',
+                  'id'    : {{ $user->id}}
+                },
+                dataType: 'json',
+                success: function( data ) {
+                  $('.video_holder').remove();
+                }
+            })
+    });
+
     @endif
 
     $(".add_services_handler").click(function(){
@@ -278,6 +362,16 @@
 
     Dropzone.options.dropzone =
          {
+           init:function(){
+              @foreach ($user->work_images as $image)              
+                  var mockFile = {  name: "{{ $image->image_url }}" , upload:{}};  
+                  mockFile.upload.filename =    "{{ $image->image_url }}";  
+                  this.options.addedfile.call(this, mockFile);
+                  this.options.thumbnail.call(this, mockFile, "{{ Storage::disk('work_images')->url($image->image_url) }}");
+                  mockFile.previewElement.classList.add('dz-success');
+                  mockFile.previewElement.classList.add('dz-complete');
+              @endforeach
+           },
             maxFilesize: 12,
             renameFile: function(name) {
                return name;
@@ -297,8 +391,7 @@
                     url: '{{ route("admin.users.remove_dropzone_image") }}',
                     data: {image: $servername},
                     success: function (data){
-                        
-                        console.log("File has been successfully removed!!");
+                      $(`.payer-images input[value='${data.name}']`).remove();
                     },
                     error: function(e) {
                         console.log(e);
@@ -310,8 +403,10 @@
        
             success: function(file, response) 
             {
-              console.log(response);
-              file.previewElement.querySelector("img").src = response.name;
+              $('.payer-images').append(`
+                  <input type="hidden" name="work_images[]" value="${response.name}" /> 
+              `);
+              file.previewElement.querySelector("img").src = response.url;
             },
             error: function(file, response)
             {
@@ -321,9 +416,59 @@
 
   })
 </script>
+
+<script type="text/javascript">
+ 
+  function validate(formData, jqForm, options) {
+      var form = jqForm[0];
+      if (!form.video.value) {
+          alert('File not found');
+          return false;
+      }
+  }
+
+  (function() {
+
+  var bar = $('.bar');
+  var percent = $('.percent');
+  var status = $('#status');
+
+  $('#video_form').ajaxForm({
+      beforeSubmit: validate,
+      beforeSend: function() {
+          status.empty();
+          var percentVal = '0%';
+          var posterValue = $('input[name=video]').fieldValue();
+          bar.width(percentVal)
+          percent.html(percentVal);
+      },
+      uploadProgress: function(event, position, total, percentComplete) {
+          var percentVal = percentComplete + '%';
+          bar.width(percentVal)
+          percent.html(percentVal);
+      },
+      success: function() {
+          var percentVal = 'Wait, Saving';
+          bar.width(percentVal)
+          percent.html(percentVal);
+      },
+      complete: function(xhr) {
+          status.html(xhr.responseText);
+          let response = JSON.parse(xhr.responseText);
+          $('.payer-video input').remove();
+          $('.payer-video').append(`<input type="hidden" name="work_video" value="${response.name}" />`);
+
+          // window.location.href = "/file-upload";
+      }
+  });
+   
+  })();
+</script>
+
 @endsection
 
 @push('js-files')
    <script src="{{ asset('admin-files/js/select2.min.js') }}"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/dropzone.js"></script>
+   <script src="http://malsup.github.com/jquery.form.js"></script>
 @endpush

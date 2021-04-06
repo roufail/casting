@@ -21,8 +21,11 @@ Route::group(['namespace' => 'Admin','as'=>'admin.'],function(){
 
         Route::get('users/ajax_data', 'UserController@ajaxData')->name('users.ajax_data');
         Route::get('users/delete_image', 'UserController@delete_image')->name('users.delete_image');
+        Route::get('users/delete_video', 'UserController@delete_video')->name('users.delete_video');
         Route::post('users/upload_images', 'UserController@upload_images')->name('users.upload_images');
         Route::post('users/remove_dropzone_image', 'UserController@remove_dropzone_image')->name('users.remove_dropzone_image');
+        Route::post('users/upload_video', 'UserController@upload_video')->name('users.video.upload');
+        
         Route::resource('users', 'UserController');
         
 

@@ -196,11 +196,10 @@ class ServiceController extends BaseController
     public function payer_images(User $user)
     {
         $images = $user->work_images;
-        if($images){
+        if(count($images) > 0){
             return $this->success(PayerImagesResource::collection($images),'Payer images retrived successfully');
         }
-        return $this->error([],'this user has no images');
-
+        return $this->success(null,'this user has no images');
     }
 
     public function payer_video(User $user)
@@ -209,7 +208,7 @@ class ServiceController extends BaseController
         if($video){
             return $this->success(new PayerVideoResource($video),'Payer video retrived successfully');
         }
-        return $this->error([],'this user has no videos');
+        return $this->success(null,'this user has no videos');
 
     }
 

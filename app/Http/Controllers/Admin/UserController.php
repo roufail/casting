@@ -50,6 +50,9 @@ class UserController extends Controller
             $validated['image'] = $request->image->store("/","users");
         }
 
+
+ 
+
         if($request->active) {
             $validated['active'] = true;
         }else {
@@ -61,6 +64,25 @@ class UserController extends Controller
         if($user = User::create($validated)){
             $user->services()->delete();
             $user->services()->createMany($validated['services']);
+
+
+            if($request->work_images) {
+                foreach ($request->work_images as $image) {
+                    $user->work_images()->create(['image_url' => $image]);
+                };
+            }
+
+
+            if($request->work_video) {
+                $user->work_video()->create(['video_url' => $request->work_video]);
+            }
+
+            $user->payer_data()->create([
+                'job_title'             => $request->job_title,
+                'prev_work'             => $request->prev_work,
+                'bio'                   => $request->bio,    
+            ]);
+            
             Alert::toast('<h4>تم انشاء المستخدم بنجاح</h4>','success');
         }else{
             Alert::toast('<h4>حدث خطأ ما , يرجي المحاوله لاحقاً</h4>','error');
@@ -78,7 +100,7 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $services = Service::get(['id','title']);
-        $user->load('services');
+        $user->load(['services','work_images','work_video']);
         return view('admin.users.form',compact('user','services'));
     }
 
@@ -114,6 +136,26 @@ class UserController extends Controller
         if($user->update($validated)){
             $user->services()->delete();
             $user->services()->createMany($validated['services']);
+            $user->work_images()->delete();
+            $user->work_video()->delete();
+
+            if($request->work_images) {
+                foreach ($request->work_images as $image) {
+                    $user->work_images()->create(['image_url' => $image]);
+                };
+            }
+
+            if($request->work_video) {
+                $user->work_video()->create(['video_url' => $request->work_video]);
+            }
+
+
+            $user->payer_data()->updateOrCreate(['payer_id' => $user->id],[
+                'job_title'             => $request->job_title,
+                'prev_work'             => $request->prev_work,
+                'bio'                   => $request->bio,    
+            ]);
+
             Alert::toast('<h4>تم تحديث المستخدم بنجاح</h4>','success');
         }else{
             Alert::toast('<h4>حدث خطأ ما , يرجي المحاوله لاحقاً</h4>','error');
@@ -171,20 +213,48 @@ class UserController extends Controller
         }
     }
 
+    public function delete_video(Request $request) {
+        if($request->ajax()){
+            $user = User::findOrFail($request->id);
+            Storage::disk('work_videos')->delete($user->work_video->video_url);
+            $user->work_video()->delete();;
+            return true;
+        }
+    }
+
+
+
+    
+
 
 
     public function upload_images(Request $request) {
         if($request->ajax()){
-            $name = $request->file->store("/","dropzone");
-            return response()->json(['name' => Storage::disk('dropzone')->url($name)]);
+            $name = $request->file->store("/","work_images");
+            return response()->json([
+            'url'  => Storage::disk('work_images')->url($name),
+            'name' => $name
+            ]);
         }
     }
 
     public function remove_dropzone_image(Request $request) {
         $image_arr = explode("/",$request->image);
         $image     = end($image_arr);
-        Storage::disk('dropzone')->delete($image);
-        return response()->json(['success' => true]);
+        Storage::disk('work_images')->delete($image);
+        return response()->json(['success' => true,'name' => $image]);
+    }
+
+
+    public function upload_video(Request $request){
+        if($request->ajax()){
+            $name = $request->video->store("/","work_videos");
+            return response()->json([
+            'url'  => Storage::disk('work_videos')->url($name),
+            'name' => $name
+            ]);
+        }
+
     }
 
 
