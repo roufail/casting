@@ -225,6 +225,14 @@ class UserController extends BaseController
         return $this->success(new NotificationCollection($notifications), 'Notifications retrived successfully');
     }
 
+
+    
+    public function read_notifications(Request $request){
+        if(!$request->notifications_ids) return;
+        $notifications = auth()->user()->notifications()->find($request->notifications_ids)->markAsRead();
+        return $this->success(null, 'Notifications marked as read');
+    }
+
     public function logout(){
         auth()->user()->tokens()->where('name','payer')->each(function ($token, $key) {
             $token->delete();

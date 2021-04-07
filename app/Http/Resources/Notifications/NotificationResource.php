@@ -18,6 +18,7 @@ class NotificationResource extends JsonResource
         $class = 'App\\Models\\' . $class_name;
         $reported        = $class::find($this['data']['reported_id']);
         return [
+            "id"             => $this->id,
             "title"          => isset($this['data']['title']) ? $this['data']['title'] : '' ,
             "notification"   => $this['data']['notification'],
             "type"           => $this['data']['not_type'],

@@ -203,6 +203,10 @@ class ClientController extends BaseController
 
     }
 
+    public function read_notifications(Request $request){
+        $notifications = auth('client-api')->user()->notifications()->find($request->notifications_ids)->markAsRead();
+        return $this->success(null, 'Notifications marked as read');
+    }
 
     public function logout(){
         auth('client-api')->user()->tokens()->where('name','client')->each(function ($token, $key) {
