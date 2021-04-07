@@ -12,6 +12,8 @@ use App\Http\Requests\Payer\PayerRecoveryRequest;
 use App\Models\User;
 use App\Http\Resources\PayerResource;
 
+use App\Http\Resources\Notifications\NotificationCollection;
+
 use Storage;
 class UserController extends BaseController
 {
@@ -215,11 +217,12 @@ class UserController extends BaseController
     }
 
     public function notifications(){
-        $notifications = [];
-        foreach (auth()->user()->notifications as $key => $notification) {
-            $notifications[] = load_notification($notification);
-        }
-        return $this->success($notifications, 'notifications retrived successfully');
+        // $notifications = [];
+        // foreach (auth()->user()->notifications as $key => $notification) {
+        //     $notifications[] = load_notification($notification);
+        // }
+        $notifications = auth()->user()->notifications()->paginate(10);
+        return $this->success(new NotificationCollection($notifications), 'Notifications retrived successfully');
     }
 
     public function logout(){

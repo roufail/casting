@@ -12,6 +12,7 @@ use App\Models\Client;
 use App\Http\Resources\ClientResource;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Resources\Notifications\NotificationCollection;
 
 use Storage;
 class ClientController extends BaseController
@@ -191,11 +192,15 @@ class ClientController extends BaseController
 
 
     public function notifications(){
-        $notifications = [];
-        foreach (auth('client-api')->user()->notifications as $key => $notification) {
-            $notifications[] = load_notification($notification);
-        }
-        return $this->success($notifications, 'notifications retrived successfully');
+        // $notifications = [];
+        // foreach (auth('client-api')->user()->notifications as $key => $notification) {
+        //     $notifications[] = load_notification($notification);
+        // }
+        // return $this->success($notifications, 'notifications retrived successfully');
+
+        $notifications = auth('client-api')->user()->notifications()->paginate(10);
+        return $this->success(new NotificationCollection($notifications), 'Notifications retrived successfully');
+
     }
 
 
