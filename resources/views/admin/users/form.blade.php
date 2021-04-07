@@ -308,7 +308,7 @@
                 },
                 dataType: 'json',
                 success: function( data ) {
-                  $('.video_holder').remove();
+                  $('.payer-video').remove();
                 }
             })
     });
