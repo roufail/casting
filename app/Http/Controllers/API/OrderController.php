@@ -100,6 +100,17 @@ class OrderController extends BaseController
     }
 
 
+    public function client_orders() {
+        $orders = auth('client-api')->user()->orders()->with(["userservice","user"])->paginate(10);
+        return  $this->success(new OrderCollection($orders),'orders retrived successfully');
+    }
+
+    public function client_order($id) {
+        $order = auth('client-api')->user()->orders()->with(["userservice","user",'userservice.service'])->find($id);
+        return  $this->success(new OrderResource($order),'order retrived successfully');
+    }
+
+
     public function rate_payer(RateRequest $request,$order) {
         $order = auth('client-api')->user()->orders()->where('status','done')->where('id',$order)->first();
         if($order) {

@@ -72,6 +72,7 @@ Route::group(['middleware' => ['auth:payer-api','payer.activated'],'prefix' => '
     Route::get('chat/load-chat/{order}', 'API\ChatController@load_chat')->name('load_chat');
     Route::get('notifications', 'API\UserController@notifications')->name('notifications');
     Route::post('read-notifications', 'API\UserController@read_notifications')->name('read_notifications');
+    
 
 
 });
@@ -82,6 +83,8 @@ Route::group(['middleware' => ['auth:client-api','client.activated'],'prefix' =>
     Route::post('logout', 'API\ClientController@logout')->name('client.logout');
 
     Route::post('place-order', 'API\OrderController@place_order')->name('place_order');
+    Route::get('myorders', 'API\OrderController@client_orders')->name('myorders');
+    Route::get('myorders/{order}', 'API\OrderController@client_order')->name('myorder');
     Route::get('myorders/update/{id}/{status}', 'API\OrderController@client_updatemyorders')->name('updatemyorders');
     Route::post('rate/{order}', 'API\OrderController@rate_payer')->name('rate_payer');
     // chat routes

@@ -15,7 +15,7 @@ class OrderCollection extends ResourceCollection
     public function toArray($request)
     {
         return [
-            'data'          => OrderResource::collection($this->collection),
+            'data'          => OrderResource::setMode("collection")::collection($this->collection),
             'total'         => $this->total(),
             'per_page'      => $this->perPage(),
             'current_page'  => $this->currentPage(),

@@ -29,6 +29,13 @@
         .listen(('.message') => {
             console.log(message);
     });
+
+
+
+    Echo.private('chat-channel.payer.362')
+        .listen(('.message') => {
+            console.log(message);
+    });
 </script>
 
 

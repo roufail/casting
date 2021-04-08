@@ -133,8 +133,16 @@
         <script src="{{ asset('js/app.js') }}"></script>
 
 
-                
-    </body>
+        <script>
 
+
+            Echo.private('chat-channel.payer.362')
+                .listen('.message', (e) => {
+                console.log(e.order);
+            });
+
+        </script>
+             
+    </body>
 
 </html>

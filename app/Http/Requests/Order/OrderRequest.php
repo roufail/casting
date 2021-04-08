@@ -24,11 +24,11 @@ class OrderRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id'          => 'required|exists:users,id',
-            // 'client_id'       => 'required|exists:clients,id',
+            //'user_id'        => 'required|exists:users,id',
+            'client_id'        => 'required|exists:clients,id',
             'payer_service_id' => 'required|exists:user_services,id',
             'status'           => 'required|in:'.implode(",",get_status()),
-            // 'price'           => 'required|numaric',
+            // 'price'         => 'required|numaric',
         ];
     }
 }

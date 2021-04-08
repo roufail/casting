@@ -21,7 +21,17 @@ Broadcast::channel('payer.{payer_id}', function ($user, $payer_id) {
     return (int) $user->id === (int) $payer_id;
 });
 
+
+// Broadcast::channel('chat-channel.payer.{payer_id}', function ($user, $payer_id) {
+//     return (int) $user->id === (int) $payer_id;
+// },['guards' => ['payer-api']]);
+
+
+// Broadcast::channel('chat-channel.client.{client_id}', function ($user, $client_id) {
+//     return (int) $user->id === (int) $client_id;
+// },['guards' => ['client-api']]);
+
+
 Broadcast::channel('admin.{admin_id}', function ($admin, $admin_id) {
     return (int) $admin->id === (int) $admin_id;
 },['guards' => ['admin']]);
-

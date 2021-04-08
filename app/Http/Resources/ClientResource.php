@@ -15,6 +15,7 @@ class ClientResource extends JsonResource
     public function toArray($request)
     {
         return [
+            "id"             => $this->id,
             "email"          => $this->email,
             "country"        => $this->country,
             "image"          => $this->image ? \Storage::disk("clients")->url($this->image) : null,
