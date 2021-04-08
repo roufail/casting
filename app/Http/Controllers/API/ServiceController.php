@@ -190,6 +190,8 @@ class ServiceController extends BaseController
         //     $services->orderBy("price","asc");
         // },'user.work_video'])),'Service retrived successfully');
         //$UserService->load_payer = false;
+
+        $UserService->load(['user.work_video']);
         return $this->success(new ServiceResource($UserService),'Service retrived successfully');
     }
 
