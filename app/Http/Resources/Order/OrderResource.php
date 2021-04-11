@@ -37,8 +37,14 @@ class OrderResource extends JsonResource
     {
         $result =  [
             'id'          => $this->id,
-            'client'      => new ClientResource($this->whenLoaded('client')),
-            'payer'       => new PayerResource($this->whenLoaded('user')),
+            'client'      => [
+                'id' => $this->client->id,
+                'name' => $this->client->name,
+            ],
+            'payer'      => [
+                'id' => $this->user->id,
+                'name' => $this->user->name,
+	        ],
             // 'service'     => $this->userservice,
             'service'     => $this->when(
                 $this->relationLoaded('userservice') &&

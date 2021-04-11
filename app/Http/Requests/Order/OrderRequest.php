@@ -25,9 +25,9 @@ class OrderRequest extends FormRequest
     {
         return [
             //'user_id'        => 'required|exists:users,id',
-            'client_id'        => 'required|exists:clients,id',
+            // 'client_id'        => 'required|exists:clients,id',
             'payer_service_id' => 'required|exists:user_services,id',
-            'status'           => 'required|in:'.implode(",",get_status()),
+            // 'status'           => 'required|in:'.implode(",",get_status()),
             // 'price'         => 'required|numaric',
         ];
     }

@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Incoming extends Model
 {
     use HasFactory;
-    protected $fillable = ['delivered'];
+    protected $fillable = ['delivered','received'];
+
     public function order(){
         return $this->belongsTo(Order::class);
     }

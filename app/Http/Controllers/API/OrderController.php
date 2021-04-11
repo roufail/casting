@@ -20,11 +20,14 @@ class OrderController extends BaseController
 {
     private $status_ar = ['paid', 'processing', 'cancelled', 'done'];
     public function myorders($status=null){
+
         $orders = auth()->user()->orders()->with('client:id,name','user:id,name','userservice.service');
+
         if($status){
             $orders = $orders->where('status' , $status);
         }
-        $orders = $orders->paginate(15);
+
+        $orders = $orders->latest()->paginate(15);
         return  $this->success(new OrderCollection($orders),'Orders Retrived Successfully');
     }
 
@@ -54,14 +57,26 @@ class OrderController extends BaseController
                 "status"          => 'pending',
                 "price"           => $userService->price,
         ]);
+       
 
         // pay to website
         $payment = true;
 
         if($payment){    
+
+           $order->incoming()->create([
+                'received' => 1,
+                'delivered' => 0
+            ]);
+
+
             $updated = $order->update([
                 'status' => 'paid'
             ]);
+
+ 
+
+           
             if($updated){
                 AdminPaymentJob::dispatch($order);
                 ServiceRequestJob::dispatch(auth('client-api')->user(),$userService->user,$userService->service);
@@ -99,7 +114,7 @@ class OrderController extends BaseController
             // send notification to the admin
             return  $this->success($order,'Order updated successfully');
         }else {
-            return  $this->error([],'Something went wrong');
+            return  $this->error([],'Clinet can set order to done [3] only ');
         }
     }
 
