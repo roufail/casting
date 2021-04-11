@@ -18,8 +18,6 @@ use App\Http\Resources\MainService\MainServiceResource;
 
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\CategoryCollection;
-use App\Http\Resources\PayerImagesResource;
-use App\Http\Resources\PayerVideoResource;
 
 use App\Http\Requests\Api\ServiceRequest;
 use App\Http\Requests\Api\MainServiceRequest;
@@ -195,24 +193,7 @@ class ServiceController extends BaseController
         return $this->success(new ServiceResource($UserService),'Service retrived successfully');
     }
 
-    public function payer_images(User $user)
-    {
-        $images = $user->work_images;
-        if(count($images) > 0){
-            return $this->success(PayerImagesResource::collection($images),'Payer images retrived successfully');
-        }
-        return $this->success(null,'this user has no images');
-    }
 
-    public function payer_video(User $user)
-    {
-        $video = $user->work_video;
-        if($video){
-            return $this->success(new PayerVideoResource($video),'Payer video retrived successfully');
-        }
-        return $this->success(null,'this user has no videos');
-
-    }
 
     public function service_reviews(UserService $UserService) {
         $rating = $UserService->ratings->load("client:id,name,image");

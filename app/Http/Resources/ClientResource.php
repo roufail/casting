@@ -17,6 +17,7 @@ class ClientResource extends JsonResource
         return [
             "id"             => $this->id,
             "email"          => $this->email,
+            "phone"          => $this->phone,
             "country"        => $this->country,
             "image"          => $this->image ? \Storage::disk("clients")->url($this->image) : null,
             "name"           => $this->name,

@@ -18,13 +18,14 @@ class PayerResource extends JsonResource
         return [
             "id"             => $this->id,
             "email"          => $this->email,
+            "phone"          => $this->phone,
             "country"        => $this->country,
             "image"          => $this->image ? \Storage::disk("users")->url($this->image) : null,
             "name"           => $this->name,
             "active"         => $this->active,
             "payer_data"     => new PayerDataResource($this->payer_data),
             "video_url"      => new PayerVideoResource($this->whenLoaded("work_video")), 
-            "images_urls"    => new PayerImagesCollection($this->work_images()->paginate(1)), 
+            //"images_urls"    => new PayerImagesCollection($this->work_images()->paginate(15)), 
             "rating"         => $this->rating_stars(),
             "firebase_token" => $this->firebase_token,
             "age"            => date_diff(date_create($this->dob), date_create('now'))->y,
@@ -33,6 +34,7 @@ class PayerResource extends JsonResource
             "services_count" => $this->whereHas("orders",function($orders){
                 $orders->where('status','done')->where('user_id',$this->id);
             })->count(),
+            "reviews_count" => $this->services->count("ratings"),
         ];
     }
 }

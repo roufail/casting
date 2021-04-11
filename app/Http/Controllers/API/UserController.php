@@ -13,12 +13,14 @@ use App\Models\User;
 use App\Http\Resources\PayerResource;
 
 use App\Http\Resources\Notifications\NotificationCollection;
+use App\Http\Resources\PayerImagesCollection;
+use App\Http\Resources\PayerVideoResource;
 
 use Storage;
 class UserController extends BaseController
 {
     public function payer() {
-        return $this->success(new PayerResource(auth()->user()), 'payer data retrived successfully');
+        return $this->success(new PayerResource(auth()->user()->load('work_video')), 'payer data retrived successfully');
     }
 
     public function register(PayerRegisterRequest $request){
@@ -238,6 +240,26 @@ class UserController extends BaseController
             $token->delete();
         });
         return $this->success([], 'payer logged out successfully');
+    }
+
+
+    public function payer_images(User $user)
+    {
+        $images = $user->work_images()->paginate(15);
+        if(count($images) > 0){
+            return $this->success(new PayerImagesCollection($images),'Payer images retrived successfully');
+        }
+        return $this->success(null,'this user has no images');
+    }
+
+    public function payer_video(User $user)
+    {
+        $video = $user->work_video;
+        if($video){
+            return $this->success(new PayerVideoResource($video),'Payer video retrived successfully');
+        }
+        return $this->success(null,'this user has no videos');
+
     }
 
 }

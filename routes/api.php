@@ -22,8 +22,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('services', 'API\ServiceController@index')->name('services');
 Route::get('service/{UserService}', 'API\ServiceController@service')->name('service');
 Route::get('service/{UserService}/reviews', 'API\ServiceController@service_reviews')->name('service_reviews');
-Route::get('payer-images/{user}', 'API\ServiceController@payer_images')->name('payer_images');
-Route::get('payer-video/{user}', 'API\ServiceController@payer_video')->name('payer_video');
 Route::get('categories', 'API\ServiceController@categories')->name('categories');
 Route::get('category/{category}', 'API\ServiceController@category')->name('category');
 
@@ -41,6 +39,11 @@ Route::post('payer/activate', 'API\UserController@activate')->name('payer.activa
 Route::post('payer/register', 'API\UserController@register')->name('payer.register');
 Route::post('payer/password-recovery', 'API\UserController@password_recovery')->name('payer.password_recovery');
 Route::post('payer/reset-password', 'API\UserController@reset_password')->name('payer.reset_password');
+
+
+Route::get('payer-images/{user}', 'API\UserController@payer_images')->name('payer_images');
+Route::get('payer-video/{user}', 'API\UserController@payer_video')->name('payer_video');
+
 
 Route::get('settings',function(){
     return [
@@ -73,6 +76,8 @@ Route::group(['middleware' => ['auth:payer-api','payer.activated'],'prefix' => '
     Route::get('notifications', 'API\UserController@notifications')->name('notifications');
     Route::post('read-notifications', 'API\UserController@read_notifications')->name('read_notifications');
     
+
+
 
 
 });

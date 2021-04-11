@@ -18,6 +18,7 @@ use App\Http\Requests\Api\RateRequest;
 
 class OrderController extends BaseController
 {
+    private $status_ar = ['paid', 'processing', 'cancelled', 'done'];
     public function myorders($status=null){
         $orders = auth()->user()->orders()->with('client:id,name','user:id,name','userservice.service');
         if($status){
@@ -29,12 +30,15 @@ class OrderController extends BaseController
 
     public function payer_updatemyorders($id,$status) {
         $order = auth()->user()->orders()->find($id);
-        if($order && in_array($status,['processing','cancelled'])) {
-            $order->update(['status' => $status]);
+        if($status > 3) {
+            return  $this->error([],'invalid order status');
+        }
+        if($order && in_array($this->status_ar[$status],['processing','cancelled','done'])) {
+            $order->update(['status' => $this->status_ar[$status]]);
             OrderStatusUpdateJob::dispatch($order);
             return  $this->success($order,'Order updated successfully');
         }else {
-            return  $this->error([],'Something went wrong');
+            return  $this->error([],'invalid order status');
         }
     }
 
@@ -79,7 +83,7 @@ class OrderController extends BaseController
 
     public function client_updatemyorders($id,$status) {
         $order = auth('client-api')->user()->orders()->find($id);
-        if($order && in_array($status,['done'])) {
+        if($order && in_array($this->status_ar[$status],['done'])) {
             $order->update(['status' => $status]);
             $order->load('incoming');
             OrderStatusUpdateJob::dispatch($order);
