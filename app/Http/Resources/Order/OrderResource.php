@@ -10,7 +10,7 @@ use App\Http\Resources\ClientResource;
 
 class OrderResource extends JsonResource
 {
-    private $status_ar = ['paid', 'processing', 'cancelled', 'done'];
+    private $status_ar = ['paid', 'processing', 'cancelled', 'done','pending'];
 
 
     public static $mode = 'single';
@@ -70,7 +70,6 @@ class OrderResource extends JsonResource
         }
 
         return $result;
-
 
     }
 }
