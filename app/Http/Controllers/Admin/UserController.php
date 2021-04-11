@@ -65,6 +65,10 @@ class UserController extends Controller
             $user->services()->delete();
             $user->services()->createMany($validated['services']);
 
+            foreach ($validated['services'] as $service) {
+                
+            }
+
 
             if($request->work_images) {
                 foreach ($request->work_images as $image) {
@@ -134,8 +138,16 @@ class UserController extends Controller
         }
 
         if($user->update($validated)){
-            $user->services()->delete();
-            $user->services()->createMany($validated['services']);
+
+            $created_services = [];
+            foreach ($validated['services'] as $service) {
+                $created_services[] = $user->services()->updateOrCreate([
+                    'service_id' => $service['service_id']
+                ],$service);
+            }
+
+            $user->services()->whereNotin('id',collect($created_services)->pluck('id')->toArray())->delete();
+
             $user->work_images()->delete();
             $user->work_video()->delete();
 

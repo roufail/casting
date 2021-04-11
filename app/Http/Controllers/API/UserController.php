@@ -180,7 +180,7 @@ class UserController extends BaseController
 
             return $this->success(["code" => $code],'Recovery code sent successfully');
         }
-        return $this->error([],'something went wrong');
+        return $this->error([],'phone number not exists');
 
     }
 
@@ -207,7 +207,7 @@ class UserController extends BaseController
                 return $this->error([],'code is wrong',401);
             }
         }
-        return $this->error([],'something went wrong');
+        return $this->error([],'phone number not exists');
     }
 
 

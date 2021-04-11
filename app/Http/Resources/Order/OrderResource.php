@@ -5,8 +5,12 @@ namespace App\Http\Resources\Order;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\PayerResource;
 use App\Http\Resources\ClientResource;
+
+
+
 class OrderResource extends JsonResource
 {
+    private $status_ar = ['paid', 'processing', 'cancelled', 'done'];
 
 
     public static $mode = 'single';
@@ -49,7 +53,7 @@ class OrderResource extends JsonResource
                     ];
                 }
             ),
-            'status'         => $this->status,
+            'status'         => ['index' => array_search($this->status,$this->status_ar) , 'string' => $this->status],
             'price'          => $this->price,
             'created_at'     => $this->created_at,
             'payment_method' => 'Cash' 

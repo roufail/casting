@@ -23,6 +23,7 @@ class NotificationResource extends JsonResource
             "notification"   => $this['data']['notification'],
             "type"           => $this['data']['not_type'],
             "read_at"        => $this->read_at,
+            "created_at"     => $this->created_at,
             "reported"       => [ 
                 'id'    => $this['data']['reported_id'],
                 'type'  => $this['data']['reported_type'],
