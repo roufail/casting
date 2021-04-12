@@ -11,7 +11,7 @@ use App\Models\UserService;
 use App\Models\Setting;
 use App\Http\Resources\Service\ServiceCollection;
 use App\Http\Resources\Service\ServiceResource;
-use App\Http\Resources\Service\RatingResource;
+use App\Http\Resources\Service\RatingCollection;
 
 use App\Http\Resources\MainService\MainServiceCollection;
 use App\Http\Resources\MainService\MainServiceResource;
@@ -196,8 +196,8 @@ class ServiceController extends BaseController
 
 
     public function service_reviews(UserService $UserService) {
-        $rating = $UserService->ratings->load("client:id,name,image");
-        return $this->success(RatingResource::collection($rating),'ratings retrived successfully');
+        $rating = $UserService->ratings()->with("client:id,name,image")->paginate(15);
+        return $this->success(new RatingCollection($rating),'ratings retrived successfully');
     }
 
     public function service_categories(){

@@ -18,8 +18,11 @@ class RatingResource extends JsonResource
             "id"     => $this->id,
             "review" => $this->feedback,
             "rate"   => $this->rate,
-            "client" => $this->client
-
+            "client" => [
+                'id' => $this->client->id,
+                'name' => $this->client->name,
+                'image' => $this->client->image ? \Storage::disk("clients")->url($this->client->image) : null,
+            ]
         ];
     }
 }
