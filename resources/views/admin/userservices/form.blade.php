@@ -5,17 +5,17 @@
 @endpush
 
 @section('content')
-<div class="box">
-    <div class="box-header">
-      <h3 class="box-title">@if($userservice->id) @lang("admin/userservice.form.edit_service") {{$userservice->name}}@else @lang("admin/userservice.form.new_service") @endif</h3>
-    </div><!-- /.box-header -->
+<div class="card">
+    <div class="card-header">
+      <h3 class="card-title">@if($userservice->id) @lang("admin/userservice.form.edit_service") {{$userservice->name}}@else @lang("admin/userservice.form.new_service") @endif</h3>
+    </div><!-- /.card-header -->
 
 
     @include('admin.layout.components.messages')
 
-    <div class="box-body">
+    <div class="card-body">
         <form enctype="multipart/form-data" role="form" method="POST" action="{{ $userservice->id ? route('admin.userservices.update',$userservice->id) : route('admin.userservices.store') }}">
-            <div class="box-body">
+            <div class="card-body">
               @csrf
               @if ($userservice->id)
                 @method('put')  
@@ -61,14 +61,14 @@
                   <input name="active" type="checkbox" @if($userservice->active || old('active')) checked @endif> @lang("admin/userservice.form.service")
                 </label>
               </div>
-            </div><!-- /.box-body -->
+            </div><!-- /.card-body -->
 
-            <div class="box-footer">
+            <div class="card-footer">
               <button type="submit" class="btn btn-primary">@lang("admin/userservice.form.save")</button>
             </div>
           </form>
-      </div><!-- /.box-body -->
-    </div><!-- /.box -->
+      </div><!-- /.card-body -->
+    </div><!-- /.card -->
 @endsection
 
 

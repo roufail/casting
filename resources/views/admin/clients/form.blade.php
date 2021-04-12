@@ -6,17 +6,17 @@
 @endpush
 
 @section('content')
-<div class="box">
-    <div class="box-header">
-      <h3 class="box-title">@if($client->id) @lang("admin/clients.form.edit_client") {{$client->name}}@else @lang("admin/clients.form.new_client") @endif</h3>
-    </div><!-- /.box-header -->
+<div class="card">
+    <div class="card-header">
+      <h3 class="card-title">@if($client->id) @lang("admin/clients.form.edit_client") {{$client->name}}@else @lang("admin/clients.form.new_client") @endif</h3>
+    </div><!-- /.card-header -->
 
 
     @include('admin.layout.components.messages')
 
-    <div class="box-body">
+    <div class="card-body">
         <form enctype="multipart/form-data" role="form" method="POST" action="{{ $client->id ? route('admin.clients.update',$client->id) : route('admin.clients.store') }}">
-            <div class="box-body">
+            <div class="card-body">
               @csrf
               @if ($client->id)
                 @method('put')  
@@ -74,15 +74,15 @@
 
 
 
-            </div><!-- /.box-body -->
+            </div><!-- /.card-body -->
 
-            <div class="box-footer">
+            <div class="card-footer">
               <button type="submit" class="btn btn-primary">@lang('admin/clients.form.submit')</button>
             </div>
           </form>
 
-      </div><!-- /.box-body -->
-    </div><!-- /.box -->
+      </div><!-- /.card-body -->
+    </div><!-- /.card -->
 @endsection
 
 

@@ -1,17 +1,17 @@
 @extends('admin.layout.master')
 
 @section('content')
-<div class="box">
-    <div class="box-header">
-      <h3 class="box-title">
+<div class="card">
+    <div class="card-header">
+      <h3 class="card-title">
             @lang('admin/orders.list.orders')
       </h3>
-    </div><!-- /.box-header -->
+    </div><!-- /.card-header -->
 
 
     @include('admin.layout.components.messages')
 
-    <div class="box-body">
+    <div class="card-body">
         <table class="table table-bordered" id="orders-table">
             <thead>
                 <tr>
@@ -25,8 +25,8 @@
                 </tr>
             </thead>
         </table>
-      </div><!-- /.box-body -->
-    </div><!-- /.box -->
+      </div><!-- /.card-body -->
+    </div><!-- /.card -->
 @endsection
 
 

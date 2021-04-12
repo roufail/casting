@@ -1,17 +1,17 @@
 @extends('admin.layout.master')
 
 @section('content')
-<div class="box">
-    <div class="box-header">
+<div class="card">
+    <div class="card-header">
         <a href="{{ route("admin.services.create") }} "><i class="fa fa-user-plus pull-left"></i></a>
 
-      <h3 class="box-title">الخدمات</h3>
-    </div><!-- /.box-header -->
+      <h3 class="card-title">الخدمات</h3>
+    </div><!-- /.card-header -->
 
 
     @include('admin.layout.components.messages')
 
-    <div class="box-body">
+    <div class="card-body">
         <table class="table table-bordered" id="services-table">
             <thead>
                 <tr>
@@ -23,8 +23,8 @@
                 </tr>
             </thead>
         </table>
-      </div><!-- /.box-body -->
-    </div><!-- /.box -->
+      </div><!-- /.card-body -->
+    </div><!-- /.card -->
 @endsection
 
 

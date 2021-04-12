@@ -5,17 +5,17 @@
 @endpush
 
 @section('content')
-<div class="box">
-    <div class="box-header">
-      <h3 class="box-title">@if($service->id) @lang("admin/services.form.edit_service") {{$service->name}}@else @lang("admin/services.form.new_service") @endif</h3>
-    </div><!-- /.box-header -->
+<div class="card">
+    <div class="card-header">
+      <h3 class="card-title">@if($service->id) @lang("admin/services.form.edit_service") {{$service->name}}@else @lang("admin/services.form.new_service") @endif</h3>
+    </div><!-- /.card-header -->
 
 
     @include('admin.layout.components.messages')
 
-    <div class="box-body">
+    <div class="card-body">
         <form enctype="multipart/form-data" role="form" method="POST" action="{{ $service->id ? route('admin.services.update',$service->id) : route('admin.services.store') }}">
-            <div class="box-body">
+            <div class="card-body">
               @csrf
               @if ($service->id)
                 @method('put')  
@@ -62,14 +62,14 @@
                   <input name="active" type="checkbox" @if($service->active || old('active')) checked @endif> @lang("admin/services.form.active")
                 </label>
               </div>
-            </div><!-- /.box-body -->
+            </div><!-- /.card-body -->
 
-            <div class="box-footer">
+            <div class="card-footer">
               <button type="submit" class="btn btn-primary">@lang("admin/services.form.save")</button>
             </div>
           </form>
-      </div><!-- /.box-body -->
-    </div><!-- /.box -->
+      </div><!-- /.card-body -->
+    </div><!-- /.card -->
 @endsection
 
 

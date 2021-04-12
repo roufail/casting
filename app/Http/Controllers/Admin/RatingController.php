@@ -30,6 +30,12 @@ class RatingController extends Controller
     {
         $ratings = Rate::with('service','userservice.user','client');
         return DataTables::of($ratings)
+        ->addColumn('userservice.user.name', function ($rating) {
+            return $rating->userservice && $rating->userservice->user ? $rating->userservice->user->name : '-----';
+        })
+        ->addColumn('client.name', function ($rating) {
+            return $rating->client ? $rating->client->name  : '-----';
+        })
         ->addColumn('action', function ($rating) {
             return '
             <form method="post" action="'.route('admin.ratings.destroy',$rating->id).'">

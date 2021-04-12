@@ -5,17 +5,17 @@
 @endpush
 
 @section('content')
-<div class="box">
-    <div class="box-header">
-      <h3 class="box-title">@if($category->id) @lang('admin/categories.form.edit_user') {{$category->name}}@else @lang('admin/categories.form.new_user') @endif</h3>
-    </div><!-- /.box-header -->
+<div class="card">
+    <div class="card-header">
+      <h3 class="card-title">@if($category->id) @lang('admin/categories.form.edit_user') {{$category->name}}@else @lang('admin/categories.form.new_user') @endif</h3>
+    </div><!-- /.card-header -->
 
 
     @include('admin.layout.components.messages')
 
-    <div class="box-body">
+    <div class="card-body">
         <form enctype="multipart/form-data" role="form" method="POST" action="{{ $category->id ? route('admin.categories.update',$category->id) : route('admin.categories.store') }}">
-            <div class="box-body">
+            <div class="card-body">
               @csrf
               @if ($category->id)
                 @method('put')  
@@ -52,14 +52,14 @@
                   <input name="active" type="checkbox" @if($category->active || old('active')) checked @endif> @lang('admin/categories.form.active')
                 </label>
               </div>
-            </div><!-- /.box-body -->
+            </div><!-- /.card-body -->
 
-            <div class="box-footer">
+            <div class="card-footer">
               <button type="submit" class="btn btn-primary">@lang('admin/categories.form.save')</button>
             </div>
           </form>
-      </div><!-- /.box-body -->
-    </div><!-- /.box -->
+      </div><!-- /.card-body -->
+    </div><!-- /.card -->
 @endsection
 
 

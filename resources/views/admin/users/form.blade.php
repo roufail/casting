@@ -15,17 +15,17 @@
 @endsection
 
 @section('content')
-<div class="box">
-    <div class="box-header">
-      <h3 class="box-title">@if($user->id) @lang('admin/users.form.edit_user') {{$user->name}}@else @lang('admin/users.form.edit_user') @endif</h3>
-    </div><!-- /.box-header -->
+<div class="card">
+    <div class="card-header">
+      <h3 class="card-title">@if($user->id) @lang('admin/users.form.edit_user') {{$user->name}}@else @lang('admin/users.form.edit_user') @endif</h3>
+    </div><!-- /.card-header -->
 
 
     @include('admin.layout.components.messages')
 
-    <div class="box-body">
+    <div class="card-body">
         <form enctype="multipart/form-data" role="form" method="POST" action="{{ $user->id ? route('admin.users.update',$user->id) : route('admin.users.store') }}">
-            <div class="box-body">
+            <div class="card-body">
               @csrf
               @if ($user->id)
                 @method('put')  
@@ -236,9 +236,9 @@
 
 
 
-            </div><!-- /.box-body -->
+            </div><!-- /.card-body -->
 
-            <div class="box-footer">
+            <div class="card-footer">
               <button type="submit" class="btn btn-primary">@lang('admin/users.form.submit')</button>
             </div>
           </form>
@@ -272,8 +272,8 @@
 
 
 
-      </div><!-- /.box-body -->
-    </div><!-- /.box -->
+      </div><!-- /.card-body -->
+    </div><!-- /.card -->
 @endsection
 
 
@@ -340,6 +340,7 @@
                       <div class="col-md-3"><a class="delete_service" href="javascript:;"><i class="fa fa-minus"></i>حذف</a></div>
                     </li>
       `);
+      $(".select2").select2();
     });
 
     $('.services-ul').on("click",".delete_service",function(){

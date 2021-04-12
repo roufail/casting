@@ -1,17 +1,17 @@
 @extends('admin.layout.master')
 
 @section('content')
-<div class="box">
-    <div class="box-header">
+<div class="card">
+    <div class="card-header">
         <a href="{{ route("admin.users.create") }} "><i class="fa fa-user-plus pull-left"></i></a>
 
-      <h3 class="box-title">المستخدمين</h3>
+      <h3 class="card-title">المستخدمين</h3>
     </div><!-- /.box-header -->
 
 
     @include('admin.layout.components.messages')
 
-    <div class="box-body">
+    <div class="card-body">
         <table class="table table-bordered" id="users-table">
             <thead>
                 <tr>
