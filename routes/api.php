@@ -45,14 +45,9 @@ Route::get('payer-images/{user}', 'API\UserController@payer_images')->name('paye
 Route::get('payer-video/{user}', 'API\UserController@payer_video')->name('payer_video');
 
 
-Route::get('settings',function(){
-    return [
-        "terms_and_conditions" => route("terms_and_conditions"),
-        "privacy_policy"       => route("privacy_policy"),
-    ];
-});
 
-
+Route::get('/inital','API\InitialController@initial');
+Route::get('/settings','API\InitialController@settings');
 
 
 Route::group(['middleware' => ['auth:payer-api','payer.activated'],'prefix' => 'payer','as' => 'payer.'],function(){
@@ -65,6 +60,7 @@ Route::group(['middleware' => ['auth:payer-api','payer.activated'],'prefix' => '
     Route::post('profile', 'API\UserController@updatemyprofile')->name('updatemyprofile');
     Route::post('update-my-data', 'API\UserController@update_my_data')->name('update_my_data');
     Route::get('fees', 'API\ServiceController@fees')->name('fees');
+    Route::post('update-data', 'API\UserController@update_data')->name('update_data');
 
 
     Route::get('myservices', 'API\ServiceController@myservices')->name('myservice');

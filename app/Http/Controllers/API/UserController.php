@@ -15,7 +15,7 @@ use App\Http\Resources\PayerResource;
 use App\Http\Resources\Notifications\NotificationCollection;
 use App\Http\Resources\PayerImagesCollection;
 use App\Http\Resources\PayerVideoResource;
-
+use App\Http\Requests\Payer\PayerUpdateDataRequest;
 use Storage;
 class UserController extends BaseController
 {
@@ -99,10 +99,6 @@ class UserController extends BaseController
         }else {
             return $this->error([],'Check username and password',401);
         }
-
-
-
-
     }
 
 
@@ -259,7 +255,19 @@ class UserController extends BaseController
             return $this->success(new PayerVideoResource($video),'Payer video retrived successfully');
         }
         return $this->success(null,'this user has no videos');
+    }
 
+    public function update_data(PayerUpdateDataRequest $request) {
+        $payer = auth()->user();
+        $request_arr = $request->except('image');
+        if($request->hasFile('image')){
+            Storage::disk('users')->delete($payer->image);
+            $image = $request->image->store("/","users");
+            $request_arr['image'] = $image;
+        }
+        $payer->update($request_arr);
+        $payer->payer_data()->updateOrCreate(['payer_id'=>$payer->id],$request_arr);
+        return $this->success([],'payer data updated successfully');
     }
 
 }

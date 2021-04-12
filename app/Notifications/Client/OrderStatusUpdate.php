@@ -60,7 +60,9 @@ class OrderStatusUpdate extends Notification
             'title'            => 'order status changed',
             'not_id'           => $this->order->id,
             'not_type'         => 'order',
-            'notifiable_id'    => $notifiable->id
+            'notifiable_id'    => $notifiable->id,
+            'reported_id'      => $this->order->client->id,
+            'reported_type'    => 'client'
         ];
     }
 

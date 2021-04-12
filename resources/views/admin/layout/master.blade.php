@@ -35,7 +35,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <div class="wrapper">
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand bg-white navbar-light border-bottom">
-    <!-- Left navbar links -->
+    {{-- <!-- Left navbar links -->
     <ul class="navbar-nav">
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#"><i class="fa fa-bars"></i></a>
@@ -46,10 +46,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <li class="nav-item d-none d-sm-inline-block">
         <a href="#" class="nav-link">تماس</a>
       </li>
-    </ul>
+    </ul> --}}
 
     <!-- SEARCH FORM -->
-    <form class="form-inline ml-3">
+    {{-- <form class="form-inline ml-3">
       <div class="input-group input-group-sm">
         <input class="form-control form-control-navbar" type="search" placeholder="جستجو" aria-label="Search">
         <div class="input-group-append">
@@ -58,11 +58,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
           </button>
         </div>
       </div>
-    </form>
+    </form> --}}
 
     <!-- Right navbar links -->
     <ul class="navbar-nav mr-auto">
-      <!-- Messages Dropdown Menu -->
+      {{-- <!-- Messages Dropdown Menu -->
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
           <i class="fa fa-comments-o"></i>
@@ -101,6 +101,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <!-- Message End -->
           </a>
           <div class="dropdown-divider"></div>
+          
           <a href="#" class="dropdown-item">
             <!-- Message Start -->
             <div class="media">
@@ -116,41 +117,60 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </div>
             <!-- Message End -->
           </a>
+
           <div class="dropdown-divider"></div>
           <a href="#" class="dropdown-item dropdown-footer">مشاهده همه پیام‌ها</a>
         </div>
-      </li>
+      </li> --}}
+
+
+
+
       <!-- Notifications Dropdown Menu -->
-      <li class="nav-item dropdown">
+      <li class="nav-item dropdown notifications-menu">
         <a class="nav-link" data-toggle="dropdown" href="#">
           <i class="fa fa-bell-o"></i>
-          <span class="badge badge-warning navbar-badge">15</span>
+          <span class="badge badge-warning navbar-badge count-pupple">0</span>
         </a>
-        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-left">
-          <span class="dropdown-item dropdown-header">15 نوتیفیکیشن</span>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fa fa-envelope ml-2"></i> 4 پیام جدید
-            <span class="float-left text-muted text-sm">3 دقیقه</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fa fa-users ml-2"></i> 8 درخواست دوستی
-            <span class="float-left text-muted text-sm">12 ساعت</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fa fa-file ml-2"></i> 3 گزارش جدید
-            <span class="float-left text-muted text-sm">2 روز</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item dropdown-footer">مشاهده همه نوتیفیکیشن</a>
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-left show">
+          
+
+
+
         </div>
       </li>
-      <li class="nav-item">
+
+
+
+
+       {{-- <!-- Notifications Menu -->
+       <li class="dropdown notifications-menu">
+        <!-- Menu toggle button -->
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+          <i class="fa fa-bell-o"></i>
+          <span class="label label-danger count-pupple">0</span>
+        </a>
+        <ul class="dropdown-menu">
+          <li class="header">You have <span class="count">0</span> notifications</li>
+          <li>
+            <!-- Inner Menu: contains the notifications -->
+            <ul class="notifications-dropdown-menu menu">
+              <li><!-- start notification -->
+                <a href="#">
+                  <i class="fa fa-users text-aqua"></i> 5 new members joined today
+                </a>
+              </li><!-- end notification -->
+            </ul>
+          </li>
+          <li class="footer"><a href="#">View all</a></li>
+        </ul>
+      </li> --}}
+
+      
+      {{-- <li class="nav-item">
         <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#"><i
                 class="fa fa-th-large"></i></a>
-      </li>
+      </li> --}}
     </ul>
   </nav>
   <!-- /.navbar -->
@@ -206,11 +226,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Main Footer -->
   <footer class="main-footer">
     <!-- To the right -->
-    <div class="float-right d-none d-sm-inline">
+    {{-- <div class="float-right d-none d-sm-inline">
       Anything you want
-    </div>
+    </div> --}}
     <!-- Default to the left -->
-    <strong>CopyLeft &copy; 2018 <a href="http://github.com/mratwan/">محمدرضا عطوان</a>.</strong>
+    <strong>CopyRight &copy; {{ date('Y')}} <a target="_blank" href="https://oneappit.com">OneAppIt</a>.</strong>
   </footer>
 </div>
 <!-- ./wrapper -->
@@ -230,6 +250,20 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <!-- Bootstrap 3.3.4 -->
 <!-- AdminLTE App -->
 <script src="{{ asset('admin-files/js/toastr.min.js') }}"></script>
+
+<script>
+  Echo.private("admin.{{auth()->user()->id}}")
+      .notification((notification) => {
+          toastr.success(notification.notification)
+          let count = parseInt($('.notifications-menu .count-pupple').text()) + 1;
+          $('.notifications-menu .count-pupple').text(count);
+          $('.notifications-menu .count').text(count);
+          $('.notifications-dropdown-menu').append($('<a>').text(notification.notification));
+      });
+
+</script>
+
+
 @stack('js-files')
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the

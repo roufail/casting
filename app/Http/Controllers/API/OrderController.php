@@ -18,7 +18,7 @@ use App\Http\Requests\Api\RateRequest;
 
 class OrderController extends BaseController
 {
-    private $status_ar = ['paid', 'processing', 'cancelled', 'done'];
+    private $status_ar = ['paid', 'processing', 'cancelled', 'done','pending','failed'];
     public function myorders($status=null){
 
         $orders = auth()->user()->orders()->with('client:id,name','user:id,name','userservice.service');
