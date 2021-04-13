@@ -19,7 +19,10 @@ class ClientController extends BaseController
 {
 
     public function client() {
-        return $this->success(new ClientResource(auth('client-api')->user()), 'client data retrived successfully');
+        $client = auth('client-api')->user();
+        // $success['client'] =  new ClientResource($client);
+        // $success['token']  =  $client->token('client')->accessToken;;
+        return $this->success(new ClientResource($client), 'client data retrived successfully');
     }
 
     public function register(ClientRegisterRequest $request){
@@ -35,7 +38,9 @@ class ClientController extends BaseController
         ]);
 
         $client = Client::create($request->all());
-        return $this->success(new ClientResource($client), 'client registered successfully');
+        $success['client'] =  new ClientResource($client);
+        $success['token'] =  $client->createToken('client')->accessToken;
+        return $this->success($success, 'client registered successfully');
     }
 
 

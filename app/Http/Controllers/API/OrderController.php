@@ -18,7 +18,7 @@ use App\Http\Requests\Api\RateRequest;
 
 class OrderController extends BaseController
 {
-    private $status_ar = ['paid', 'processing', 'cancelled', 'done','pending','failed'];
+    private $status_ar = ['paid', 'processing', 'cancelled', 'done','pending','failed','received'];
     public function myorders($status=null){
 
         $orders = auth()->user()->orders()->with('client:id,name','user:id,name','userservice.service');
@@ -30,6 +30,17 @@ class OrderController extends BaseController
         $orders = $orders->latest()->paginate(15);
         return  $this->success(new OrderCollection($orders),'Orders Retrived Successfully');
     }
+
+
+    public function payer_order($order){
+        $order = auth()->user()->orders()->find($order);
+        if(!$order){
+           return $this->success([],'Order dosn\'t exits',404);
+        }
+        return  $this->success(new OrderResource($order),'Order Retrived Successfully');
+    }
+
+
 
     public function payer_updatemyorders($id,$status) {
         $order = auth()->user()->orders()->find($id);

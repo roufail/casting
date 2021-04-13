@@ -48,14 +48,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
  
         
 
-        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-left" style="left: 0px; right: inherit;">
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-left notifications-dropdown-menu" style="left: 0px; right: inherit;">
           <span class="dropdown-item dropdown-header"><span class="count-pupple">0</span> نوتیفیکیشن</span>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fa fa-envelope ml-2"></i> 4 پیام جدید
-            <span class="float-left text-muted text-sm">3 دقیقه</span>
-          </a>
-          <div class="dropdown-divider"></div>
+        
+        
         </div>
 
 

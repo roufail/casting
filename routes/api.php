@@ -50,12 +50,13 @@ Route::get('/inital','API\InitialController@initial');
 Route::get('/settings','API\InitialController@settings');
 
 
-Route::group(['middleware' => ['auth:payer-api','payer.activated'],'prefix' => 'payer','as' => 'payer.'],function(){
+Route::group(['middleware' => ['auth:payer-api'],'prefix' => 'payer','as' => 'payer.'],function(){
     
     Route::get('/', 'API\UserController@payer')->name('payer');
     Route::post('logout', 'API\UserController@logout')->name('payer.logout');
 
     Route::get('myorders/update/{id}/{status}', 'API\OrderController@payer_updatemyorders')->name('updatemyorders');
+    Route::get('order/{order}', 'API\OrderController@payer_order')->name('payer_order');
     Route::get('myorders/{status?}', 'API\OrderController@myorders')->name('myorders');
     Route::post('profile', 'API\UserController@updatemyprofile')->name('updatemyprofile');
     Route::post('update-my-data', 'API\UserController@update_my_data')->name('update_my_data');
@@ -78,7 +79,7 @@ Route::group(['middleware' => ['auth:payer-api','payer.activated'],'prefix' => '
 
 });
 
-Route::group(['middleware' => ['auth:client-api','client.activated'],'prefix' => 'client','as' => 'client.'],function(){
+Route::group(['middleware' => ['auth:client-api'],'prefix' => 'client','as' => 'client.'],function(){
     
     Route::get('/', 'API\ClientController@client')->name('client');
     Route::post('logout', 'API\ClientController@logout')->name('client.logout');

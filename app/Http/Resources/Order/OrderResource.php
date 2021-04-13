@@ -10,7 +10,7 @@ use App\Http\Resources\ClientResource;
 
 class OrderResource extends JsonResource
 {
-    private $status_ar = ['paid', 'processing', 'cancelled', 'done','pending','failed'];
+    private $status_ar = ['paid', 'processing', 'cancelled', 'done','pending','failed','received'];
 
 
     public static $mode = 'single';
@@ -37,12 +37,6 @@ class OrderResource extends JsonResource
     {
         $result =  [
             'id'          => $this->id,
-            // 'client'      => [
-            //     'id' => $this->client->id,
-            //     'name' => $this->client->name,
-            // ],
-            
-            // 'service'     => $this->userservice,
             'service'     => $this->when(
                 $this->relationLoaded('userservice') &&
                 $this->userservice->relationLoaded('service'),
@@ -64,6 +58,16 @@ class OrderResource extends JsonResource
 
         if(self::$mode == "single"){
             $result['updated_at']     = $this->updated_at;
+            $result['client']      = [
+                'id' => $this->client->id,
+                'name' => $this->client->name,
+            ];
+            $result['service'] = [
+                'id' => $this->userservice->id,
+                'name' => $this->userservice->service->title,
+                'price' => $this->userservice->price,
+                'work_type' => $this->userservice->work_type,
+            ];
         }else {
             $result['payer'] = [
                 'id'     => $this->user->id,

@@ -20,7 +20,10 @@ use Storage;
 class UserController extends BaseController
 {
     public function payer() {
-        return $this->success(new PayerResource(auth()->user()->load('work_video')), 'payer data retrived successfully');
+        $payer = auth()->user();
+        // $success['payer'] =  new PayerResource($payer->load('work_video'));
+        // $success['token'] =  $payer->createToken('payer')->accessToken;
+        return $this->success(new PayerResource($payer->load('work_video')), 'payer data retrived successfully');
     }
 
     public function register(PayerRegisterRequest $request){
@@ -36,7 +39,9 @@ class UserController extends BaseController
         ]);
 
         $payer = User::create($request->all());
-        return $this->success(new PayerResource($payer), 'payer registered successfully');
+        $success['payer'] =  new PayerResource($payer);
+        $success['token'] =  $payer->createToken('payer')->accessToken;
+        return $this->success($success, 'payer registered successfully');
     }
 
 
@@ -123,6 +128,7 @@ class UserController extends BaseController
     {
         $payer = auth()->user();
         $payer->payer_data()->updateOrCreate(["payer_id" => $payer->id],$request->only("job_title","prev_work","bio"));
+        
         if($request->prev_work_images) {            
             foreach($payer->work_images as $workimage){
                 Storage::disk("work_images")->delete($workimage->image_url);
@@ -267,6 +273,29 @@ class UserController extends BaseController
         }
         $payer->update($request_arr);
         $payer->payer_data()->updateOrCreate(['payer_id'=>$payer->id],$request_arr);
+
+
+        if($request->prev_work_images) {            
+            foreach($payer->work_images as $workimage){
+                Storage::disk("work_images")->delete($workimage->image_url);
+            }
+            $payer->work_images()->delete();
+            $images;
+            foreach($request->prev_work_images as $prev_work_image) {
+                $images[] = ["image_url" => $prev_work_image->store("/","work_images")];
+            }
+            $payer->work_images()->createMany($images);
+        }
+
+        if($request->prev_work_video) {
+            if($payer->work_video){
+                Storage::disk("work_videos")->delete($payer->work_video->video_url);
+            }
+            $video = ["video_url" => $request->prev_work_video->store("/","work_videos")];
+            $payer->work_video()->updateOrcreate(["payer_id" => $payer->id],$video);
+        }
+
+
         return $this->success([],'payer data updated successfully');
     }
 
