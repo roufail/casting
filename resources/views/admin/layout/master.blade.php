@@ -26,6 +26,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="{{ asset('admin-files/css/custom-style.css') }}">
   <link rel="stylesheet" href="{{ asset('admin-files/css/toastr.min.css') }}">
   <meta name="csrf-token" content="{{ csrf_token() }}">
+
   @stack('css-files')
 
   @yield("extra-css")
@@ -35,95 +36,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <div class="wrapper">
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand bg-white navbar-light border-bottom">
-    {{-- <!-- Left navbar links -->
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" data-widget="pushmenu" href="#"><i class="fa fa-bars"></i></a>
-      </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="index3.html" class="nav-link">خانه</a>
-      </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="#" class="nav-link">تماس</a>
-      </li>
-    </ul> --}}
-
-    <!-- SEARCH FORM -->
-    {{-- <form class="form-inline ml-3">
-      <div class="input-group input-group-sm">
-        <input class="form-control form-control-navbar" type="search" placeholder="جستجو" aria-label="Search">
-        <div class="input-group-append">
-          <button class="btn btn-navbar" type="submit">
-            <i class="fa fa-search"></i>
-          </button>
-        </div>
-      </div>
-    </form> --}}
-
-    <!-- Right navbar links -->
-    <ul class="navbar-nav mr-auto">
-      {{-- <!-- Messages Dropdown Menu -->
-      <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#">
-          <i class="fa fa-comments-o"></i>
-          <span class="badge badge-danger navbar-badge">3</span>
-        </a>
-        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-left">
-          <a href="#" class="dropdown-item">
-            <!-- Message Start -->
-            <div class="media">
-              <img src="{{ asset('imgs/no-user.png') }}" alt="User Avatar" class="img-size-50 ml-3 img-circle">
-              <div class="media-body">
-                <h3 class="dropdown-item-title">
-                  {{ auth()->user()->name }}
-                  <span class="float-left text-sm text-danger"><i class="fa fa-star"></i></span>
-                </h3>
-                <p class="text-sm">با من تماس بگیر لطفا...</p>
-                <p class="text-sm text-muted"><i class="fa fa-clock-o mr-1"></i> 4 ساعت قبل</p>
-              </div>
-            </div>
-            <!-- Message End -->
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <!-- Message Start -->
-            <div class="media">
-              <img src="{{ asset('imgs/no-user.png') }}" alt="User Avatar" class="img-size-50 img-circle ml-3">
-              <div class="media-body">
-                <h3 class="dropdown-item-title">
-                  پیمان احمدی
-                  <span class="float-left text-sm text-muted"><i class="fa fa-star"></i></span>
-                </h3>
-                <p class="text-sm">من پیامتو دریافت کردم</p>
-                <p class="text-sm text-muted"><i class="fa fa-clock-o mr-1"></i> 4 ساعت قبل</p>
-              </div>
-            </div>
-            <!-- Message End -->
-          </a>
-          <div class="dropdown-divider"></div>
-          
-          <a href="#" class="dropdown-item">
-            <!-- Message Start -->
-            <div class="media">
-              <img src="{{ asset('imgs/no-user.png') }}" alt="User Avatar" class="img-size-50 img-circle ml-3">
-              <div class="media-body">
-                <h3 class="dropdown-item-title">
-                  سارا وکیلی
-                  <span class="float-left text-sm text-warning"><i class="fa fa-star"></i></span>
-                </h3>
-                <p class="text-sm">پروژه اتون عالی بود مرسی واقعا</p>
-                <p class="text-sm text-muted"><i class="fa fa-clock-o mr-1"></i>4 ساعت قبل</p>
-              </div>
-            </div>
-            <!-- Message End -->
-          </a>
-
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item dropdown-footer">مشاهده همه پیام‌ها</a>
-        </div>
-      </li> --}}
-
-
+        <ul class="navbar-nav mr-auto">
 
 
       <!-- Notifications Dropdown Menu -->
@@ -132,45 +45,45 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <i class="fa fa-bell-o"></i>
           <span class="badge badge-warning navbar-badge count-pupple">0</span>
         </a>
-        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-left show">
-          
+ 
+        
 
-
-
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-left" style="left: 0px; right: inherit;">
+          <span class="dropdown-item dropdown-header"><span class="count-pupple">0</span> نوتیفیکیشن</span>
+          <div class="dropdown-divider"></div>
+          <a href="#" class="dropdown-item">
+            <i class="fa fa-envelope ml-2"></i> 4 پیام جدید
+            <span class="float-left text-muted text-sm">3 دقیقه</span>
+          </a>
+          <div class="dropdown-divider"></div>
         </div>
+
+
+
       </li>
 
 
+      
 
-
-       {{-- <!-- Notifications Menu -->
-       <li class="dropdown notifications-menu">
-        <!-- Menu toggle button -->
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+      {{-- <li class="nav-item dropdown">
+        <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false">
           <i class="fa fa-bell-o"></i>
-          <span class="label label-danger count-pupple">0</span>
+          <span class="badge badge-warning navbar-badge count-pupple">0</span>
         </a>
-        <ul class="dropdown-menu">
-          <li class="header">You have <span class="count">0</span> notifications</li>
-          <li>
-            <!-- Inner Menu: contains the notifications -->
-            <ul class="notifications-dropdown-menu menu">
-              <li><!-- start notification -->
-                <a href="#">
-                  <i class="fa fa-users text-aqua"></i> 5 new members joined today
-                </a>
-              </li><!-- end notification -->
-            </ul>
-          </li>
-          <li class="footer"><a href="#">View all</a></li>
-        </ul>
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-left" style="left: 0px; right: inherit;">
+          <span class="dropdown-item dropdown-header"><span class="count-pupple">0</span> نوتیفیکیشن</span>
+          <div class="dropdown-divider"></div>
+          <a href="#" class="dropdown-item">
+            <i class="fa fa-envelope ml-2"></i> 4 پیام جدید
+            <span class="float-left text-muted text-sm">3 دقیقه</span>
+          </a>
+          <div class="dropdown-divider"></div>
+        </div>
       </li> --}}
+
+
 
       
-      {{-- <li class="nav-item">
-        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#"><i
-                class="fa fa-th-large"></i></a>
-      </li> --}}
     </ul>
   </nav>
   <!-- /.navbar -->
@@ -252,6 +165,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="{{ asset('admin-files/js/toastr.min.js') }}"></script>
 
 <script>
+
+
   Echo.private("admin.{{auth()->user()->id}}")
       .notification((notification) => {
           toastr.success(notification.notification)

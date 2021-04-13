@@ -1,4 +1,4 @@
-require('./bootstrap');
+// require('./bootstrap');
 
 import Echo from "laravel-echo"
 
