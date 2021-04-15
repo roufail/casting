@@ -68,7 +68,7 @@ class OrderResource extends JsonResource
                 'price' => $this->userservice->price,
                 'work_type' => $this->userservice->work_type,
             ];
-        }else {
+        }elseif($this->load_payer || !isset($this->load_payer)){
             $result['payer'] = [
                 'id'     => $this->user->id,
                 'name'   => $this->user->name,

@@ -19,6 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
+Route::get('main-services', 'API\ServiceController@main_services')->name('main_services');
 Route::get('services', 'API\ServiceController@index')->name('services');
 Route::get('service/{UserService}', 'API\ServiceController@service')->name('service');
 Route::get('service/{UserService}/reviews', 'API\ServiceController@service_reviews')->name('service_reviews');
@@ -70,8 +71,8 @@ Route::group(['middleware' => ['auth:payer-api'],'prefix' => 'payer','as' => 'pa
     // chat routes
     Route::post('chat/message/{client}', 'API\ChatController@message_to_client')->name('messagetoclient');
     Route::get('chat/load-chat/{order}', 'API\ChatController@load_chat')->name('load_chat');
-    Route::get('notifications', 'API\UserController@notifications')->name('notifications');
-    Route::post('read-notifications', 'API\UserController@read_notifications')->name('read_notifications');
+    // Route::get('notifications', 'API\UserController@notifications')->name('notifications');
+    // Route::post('read-notifications', 'API\UserController@read_notifications')->name('read_notifications');
     
 
 
@@ -94,7 +95,11 @@ Route::group(['middleware' => ['auth:client-api'],'prefix' => 'client','as' => '
     Route::get('chat/load-chat/{order}', 'API\ChatController@load_chat')->name('load_chat');
     Route::post('update-profile', 'API\ClientController@update_profile')->name('update_profile');
     Route::post('update-password', 'API\ClientController@update_password')->name('update_password');
-    Route::get('notifications', 'API\ClientController@notifications')->name('notifications');
-    Route::post('read-notifications', 'API\ClientController@read_notifications')->name('read_notifications');
+    // Route::get('notifications', 'API\ClientController@notifications')->name('notifications');
+    // Route::post('read-notifications', 'API\ClientController@read_notifications')->name('read_notifications');
 
 });
+// Route::group(['middleware' => ['auth.api']],function(){
+//     Route::get('notifications', 'API\NotificationController@notifications')->name('notifications');
+//     Route::post('read-notifications', 'API\NotificationController@read_notifications')->name('read_notifications');
+// });

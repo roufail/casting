@@ -17,7 +17,7 @@ class MainServiceResource extends JsonResource
         return [
             'id'            => $this->id,
             'title'         => $this->title,
-            'description'   => $this->description,
+            //'description'   => $this->description,
         ];
     }
 }

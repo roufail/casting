@@ -26,8 +26,8 @@ class OrderController extends BaseController
         if($status){
             $orders = $orders->where('status' , $status);
         }
-
         $orders = $orders->latest()->paginate(15);
+
         return  $this->success(new OrderCollection($orders),'Orders Retrived Successfully');
     }
 

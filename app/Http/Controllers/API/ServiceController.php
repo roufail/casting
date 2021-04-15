@@ -58,16 +58,27 @@ class ServiceController extends BaseController
             }
         }
 
+
         $services = $services->with("user")->paginate(15)->appends(request()->query());
         return $this->success(new ServiceCollection($services),'Services Retrived successfully');
     }
 
 
     public function myservices($search=null){
-        $services = auth()->user()->services()->paginate(15)->appends(request()->query());
+        $services = auth()->user()->services()->latest()->paginate(15)->appends(request()->query());
+        $services->map(function($service){
+            $service->load_payer = false;
+        });
         return $this->success(new ServiceCollection($services),'Services Retrived successfully');
     }
 
+
+    
+
+    public function main_services(){
+        $services = Service::paginate(15,['id','title']);
+        return $this->success(new MainServiceCollection($services),'Services Retrived successfully');
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -85,6 +96,7 @@ class ServiceController extends BaseController
 
         $service = auth()->user()->services()->create($validated);
         if($service){
+            $service->load_payer = false;
             return $this->success(new ServiceResource($service),'Service created successfully');
         } else {
             return $this->error([],'Something went wrong');
@@ -130,6 +142,11 @@ class ServiceController extends BaseController
     {
         $service = auth()->user()->services()->find($id);
 
+        if(!$service) {
+            return $this->error([],'service not exists');
+        }
+
+
         $validated = $request->validated();
         $validated['active'] = 0;
         if($request->exists('active')){
@@ -137,6 +154,7 @@ class ServiceController extends BaseController
         }
 
         if($service->update($validated)){
+            $service->load_payer = false;
             return $this->success(new ServiceResource($service),'Service updated successfully');
         } else {
             return $this->error([],'Something went wrong');

@@ -25,10 +25,10 @@ class ServiceRequest extends FormRequest
     {
         $rules =  [
             // 'title'                 => 'required|string|unique:user_services,id',
-            'price'                 => 'nullable|numeric',
-            'work_type'             => 'required|string',
-            'category_id'           => 'required|numeric|exists:categories,id',
-            'service_id'            => 'required|numeric|exists:services,id',
+            'price'                 => 'sometimes|numeric',
+            'work_type'             => 'sometimes|required|string',
+            'category_id'           => 'sometimes|required|numeric|exists:categories,id',
+            'service_id'            => 'sometimes|required|numeric|exists:services,id',
             'active'                => 'nullable'
         ];
         return $rules;    
