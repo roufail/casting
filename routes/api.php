@@ -58,7 +58,7 @@ Route::group(['middleware' => ['auth:payer-api'],'prefix' => 'payer','as' => 'pa
     Route::post('/update-firebase-token', 'API\UserController@update_firebase_token')->name('update_firebase_token');
 
     Route::get('myorders/update/{id}/{status}', 'API\OrderController@payer_updatemyorders')->name('updatemyorders');
-    Route::get('order/{order}', 'API\OrderController@payer_order')->name('payer_order');
+    Route::get('myorders/{order}', 'API\OrderController@payer_order')->name('payer_order')->where(['order' => '[0-9]+']);
     Route::get('myorders/{status?}', 'API\OrderController@myorders')->name('myorders');
     Route::post('profile', 'API\UserController@updatemyprofile')->name('updatemyprofile');
     Route::post('update-my-data', 'API\UserController@update_my_data')->name('update_my_data');
@@ -72,8 +72,8 @@ Route::group(['middleware' => ['auth:payer-api'],'prefix' => 'payer','as' => 'pa
     // chat routes
     Route::post('chat/message/{client}', 'API\ChatController@message_to_client')->name('messagetoclient');
     Route::get('chat/load-chat/{order}', 'API\ChatController@load_chat')->name('load_chat');
-    // Route::get('notifications', 'API\UserController@notifications')->name('notifications');
-    // Route::post('read-notifications', 'API\UserController@read_notifications')->name('read_notifications');
+    Route::get('notifications', 'API\UserController@notifications')->name('notifications');
+    Route::post('read-notifications', 'API\UserController@read_notifications')->name('read_notifications');
     
 
 
@@ -88,8 +88,8 @@ Route::group(['middleware' => ['auth:client-api'],'prefix' => 'client','as' => '
     Route::post('/update-firebase-token', 'API\ClientController@update_firebase_token')->name('update_firebase_token');
 
     Route::post('place-order', 'API\OrderController@place_order')->name('place_order');
-    Route::get('myorders', 'API\OrderController@client_orders')->name('myorders');
-    Route::get('myorders/{order}', 'API\OrderController@client_order')->name('myorder');
+    Route::get('myorders/{order}', 'API\OrderController@client_order')->name('myorder')->where(['order' => '[0-9]+']);
+    Route::get('myorders/{status?}', 'API\OrderController@client_orders')->name('myorders');
     Route::get('myorders/update/{id}/{status}', 'API\OrderController@client_updatemyorders')->name('updatemyorders');
     Route::post('rate/{order}', 'API\OrderController@rate_payer')->name('rate_payer');
     // chat routes
@@ -97,8 +97,8 @@ Route::group(['middleware' => ['auth:client-api'],'prefix' => 'client','as' => '
     Route::get('chat/load-chat/{order}', 'API\ChatController@load_chat')->name('load_chat');
     Route::post('update-profile', 'API\ClientController@update_profile')->name('update_profile');
     Route::post('update-password', 'API\ClientController@update_password')->name('update_password');
-    // Route::get('notifications', 'API\ClientController@notifications')->name('notifications');
-    // Route::post('read-notifications', 'API\ClientController@read_notifications')->name('read_notifications');
+    Route::get('notifications', 'API\ClientController@notifications')->name('notifications');
+    Route::post('read-notifications', 'API\ClientController@read_notifications')->name('read_notifications');
 
 });
 // Route::group(['middleware' => ['auth.api']],function(){

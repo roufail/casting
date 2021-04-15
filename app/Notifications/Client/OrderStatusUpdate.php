@@ -56,8 +56,8 @@ class OrderStatusUpdate extends Notification
     public function toArray($notifiable)
     {
         return [
-            'notification'     => $this->order->user->name." changed your order ".$this->order->userservice->service->name." status to ".$this->order->status,
-            'title'            => 'order status changed',
+            'notification'     => $this->order->user->name." ".lang('API.notifications.trans.changed_your_order')." ".$this->order->userservice->service->name." ".lang('API.notifications.trans.status_to')." ".lang('API.notifications.status.'.$this->order->status),
+            'title'            => lang('API.notifications.titles.order_status_changed'),
             'not_id'           => $this->order->id,
             'not_type'         => 'order',
             'notifiable_id'    => $notifiable->id,
@@ -71,8 +71,8 @@ class OrderStatusUpdate extends Notification
     {
         return (
             new OrderStatusUpdateEvent($notifiable->id,
-            'order status changed',
-            $this->order->user->name." changed your order ".$this->order->userservice->service->name." status to ".$this->order->status,
+            lang('API.notifications.titles.order_status_changed'),
+            $this->order->user->name." ".lang('API.notifications.trans.changed_your_order')." ".$this->order->userservice->service->name." ".lang('API.notifications.trans.status_to')." ".lang('API.notifications.status.'.$this->order->status),
             $this->order->id
            ,
            'order'));

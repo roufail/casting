@@ -21,13 +21,15 @@ class OrderController extends BaseController
     private $status_ar = ['paid', 'processing', 'cancelled', 'done','pending','failed','received'];
     public function myorders($status=null){
 
-        $orders = auth()->user()->orders()->with('client:id,name','user:id,name','userservice.service');
+        $orders = auth()->user()->orders()->with('client:id,name,image','user:id,name,image','userservice.service');
 
         if($status){
             $orders = $orders->where('status' , $status);
         }
         $orders = $orders->latest()->paginate(15);
-
+        $orders->map(function($order){
+            $order->load_payer = false;
+        });
         return  $this->success(new OrderCollection($orders),'Orders Retrived Successfully');
     }
 
@@ -130,8 +132,12 @@ class OrderController extends BaseController
     }
 
 
-    public function client_orders() {
-        $orders = auth('client-api')->user()->orders()->with(["userservice","user"])->paginate(10);
+    public function client_orders($status=null) {
+        $orders = auth('client-api')->user()->orders()->with(["userservice","user"]);
+        if($status){
+            $orders = $orders->where('status' , $status);
+        }
+        $orders = $orders->latest()->paginate(15);
         return  $this->success(new OrderCollection($orders),'orders retrived successfully');
     }
 

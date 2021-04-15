@@ -58,10 +58,6 @@ class OrderResource extends JsonResource
 
         if(self::$mode == "single"){
             $result['updated_at']     = $this->updated_at;
-            $result['client']      = [
-                'id' => $this->client->id,
-                'name' => $this->client->name,
-            ];
             $result['service'] = [
                 'id' => $this->userservice->id,
                 'name' => $this->userservice->service->title,
@@ -76,6 +72,12 @@ class OrderResource extends JsonResource
                 'image'  => $this->user->image ? \Storage::disk('users')->url($this->user->image) : null,
                 'rating' => $this->user->rating_stars()
 	        ];
+        } else {
+            $result['client'] = [
+                'id' => $this->client->id,
+                'name' => $this->client->name,
+                'image' => $this->client->image ? \Storage::disk('clients')->url($this->client->image) : null
+            ];
         }
 
         return $result;
