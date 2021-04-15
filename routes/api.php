@@ -55,6 +55,7 @@ Route::group(['middleware' => ['auth:payer-api'],'prefix' => 'payer','as' => 'pa
     
     Route::get('/', 'API\UserController@payer')->name('payer');
     Route::post('logout', 'API\UserController@logout')->name('payer.logout');
+    Route::post('/update-firebase-token', 'API\UserController@update_firebase_token')->name('update_firebase_token');
 
     Route::get('myorders/update/{id}/{status}', 'API\OrderController@payer_updatemyorders')->name('updatemyorders');
     Route::get('order/{order}', 'API\OrderController@payer_order')->name('payer_order');
@@ -84,6 +85,7 @@ Route::group(['middleware' => ['auth:client-api'],'prefix' => 'client','as' => '
     
     Route::get('/', 'API\ClientController@client')->name('client');
     Route::post('logout', 'API\ClientController@logout')->name('client.logout');
+    Route::post('/update-firebase-token', 'API\ClientController@update_firebase_token')->name('update_firebase_token');
 
     Route::post('place-order', 'API\OrderController@place_order')->name('place_order');
     Route::get('myorders', 'API\OrderController@client_orders')->name('myorders');

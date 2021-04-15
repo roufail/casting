@@ -194,6 +194,15 @@ class ClientController extends BaseController
 
     }
 
+    public function update_firebase_token(Request $requset) {
+        $requset->validate([
+            'firebase_token' => 'required'
+        ]);
+        auth('client-api')->user()->update([
+            'firebase_token' => $requset->firebase_token
+        ]);
+        return $this->success([], 'firebase token updated successfully');
+    }
 
 
     public function notifications(){

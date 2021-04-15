@@ -220,6 +220,17 @@ class UserController extends BaseController
         ]], 'Work duration retrived successfully');  
     }
 
+
+    public function update_firebase_token(Request $requset) {
+        $requset->validate([
+            'firebase_token' => 'required'
+        ]);
+        auth()->user()->update([
+            'firebase_token' => $requset->firebase_token
+        ]);
+        return $this->success([], 'firebase token updated successfully');
+    }
+
     public function notifications(){
         // $notifications = [];
         // foreach (auth()->user()->notifications as $key => $notification) {
