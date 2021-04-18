@@ -33,6 +33,6 @@ class AdminPaymentJob implements ShouldQueue
     public function handle()
     {
         $admins = Admin::all();
-        \Notification::send($admins, new AdminPaymentNotification($this->userService));
+        \Notification::send($admins, (new AdminPaymentNotification($this->userService))->locale(app()->getLocale()));
     }
 }

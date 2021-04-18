@@ -49,7 +49,11 @@ class OrderController extends BaseController
         if($status > 3) {
             return  $this->error([],'invalid order status');
         }
-        if($order && in_array($this->status_ar[$status],['processing','cancelled','done'])) {
+
+        if(!$order) {
+            return  $this->error([],'invalid order id');
+        } 
+        if(in_array($this->status_ar[$status - 1],['processing','cancelled','done'])) {
             $order->update(['status' => $this->status_ar[$status]]);
             OrderStatusUpdateJob::dispatch($order);
             return  $this->success($order,'Order updated successfully');
@@ -111,7 +115,10 @@ class OrderController extends BaseController
 
     public function client_updatemyorders($id,$status) {
         $order = auth('client-api')->user()->orders()->find($id);
-        if($order && in_array($this->status_ar[$status],['done'])) {
+        if(!$order) {
+            return  $this->success($order,'Invalid order number');
+        }
+        if($this->status_ar[$status] == 'done') {
             $order->update(['status' => $status]);
             $order->load('incoming');
             OrderStatusUpdateJob::dispatch($order);

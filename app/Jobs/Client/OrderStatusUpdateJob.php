@@ -31,6 +31,6 @@ class OrderStatusUpdateJob implements ShouldQueue
      */
     public function handle()
     {
-        $this->order->client->notify(new OrderStatusUpdate($this->order));
+        $this->order->client->notify((new OrderStatusUpdate($this->order))->locale(app()->getLocale()));
     }
 }

@@ -11,6 +11,7 @@ return [
         'status_to' => 'لحاله',
         'make_a_payment_to' => 'قام بدفع لخدمه',
         'costs' => 'تكلفه',
+        'changed_your_order' => 'قام بتغير حاله الطلب'
     ],
     'status' => [
         'paid' => 'مدفوع', 

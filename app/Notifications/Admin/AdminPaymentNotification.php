@@ -55,8 +55,8 @@ class AdminPaymentNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            'notification'     => $this->order->client->name." ".lang('API.notifications.trans.make_a_payment_to')." ".$this->order->userservice->service->title." ".lang('API.notifications.trans.costs')." ".$this->order->price,
-            'title'            => lang('API.notifications.titles.payment'),
+            'notification'     => $this->order->client->name." ".__('API/notifications.trans.make_a_payment_to')." ".$this->order->userservice->service->title." ".__('API/notifications.trans.costs')." ".$this->order->price,
+            'title'            => __('API/notifications.titles.payment'),
             'not_id'           => $this->order->id,
             'not_type'         => 'order',
             'notifiable_id'    => $notifiable->id
@@ -67,7 +67,7 @@ class AdminPaymentNotification extends Notification
     public function toBroadcast($notifiable)
     {
         return (
-            new OrderPaymentEvent($notifiable->id,lang('API.notifications.titles.payment'),$this->order->client->name." ".lang('API.notifications.trans.make_a_payment_to')." ".$this->order->userservice->service->title." ".lang('API.notifications.trans.costs')." ".$this->order->price,$this->order->id,'order')
+            new OrderPaymentEvent($notifiable->id,__('API/notifications.titles.payment'),$this->order->client->name." ".__('API/notifications.trans.make_a_payment_to')." ".$this->order->userservice->service->title." ".__('API/notifications.trans.costs')." ".$this->order->price,$this->order->id,'order')
         );
     }
 

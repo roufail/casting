@@ -32,6 +32,6 @@ class ServiceRequestJob implements ShouldQueue
      */
     public function handle()
     {
-        $this->user->notify(new ServiceRequest($this->client,$this->service));
+        $this->user->notify((new ServiceRequest($this->client,$this->service))->locale(app()->getLocale()));
     }
 }

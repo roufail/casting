@@ -56,8 +56,8 @@ class ServiceRequest extends Notification implements ShouldQueue
     public function toArray($notifiable)
     {
         return [
-            'notification'     => $this->client->name." ".lang('API.notifications.trans.asked_for')." ".$this->service->title,
-            'title'            => lang('API.notifications.titles.new_service_request'),
+            'notification'     => $this->client->name." ".__('API/notifications.trans.asked_for')." ".$this->service->title,
+            'title'            => __('API/notifications.titles.new_service_request'),
             'not_id'           => $this->service->id,
             'not_type'         => 'service',
             'notifiable_id'    => $notifiable->id,
@@ -69,7 +69,7 @@ class ServiceRequest extends Notification implements ShouldQueue
 
     public function toBroadcast($notifiable)
     {
-        return (new PayerRequestEvent($notifiable->id,lang('API.notifications.titles.new_service_request'),$this->client->name." ".lang('API.notifications.trans.asked_for')." ".$this->service->title,$this->service->id,'service'));
+        return (new PayerRequestEvent($notifiable->id,__('API/notifications.titles.new_service_request'),$this->client->name." ".__('API/notifications.trans.asked_for')." ".$this->service->title,$this->service->id,'service'));
     }
 
 
