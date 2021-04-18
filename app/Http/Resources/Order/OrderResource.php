@@ -60,7 +60,7 @@ class OrderResource extends JsonResource
             $result['updated_at']     = $this->updated_at;
             $result['service'] = [
                 'id' => $this->userservice->id,
-                'name' => $this->userservice->service->title,
+                'title' => $this->userservice->service->title,
                 'price' => $this->userservice->price,
                 'work_type' => $this->userservice->work_type,
             ];

@@ -282,6 +282,11 @@ class UserController extends BaseController
             $image = $request->image->store("/","users");
             $request_arr['image'] = $image;
         }
+
+        if(isset($request_arr['password']) && trim($request_arr['password']) != ""){
+            $request_arr['password'] = bcrypt($request_arr['password']);
+        }
+
         $payer->update($request_arr);
         $payer->payer_data()->updateOrCreate(['payer_id'=>$payer->id],$request_arr);
 

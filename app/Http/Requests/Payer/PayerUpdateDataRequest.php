@@ -24,15 +24,15 @@ class PayerUpdateDataRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'              => 'required',
-            'email'             => 'required|email|unique:users,id,'.auth()->user()->id,
-            'phone'             => 'required',
-            'country'           => 'required',
-            'image'             => 'required',
-            'dob'               => 'required|date',
-            'job_title'         => 'required',
-            'prev_work'         => 'required',
-            'bio'               => 'required',
+            'name'              => 'sometimes|required',
+            'email'             => 'sometimes|required|email|unique:users,id,'.auth()->user()->id,
+            'phone'             => 'sometimes|required',
+            'country'           => 'sometimes|required',
+            'image'             => 'sometimes|required',
+            'dob'               => 'sometimes|required|date',
+            'job_title'         => 'sometimes|required',
+            'prev_work'         => 'sometimes|required',
+            'bio'               => 'sometimes|required',
             'password'          => 'nullable',
             'password_confrim'  => 'required_with:password|same:password',
         ];
