@@ -229,6 +229,23 @@ class ClientController extends BaseController
         return $this->success([], 'client logged out successfully');
     }
 
+    public function payer_favorite_toggle(Request $request) {
+        $request->validate([
+            'payer_id' => 'required|exists:users,id',
+        ]);
+        $client = auth('client-api')->user();
+        if($client->favorite_payers()->where('payer_id',$request->payer_id)->exists()){
+            $client->favorite_payers()->where('payer_id',$request->payer_id)->delete();
+            return $this->success([], 'Payer removed form favorite successfully');
+
+        }else {
+            $client->favorite_payers()->create([
+                'payer_id' => $request->payer_id
+            ]);
+            return $this->success([], 'Payer added to favorite successfully');
+        }
+    }
+
 
 
 }

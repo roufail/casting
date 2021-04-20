@@ -64,6 +64,8 @@ Route::group(['middleware' => ['auth:payer-api'],'prefix' => 'payer','as' => 'pa
     Route::post('update-my-data', 'API\UserController@update_my_data')->name('update_my_data');
     Route::get('fees', 'API\ServiceController@fees')->name('fees');
     Route::post('update-data', 'API\UserController@update_data')->name('update_data');
+    Route::post('update-work-profile', 'API\UserController@update_work_profile')->name('update_work_profile');
+    Route::get('work-profile-images', 'API\UserController@work_profile_images')->name('work_profile_images');
 
 
     Route::get('myservices', 'API\ServiceController@myservices')->name('myservice');
@@ -74,7 +76,7 @@ Route::group(['middleware' => ['auth:payer-api'],'prefix' => 'payer','as' => 'pa
     Route::get('chat/load-chat/{order}', 'API\ChatController@load_chat')->name('load_chat');
     Route::get('notifications', 'API\UserController@notifications')->name('notifications');
     Route::post('read-notifications', 'API\UserController@read_notifications')->name('read_notifications');
-    
+
 
 
 
@@ -99,6 +101,7 @@ Route::group(['middleware' => ['auth:client-api'],'prefix' => 'client','as' => '
     Route::post('update-password', 'API\ClientController@update_password')->name('update_password');
     Route::get('notifications', 'API\ClientController@notifications')->name('notifications');
     Route::post('read-notifications', 'API\ClientController@read_notifications')->name('read_notifications');
+    Route::post('payer-favorite-toggle', 'API\ClientController@payer_favorite_toggle')->name('payer_favorite_toggle');
 
 });
 // Route::group(['middleware' => ['auth.api']],function(){

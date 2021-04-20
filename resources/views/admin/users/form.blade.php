@@ -2,9 +2,8 @@
 
 @push('css-files')
 <link rel="stylesheet" href="{{ asset('admin-files/css/select2.min.css') }}">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/min/dropzone.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/dropzone.min.css">
 @endpush
-
 @section("extra-css")
   <style>
   .dropzone .dz-preview .dz-image img {
@@ -243,7 +242,7 @@
             </div>
           </form>
           <form method="post" action="{{route('admin.users.upload_images')}}" enctype="multipart/form-data" 
-          class="dropzone" id="dropzone">
+           class="dropzone" id="dropzone">
             @csrf
           </form>  
           
@@ -279,6 +278,8 @@
 
 @section('extra-js')
 <script>
+  Dropzone.autoDiscover = false;
+
   $(function($){
     $(".select2").select2()
     @if($user->id)
@@ -359,16 +360,16 @@
               }
           });
       })
-    
 
-    Dropzone.options.dropzone =
-         {
+
+      var dropzoneOptions = {
            init:function(){
+              thisDropzone = this;
               @foreach ($user->work_images as $image)              
-                  var mockFile = {  name: "{{ $image->image_url }}" , upload:{}};  
+              var mockFile = {  name: "{{ $image->image_url }}" , upload:{}};  
                   mockFile.upload.filename =    "{{ $image->image_url }}";  
-                  this.options.addedfile.call(this, mockFile);
-                  this.options.thumbnail.call(this, mockFile, "{{ Storage::disk('work_images')->url($image->image_url) }}");
+                  thisDropzone.options.addedfile.call(thisDropzone, mockFile);
+                  thisDropzone.options.thumbnail.call(thisDropzone, mockFile, "{{ Storage::disk('work_images')->url($image->image_url) }}");
                   mockFile.previewElement.classList.add('dz-success');
                   mockFile.previewElement.classList.add('dz-complete');
               @endforeach
@@ -414,7 +415,9 @@
                return false;
             }
           };
-
+            var uploader = document.querySelector('#dropzone');
+            var newDropzone = new Dropzone(uploader, dropzoneOptions);
+        
   })
 </script>
 
@@ -462,7 +465,6 @@
           // window.location.href = "/file-upload";
       }
   });
-   
   })();
 </script>
 
@@ -470,6 +472,6 @@
 
 @push('js-files')
    <script src="{{ asset('admin-files/js/select2.min.js') }}"></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/dropzone.js"></script>
-   <script src="http://malsup.github.com/jquery.form.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
 @endpush

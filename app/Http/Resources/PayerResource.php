@@ -13,6 +13,7 @@ class PayerResource extends JsonResource
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
+
     public function toArray($request)
     {
         return [
@@ -34,7 +35,14 @@ class PayerResource extends JsonResource
             "services_count" => $this->whereHas("orders",function($orders){
                 $orders->where('status','done')->where('user_id',$this->id);
             })->count(),
-            "reviews_count" => $this->services->count("ratings"),
+            "reviews_count"  => $this->services->count("ratings"),
+            "is_favorite"    => $this->when(true,function(){
+                if(auth('client-api')->user()){
+                    return auth('client-api')->user()->favorite_payers()->where('payer_id',$this->id)->exists(); 
+                }else {
+                    return false;
+                }
+            })
         ];
     }
 }

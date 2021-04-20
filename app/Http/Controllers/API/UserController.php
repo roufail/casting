@@ -16,6 +16,12 @@ use App\Http\Resources\Notifications\NotificationCollection;
 use App\Http\Resources\PayerImagesCollection;
 use App\Http\Resources\PayerVideoResource;
 use App\Http\Requests\Payer\PayerUpdateDataRequest;
+use App\Http\Requests\Payer\PayerUpdateWorkProfileRequest;
+use Illuminate\Support\Facades\Hash;
+
+use Illuminate\Http\Exceptions\HttpResponseException;
+
+
 use Storage;
 class UserController extends BaseController
 {
@@ -283,19 +289,44 @@ class UserController extends BaseController
             $request_arr['image'] = $image;
         }
 
+        if(isset($request->old_password) && !Hash::check($request->old_password,$payer->password)){
+            throw new HttpResponseException(
+                response()->json([
+                  'message' =>'validation errors',
+                  'errors'  => ["Old password not correct"]
+                ], 422)
+              );       
+        }
+
+
         if(isset($request_arr['password']) && trim($request_arr['password']) != ""){
             $request_arr['password'] = bcrypt($request_arr['password']);
         }
 
         $payer->update($request_arr);
-        $payer->payer_data()->updateOrCreate(['payer_id'=>$payer->id],$request_arr);
+        return $this->success([],'payer data updated successfully');
+    }
 
 
-        if($request->prev_work_images) {            
-            foreach($payer->work_images as $workimage){
-                Storage::disk("work_images")->delete($workimage->image_url);
+    public function update_work_profile(PayerUpdateWorkProfileRequest $request) {
+
+        $payer = auth()->user();
+
+        if(isset($request->prev_work_remove_images_ids) 
+        && !empty($request->prev_work_remove_images_ids)
+            ) {
+            $work_images = $payer->work_images()->whereIn('id',$request->prev_work_remove_images_ids)->get();
+            if($work_images->count() > 0){
+                foreach($work_images as $work_image){
+                    Storage::disk("work_images")->delete($work_image->image_url);
+                }
+                $payer->work_images()->whereIn('id',$request->prev_work_remove_images_ids)->delete();
             }
-            $payer->work_images()->delete();
+        }
+
+
+        
+        if($request->prev_work_images) { 
             $images;
             foreach($request->prev_work_images as $prev_work_image) {
                 $images[] = ["image_url" => $prev_work_image->store("/","work_images")];
@@ -303,16 +334,44 @@ class UserController extends BaseController
             $payer->work_images()->createMany($images);
         }
 
-        if($request->prev_work_video) {
+
+	if($request->delete_prev_work_video){
+        if($payer->work_video){
+            Storage::disk("work_videos")->delete($payer->work_video->video_url);
+            $payer->work_video()->delete();
+        }
+	}else{
+	
+         if($request->prev_work_video) {
             if($payer->work_video){
                 Storage::disk("work_videos")->delete($payer->work_video->video_url);
             }
-            $video = ["video_url" => $request->prev_work_video->store("/","work_videos")];
-            $payer->work_video()->updateOrcreate(["payer_id" => $payer->id],$video);
+            if($request->hasFile('prev_work_video')) {
+                $video = ["video_url" => $request->prev_work_video->store("/","work_videos")];
+                $payer->work_video()->updateOrcreate(["payer_id" => $payer->id],$video);
+            }
+         }
+
+	}
+
+
+	
+
+        $payer->payer_data()->updateOrCreate(['payer_id'=>$payer->id],$request->validated());
+
+        return $this->success([],'Payer work profile updated successfully');
+
+    }
+
+
+
+    public function work_profile_images()
+    {
+        $images = auth()->user()->work_images()->paginate(15);
+        if(count($images) > 0){
+            return $this->success(new PayerImagesCollection($images),'Payer images retrived successfully');
         }
-
-
-        return $this->success([],'payer data updated successfully');
+        return $this->success(null,'this user has no images');
     }
 
 }

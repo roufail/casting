@@ -30,9 +30,7 @@ class PayerUpdateDataRequest extends FormRequest
             'country'           => 'sometimes|required',
             'image'             => 'sometimes|required',
             'dob'               => 'sometimes|required|date',
-            'job_title'         => 'sometimes|required',
-            'prev_work'         => 'sometimes|required',
-            'bio'               => 'sometimes|required',
+            'old_password'      => 'required_with:password',
             'password'          => 'nullable',
             'password_confrim'  => 'required_with:password|same:password',
         ];

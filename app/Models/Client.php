@@ -33,6 +33,11 @@ class Client extends Authenticatable
         return $this->hasOne(PasswordRecovery::class,"user_id","id")->where("user_type","client");
     }
 
+    public function favorite_payers() {
+        return $this->hasMany(Favorite::class);
+    }
+
+
 
     public function receivesBroadcastNotificationsOn() {
         return 'client.'.$this->id;

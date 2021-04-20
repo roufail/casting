@@ -9,6 +9,7 @@ class InitialController extends BaseController
 {
     public function initial(){
         $data = [
+            "upload_ize" => (int)ini_get("upload_max_filesize")*1024,
             "fees" => (double)\App\Models\Setting::where('setting_key','percentage')->pluck('setting_value','setting_key')->toArray()['percentage'],
             "work_durations" => [
                 'hourly','daily','weekly'
