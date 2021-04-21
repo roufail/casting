@@ -161,12 +161,13 @@ class OrderController extends BaseController
                 'service_id'      => $order->service_id,
                 'user_service_id' => $order->user_service_id,
                 'client_id'       => $order->client_id,
+                'user_id'         => $order->user_id,
                 'rate'            => $request->rate,
                 'feedback'        => $request->feedback,
             ]);
             return  $this->success($rate,'Rate created successfully');
         }else{
-            return  $this->error([],'Something went wrong');
+            return  $this->error([],'order not exists, or you don\'t have permissions to rate it');
         }
     }
 

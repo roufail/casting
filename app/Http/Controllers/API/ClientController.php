@@ -126,7 +126,7 @@ class ClientController extends BaseController
 
             return $this->success(["code" => $code],'Recovery code sent successfully');
         }
-        return $this->error([],'something went wrong');
+        return $this->error([],'phone number not exists');
 
     }
 

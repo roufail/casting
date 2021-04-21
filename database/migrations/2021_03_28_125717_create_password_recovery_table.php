@@ -16,7 +16,7 @@ class CreatePasswordRecoveryTable extends Migration
         Schema::create('password_recovery', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger("user_id");
-            $table->foreign("user_id")->references("id")->on("users")->onDelete("cascade");
+            // $table->foreign("user_id")->references("id")->on("users")->onDelete("cascade");
             $table->enum("user_type",["client","payer"]);
             $table->integer("code")->length(11);
             $table->timestamps();
