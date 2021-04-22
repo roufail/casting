@@ -7,6 +7,10 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use App\Events\Service\PayerRequestEvent;
+
+use Benwilkins\FCM\FcmMessage;
+
+
 class ServiceRequest extends Notification implements ShouldQueue
 {
     use Queueable;
@@ -30,7 +34,7 @@ class ServiceRequest extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        return ['database','broadcast','mail'];
+        return ['fcm','database','broadcast','mail'];
     }
 
     /**
@@ -66,6 +70,16 @@ class ServiceRequest extends Notification implements ShouldQueue
         ];
     }
 
+
+    public function toFcm($notifiable) {
+        $message = new FcmMessage();
+        $message->content([
+            'title'        => __('API/notifications.titles.new_service_request'), 
+            'body'         => $this->client->name." ".__('API/notifications.trans.asked_for')." ".$this->service->title, 
+        ]);
+        return $message;
+    }
+    
 
     public function toBroadcast($notifiable)
     {

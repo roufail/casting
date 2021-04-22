@@ -115,6 +115,8 @@ class User extends Authenticatable
         return $this->where('phone', $username)->first();
     }
 
-
+    public function routeNotificationForFcm() {
+        return $this->firebase_token;
+    }
 
  }

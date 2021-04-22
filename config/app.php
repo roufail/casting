@@ -181,8 +181,7 @@ return [
         Yajra\Datatables\DatatablesServiceProvider::class,
         Yajra\DataTables\ButtonsServiceProvider::class,
         RealRashid\SweetAlert\SweetAlertServiceProvider::class,
-
-
+        Benwilkins\FCM\FcmNotificationServiceProvider::class,
     ],
 
     /*

@@ -7,6 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use App\Events\Client\OrderStatusUpdateEvent;
+use Benwilkins\FCM\FcmMessage;
 
 class OrderStatusUpdate extends Notification
 {
@@ -30,8 +31,9 @@ class OrderStatusUpdate extends Notification
      */
     public function via($notifiable)
     {
-        return ['database','broadcast','mail'];
+        return ['database','broadcast','mail','fcm'];
     }
+    
 
     /**
      * Get the mail representation of the notification.
@@ -64,6 +66,16 @@ class OrderStatusUpdate extends Notification
             'reported_id'      => $this->order->client->id,
             'reported_type'    => 'client'
         ];
+    }
+
+
+    public function toFcm($notifiable) {
+        $message = new FcmMessage();
+        $message->content([
+            'title'        => __('API/notifications.titles.order_status_changed'), 
+            'body'         => $this->order->user->name." ".__('API/notifications.trans.changed_your_order')." ".$this->order->userservice->service->name." ".__('API/notifications.trans.status_to')." ".__('API/notifications.status.'.$this->order->status), 
+        ]);
+        return $message;
     }
 
 

@@ -43,4 +43,10 @@ class Client extends Authenticatable
         return 'client.'.$this->id;
     }
 
+
+    public function routeNotificationForFcm() {
+        return $this->firebase_token;
+    }
+    
+
 }
