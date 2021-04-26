@@ -26,9 +26,12 @@ class ChatController extends BaseController
             return $this->error([],'somthing went wrong!');
         }
 
-        $chat = Chat::firstOrCreate([
-         'order_id' => $order->id
-        ],[
+
+
+	 $chat = Chat::firstOrCreate([
+		'order_id'  => $order->id,		
+		'user_id'  => auth()->user()->id,
+	],[
             'order_id'  => $order->id,
             'user_id'   => auth()->user()->id,
             'client_id' => $order->client_id
@@ -68,17 +71,23 @@ class ChatController extends BaseController
             'message_type' => 'required|string|in:text,image',
         ]);
         $order = Order::find($order);
+
         if(!$order){
             return $this->error([],'somthing went wrong!');
         }
 
+
+
         $chat = Chat::firstOrCreate([
-         'order_id' => $order->id
-        ],[
+		'order_id'  => $order->id,		
+		'client_id'  => auth("client-api")->user()->id,
+	],[
             'order_id'  => $order->id,
-            'user_id'   => auth()->user()->id,
-            'client_id' => $order->client_id
+            'user_id'   => $order->user_id,
+            'client_id' => auth("client-api")->user()->id
         ]);
+
+	
 
 
         if($request->message_type == "image" && $request->hasFile('message')) {
@@ -88,7 +97,7 @@ class ChatController extends BaseController
         }
 
         $message = $chat->messages()->create([
-            'user_id'      =>  auth()->user()->id,
+            'user_id'      =>  auth('client-api')->user()->id,
             'user_type'    => 'client',
             'message'      =>  $request->message,
             'message_type' =>  $request->message_type,
