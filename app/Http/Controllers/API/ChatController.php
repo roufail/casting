@@ -104,7 +104,7 @@ class ChatController extends BaseController
         ]);
 
         // fire the event
-        broadcast(new Message($order->client_id,$request->message,$order->id,'payer'));
+        broadcast(new Message($order->user_id,$request->message,$order->id,'payer'));
         $response = [
             "message"       => $request->message,
             "message_type"  => $request->message_type,
