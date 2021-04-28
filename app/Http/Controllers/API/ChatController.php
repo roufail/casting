@@ -4,16 +4,32 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Models\Client;
+use App\Models\User;
 use App\Models\Chat;
 use App\Models\Order;
 use App\Events\Message;
-
+use Google\Cloud\Firestore\FirestoreClient;
 
 use App\Http\Resources\Chat\ChatResource;
 
 use Storage;
 class ChatController extends BaseController
 {
+    private $db,$collection;
+
+    function __construct() {
+
+        $this->db  = new FirestoreClient([
+            'projectId' => 'casting-fb0d5',
+            'keyFile' => json_decode(file_get_contents(base_path('casting-firestore.json')), true)
+        ]);
+
+        $this->collection = $this->db->collection('Chat');
+
+
+
+
+    }
     public function message_to_client(Request $request , $order){
         $request->validate([
             'message' => 'required',
@@ -43,13 +59,31 @@ class ChatController extends BaseController
             $request->message_type = "text";
         }
 
-
-        $message = $chat->messages()->create([
+        $message_data = [
             'user_id'      =>  auth()->user()->id,
             'user_type'    => 'payer',
             'message'      =>  $request->message,
             'message_type' =>  $request->message_type,
-        ]);
+        ];
+
+
+        
+        
+        $message = $chat->messages()->create($message_data);
+
+        $payer = User::find(auth()->user()->id);
+
+        $message_data = array_merge($message_data,[
+            'time'   => \Carbon\Carbon::now(),
+            'payer' => [
+                "id"        => $payer->id,
+                "name"      => $payer->name,
+                "image"     => $payer->image && $payer->image != "" ? Storage::disk("users")->url($payer->image) : null,
+            ]
+        ]); 
+        
+        
+        $this->collection->document($this->milliseconds())->set($message_data);
 
         // fire the event
         broadcast(new Message($order->client_id,$request->message,$order->id,'client'));
@@ -64,6 +98,13 @@ class ChatController extends BaseController
 
         return $this->success($response, 'message send successfully');
     }
+
+
+    public function milliseconds() {
+        $mt = explode(' ', microtime());
+        return ((int)$mt[1]) * 1000 + ((int)round($mt[0] * 1000));
+    }
+    
 
     public function message_to_payer(Request $request , $order){
         $request->validate([
@@ -96,12 +137,25 @@ class ChatController extends BaseController
             $request->message_type = "text";
         }
 
-        $message = $chat->messages()->create([
+        $message_data = [
             'user_id'      =>  auth('client-api')->user()->id,
             'user_type'    => 'client',
             'message'      =>  $request->message,
             'message_type' =>  $request->message_type,
-        ]);
+        ];
+
+        $message = $chat->messages()->create($message_data);
+        $client = Client::find(auth('client-api')->user()->id);
+
+        $message_data = array_merge($message_data,[
+            'time'   => \Carbon\Carbon::now(),
+            'client' => [
+                "id"        => $client->id,
+                "name"      => $client->name,
+                "image"     => $client->image && $client->image != "" ? Storage::disk("clients")->url($client->image) : null,
+            ]
+        ]);   
+        $this->collection->document($this->milliseconds())->set($message_data);
 
         // fire the event
         broadcast(new Message($order->user_id,$request->message,$order->id,'payer'));
