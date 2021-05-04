@@ -24,7 +24,7 @@ class ChatController extends BaseController
             'keyFile' => json_decode(file_get_contents(base_path('casting-firestore.json')), true)
         ]);
 
-        $this->collection = $this->db->collection('Chat');
+        $this->collection = $this->db->collection('Orders');
 
 
 
@@ -75,6 +75,7 @@ class ChatController extends BaseController
 
         $message_data = array_merge($message_data,[
             'time'   => \Carbon\Carbon::now(),
+            'order_id'=> $order->id,
             'payer' => [
                 "id"        => $payer->id,
                 "name"      => $payer->name,
@@ -83,7 +84,7 @@ class ChatController extends BaseController
         ]); 
         
         
-        $this->collection->document($this->milliseconds())->set($message_data);
+        $this->collection->document($order->id)->collection('chat')->document($this->milliseconds())->set($message_data);
 
         // fire the event
         broadcast(new Message($order->client_id,$request->message,$order->id,'client'));
@@ -148,6 +149,7 @@ class ChatController extends BaseController
         $client = Client::find(auth('client-api')->user()->id);
 
         $message_data = array_merge($message_data,[
+            'order_id'=> $order->id,
             'time'   => \Carbon\Carbon::now(),
             'client' => [
                 "id"        => $client->id,
@@ -155,7 +157,7 @@ class ChatController extends BaseController
                 "image"     => $client->image && $client->image != "" ? Storage::disk("clients")->url($client->image) : null,
             ]
         ]);   
-        $this->collection->document($this->milliseconds())->set($message_data);
+        $this->collection->document($order->id)->collection('chat')->document($this->milliseconds())->set($message_data);
 
         // fire the event
         broadcast(new Message($order->user_id,$request->message,$order->id,'payer'));
