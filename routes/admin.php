@@ -63,6 +63,7 @@ Route::group(['namespace' => 'Admin','as'=>'admin.'],function(){
         
         Route::get('outgoings/ajax_data', 'OutgoingController@ajaxData')->name('outgoings.ajax_data');
         Route::get('outgoings/pay/{order}', 'OutgoingController@pay')->name('outgoings.pay');
+        Route::get('outgoings/response', 'OutgoingController@response')->name('outgoings.response');
         Route::resource('outgoings', 'OutgoingController');
 
         Route::get('ratings/ajax_data', 'RatingController@ajaxData')->name('ratings.ajax_data');

@@ -33,7 +33,7 @@ class ChatController extends BaseController
     public function message_to_client(Request $request , $order){
         $request->validate([
             'message' => 'required',
-            'message_type' => 'required|string|in:text,image',
+            'message_type' => 'required|string|in:text,image,audio',
         ]);
 
         $order = Order::find($order);
@@ -53,7 +53,7 @@ class ChatController extends BaseController
             'client_id' => $order->client_id
         ]);
 
-        if($request->message_type == "image" && $request->hasFile('message')) {
+        if(($request->message_type == "image" || $request->message_type == "audio") && $request->hasFile('message')) {
             $request->message = Storage::disk('messages')->url($request->message->store("/","messages"));
         }else {
             $request->message_type = "text";
@@ -110,7 +110,7 @@ class ChatController extends BaseController
     public function message_to_payer(Request $request , $order){
         $request->validate([
             'message' => 'required',
-            'message_type' => 'required|string|in:text,image',
+            'message_type' => 'required|string|in:text,image,audio',
         ]);
         $order = Order::find($order);
 
@@ -132,7 +132,7 @@ class ChatController extends BaseController
 	
 
 
-        if($request->message_type == "image" && $request->hasFile('message')) {
+        if(($request->message_type == "image" || $request->message_type == "audio") && $request->hasFile('message')) {
             $request->message = Storage::disk('messages')->url($request->message->store("/","messages"));
         }else {
             $request->message_type = "text";

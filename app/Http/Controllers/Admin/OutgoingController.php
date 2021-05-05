@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Yajra\Datatables\Datatables;
 Use Alert;
+
+// use TapPayments\GoSell;
+
 class OutgoingController extends Controller
 {
     /**
@@ -37,6 +40,53 @@ class OutgoingController extends Controller
     {
         // make payment request
         $payment = true;
+        // GoSell::setPrivateKey("sk_test_DecgsiEPGZFfrNRwYt2hWxvK");
+
+        // $charge = GoSell\Charges::create(
+        //     [
+        //       "amount"=> $order->outgoing->total,
+        //       "currency"=> "SAR",
+        //       "threeDSecure"=> true,
+        //       "save_card"=> false,
+        //       "description"=> "Test Description",
+        //       "statement_descriptor"=> "Sample",
+        //       "metadata"=> [
+        //         "udf1"=> "test 1",
+        //         "udf2"=> "test 2"
+        //       ],
+        //       "reference"=> [
+        //         "transaction"=> "txn_{$order->id}",
+        //         "order"=> "order_{$order->id}"
+        //       ],
+        //       "receipt"=> [
+        //         "email"=> false,
+        //         "sms"=> true
+        //       ],
+        //       "customer"=> [
+        //         "first_name"=> "test",
+        //         "middle_name"=> "test",
+        //         "last_name"=> "test",
+        //         "email"=> "test@test.com",
+        //         "phone"=> [
+        //           "country_code"=> "002",
+        //           "number"=> "01225209199"
+        //         ]
+        //       ],
+        //       "source"=> [
+        //         "id"=> "src_all"
+        //       ],
+        //     //   "post"=> [
+        //     //     "url"=> route('admin.outgoings.response')
+        //     //   ],
+        //       "redirect"=> [
+        //         "url"=> route('admin.outgoings.response')
+        //       ]
+        //     ]
+        // );
+
+        // return redirect($charge->transaction->url); //will give charge response as PHP object
+        
+
         if($payment){
             // send notification to the client
             // send notification to the payer
@@ -48,6 +98,13 @@ class OutgoingController extends Controller
         }
         return redirect()->back();
 
+    }
+
+
+    public function response(Request $request) {
+        // GoSell::setPrivateKey("sk_test_DecgsiEPGZFfrNRwYt2hWxvK");
+        // $retrieved_charge  = GoSell\Charges::retrieve($request->tap_id);
+        // dd($retrieved_charge);
     }
 
     /**
