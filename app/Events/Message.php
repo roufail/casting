@@ -14,18 +14,18 @@ class Message implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
     public  $data = [];
-    private $order_id,$type;
+    private $order_id,$type,$notifiable_id;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($notifiable_id,$message,$order_id,$type)
+    public function __construct($notifiable_id,$data,$order_id,$type)
     {
         $this->order_id                  = $order_id;
         $this->type                      = $type;
-        $this->data['notifiable_id']     = $notifiable_id;
-        $this->data['message']           = $message;
+        $this->notifiable_id             = $notifiable_id;
+        $this->data                      = $data;
     }
 
     /**
@@ -35,7 +35,7 @@ class Message implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('chat-channel.'.$this->type.'.'.$this->data['notifiable_id']);
+        return new PrivateChannel('chat-channel.'.$this->type.'.'.$this->notifiable_id);
     }
 
     public function broadcastAs()

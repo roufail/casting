@@ -85,9 +85,8 @@ class ChatController extends BaseController
         
         
         $this->collection->document($order->id)->collection('chat')->document($this->milliseconds())->set($message_data);
+        broadcast(new Message($order->client_id,$message_data,$order->id,'client'));
 
-        // fire the event
-        broadcast(new Message($order->client_id,$request->message,$order->id,'client'));
         $response = [
             "message"       => $request->message,
             "message_type"  => $request->message_type,
@@ -96,6 +95,7 @@ class ChatController extends BaseController
             "sender_type"   => 'payer',
             "created_at"    => $message->created_at,
         ];
+        // fire the event
 
         return $this->success($response, 'message send successfully');
     }
@@ -160,7 +160,7 @@ class ChatController extends BaseController
         $this->collection->document($order->id)->collection('chat')->document($this->milliseconds())->set($message_data);
 
         // fire the event
-        broadcast(new Message($order->user_id,$request->message,$order->id,'payer'));
+        broadcast(new Message($order->user_id,$message_data,$order->id,'payer'));
         $response = [
             "message"       => $request->message,
             "message_type"  => $request->message_type,
