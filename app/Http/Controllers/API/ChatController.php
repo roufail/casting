@@ -87,17 +87,17 @@ class ChatController extends BaseController
         $this->collection->document($order->id)->collection('chat')->document($this->milliseconds())->set($message_data);
         broadcast(new Message($order->client_id,$message_data,$order->id,'client'));
 
-        $response = [
-            "message"       => $request->message,
-            "message_type"  => $request->message_type,
-            "order_id"      => $order->id,
-            "sender_avatar" => auth()->user()->image && auth()->user()->image != "" ? Storage::disk("users")->url(auth()->user()->image): null,
-            "sender_type"   => 'payer',
-            "created_at"    => $message->created_at,
-        ];
+        // $response = [
+        //     "message"       => $request->message,
+        //     "message_type"  => $request->message_type,
+        //     "order_id"      => $order->id,
+        //     "sender_avatar" => auth()->user()->image && auth()->user()->image != "" ? Storage::disk("users")->url(auth()->user()->image): null,
+        //     "sender_type"   => 'payer',
+        //     "created_at"    => $message->created_at,
+        // ];
         // fire the event
 
-        return $this->success($response, 'message send successfully');
+        return $this->success($message_data, 'message send successfully');
     }
 
 
@@ -123,7 +123,7 @@ class ChatController extends BaseController
         $chat = Chat::firstOrCreate([
 		'order_id'  => $order->id,		
 		'client_id'  => auth("client-api")->user()->id,
-	],[
+	        ],[
             'order_id'  => $order->id,
             'user_id'   => $order->user_id,
             'client_id' => auth("client-api")->user()->id
@@ -161,23 +161,23 @@ class ChatController extends BaseController
 
         // fire the event
         broadcast(new Message($order->user_id,$message_data,$order->id,'payer'));
-        $response = [
-            "message"       => $request->message,
-            "message_type"  => $request->message_type,
-            "order_id"      => $order->id,
-            "sender_avatar" => auth("client-api")->user()->image && auth("client-api")->user()->image != "" ? Storage::disk("clients")->url(auth()->user()->image): null,
-            "sender_type"   => 'client',
-            "created_at"    => $message->created_at,
-        ];
+        // $response = [
+        //     "message"       => $request->message,
+        //     "message_type"  => $request->message_type,
+        //     "order_id"      => $order->id,
+        //     "sender_avatar" => auth("client-api")->user()->image && auth("client-api")->user()->image != "" ? Storage::disk("clients")->url(auth()->user()->image): null,
+        //     "sender_type"   => 'client',
+        //     "created_at"    => $message->created_at,
+        // ];
 
-        return $this->success($response, 'message send successfully');    
+        return $this->success($message_data, 'message send successfully');    
     }
 
 
     public function load_chat($order){
         $chat = Chat::where("order_id",$order)->first();
         if(!$chat){
-            return $this->error([],'somthing went wrong!');
+            return $this->error([],'chat not exists!',422);
         }
         $chat->load_messages = true;
         return $this->success(new ChatResource($chat), 'chat loaded successfully');

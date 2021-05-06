@@ -19,6 +19,4 @@ class ChatMessages extends Model
     public function payer() {
         return $this->belongsTo(User::class,"user_id");
     }
-
-
 }
