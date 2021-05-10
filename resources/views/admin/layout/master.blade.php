@@ -156,6 +156,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="{{ asset('js/app.js') }}"></script>
 <!-- jQuery 2.1.4 -->
 <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+<script src="//cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js"></script>
 <!-- Bootstrap 3.3.4 -->
 <!-- AdminLTE App -->
 <script src="{{ asset('admin-files/js/toastr.min.js') }}"></script>

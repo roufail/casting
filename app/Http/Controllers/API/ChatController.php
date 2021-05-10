@@ -11,8 +11,7 @@ use App\Events\Message;
 use Google\Cloud\Firestore\FirestoreClient;
 
 use App\Http\Resources\Chat\ChatResource;
-
-use Storage;
+use Storage,Auth;
 class ChatController extends BaseController
 {
     private $db,$collection;
@@ -38,8 +37,8 @@ class ChatController extends BaseController
 
         $order = Order::find($order);
         
-        if(!$order){
-            return $this->error([],'somthing went wrong!');
+        if(!$order || $order->user_id != auth()->user()->id){
+            return $this->error([],'Permission denied!');
         }
 
 
@@ -87,14 +86,6 @@ class ChatController extends BaseController
         $this->collection->document($order->id)->collection('chat')->document($this->milliseconds())->set($message_data);
         broadcast(new Message($order->client_id,$message_data,$order->id,'client'));
 
-        // $response = [
-        //     "message"       => $request->message,
-        //     "message_type"  => $request->message_type,
-        //     "order_id"      => $order->id,
-        //     "sender_avatar" => auth()->user()->image && auth()->user()->image != "" ? Storage::disk("users")->url(auth()->user()->image): null,
-        //     "sender_type"   => 'payer',
-        //     "created_at"    => $message->created_at,
-        // ];
         // fire the event
 
         return $this->success($message_data, 'message send successfully');
@@ -114,8 +105,8 @@ class ChatController extends BaseController
         ]);
         $order = Order::find($order);
 
-        if(!$order){
-            return $this->error([],'somthing went wrong!');
+        if(!$order || $order->client_id != auth("client-api")->user()->id){
+            return $this->error([],'Permission denied!');
         }
 
 
@@ -161,42 +152,29 @@ class ChatController extends BaseController
 
         // fire the event
         broadcast(new Message($order->user_id,$message_data,$order->id,'payer'));
-        // $response = [
-        //     "message"       => $request->message,
-        //     "message_type"  => $request->message_type,
-        //     "order_id"      => $order->id,
-        //     "sender_avatar" => auth("client-api")->user()->image && auth("client-api")->user()->image != "" ? Storage::disk("clients")->url(auth()->user()->image): null,
-        //     "sender_type"   => 'client',
-        //     "created_at"    => $message->created_at,
-        // ];
+
 
         return $this->success($message_data, 'message send successfully');    
     }
 
 
-    public function load_chat($order){
-        $chat = Chat::where("order_id",$order)->first();
+    public function load_chat($order_id){
+        $user_type   = Auth::getDefaultDriver();
+        $order       = Order::find($order_id);
+        $logged_user = auth($user_type)->user();
+        if( ($user_type == "payer-api" && $order->user_id != $logged_user->id) || ($user_type == "client-api" && $order->client_id != $logged_user->id) ){
+            return $this->error([],'Permission denied!');
+        }
+        
+        $chat = Chat::where("order_id",$order_id)->first();
         if(!$chat){
-            return $this->error([],'chat not exists!',422);
+            $chat = $order->chat()->create([
+                'user_id' => $order->user_id,
+                'client_id' => $order->client_id,
+            ]);
         }
         $chat->load_messages = true;
         return $this->success(new ChatResource($chat), 'chat loaded successfully');
     }
-
-    public function test_socket() {
-        $socket = stream_socket_client('tcp://127.0.0.1:4444');
-        if ($socket) {
-            $sent = stream_socket_sendto($socket, 'message');
-            if ($sent > 0) {
-                $server_response = fread($socket, 4096);
-                echo $server_response;
-            }
-        } else {
-            echo 'Unable to connect to server';
-        }
-        stream_socket_shutdown($socket, STREAM_SHUT_RDWR);
-        
-    }
-
 
 }

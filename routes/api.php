@@ -77,6 +77,8 @@ Route::group(['middleware' => ['auth:payer-api'],'prefix' => 'payer','as' => 'pa
     Route::get('notifications', 'API\UserController@notifications')->name('notifications');
     Route::post('read-notifications', 'API\UserController@read_notifications')->name('read_notifications');
 
+    Route::get('account-balance', 'API\UserController@account_balance')->name('account_balance');
+    Route::post('payment-request', 'API\UserController@payment_request')->name('payment_request');
 
 
 

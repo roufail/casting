@@ -21,7 +21,7 @@
                     <th>@lang("admin/outgoings.list.fees")</th>
                     <th>@lang("admin/outgoings.list.total")</th>
                     <th>@lang("admin/outgoings.list.status")</th>
-                    <th>@lang("admin/outgoings.list.edit")</th>
+                    {{-- <th>@lang("admin/outgoings.list.edit")</th> --}}
                 </tr>
             </thead>
         </table>
@@ -46,7 +46,7 @@
                 { data: 'fees', name: 'fees' },
                 { data: 'total', name: 'total' },
                 { data: 'status', name: 'status' },
-                { data: 'action', searchable: false,sortable:false },
+                // { data: 'action', searchable: false,sortable:false },
 
             ],
             "order": [[ 0, "desc" ]]

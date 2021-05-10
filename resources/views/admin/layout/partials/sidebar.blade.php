@@ -92,6 +92,39 @@
               </a>
             </li>
     
+
+            <li class="nav-item {{ Route::is('admin.wallets.index') ? 'active' : '' }}">
+              <a class="nav-link {{ Route::is('admin.wallets.index') ? 'active' : '' }}" href="{{ route('admin.wallets.index') }}">
+                <i class="nav-icon fa fa-wallet"></i>
+                <span>@lang("admin/sidebar.menu.wallets")</span>
+              </a>
+            </li>
+
+
+            <li class="nav-item {{ Route::is('admin.wallets.payment_requests') ? 'active' : '' }}">
+              <a class="nav-link {{ Route::is('admin.wallets.payment_requests') ? 'active' : '' }}" href="{{ route('admin.wallets.payment_requests') }}">
+                <i class="nav-icon fa fa-wallet"></i>
+                <span>@lang("admin/sidebar.menu.payment_requests")</span>
+              </a>
+            </li>
+
+            <li class="nav-item {{ Route::is('admin.wallets.pending_payment_requests') ? 'active' : '' }}">
+              <a class="nav-link {{ Route::is('admin.wallets.pending_payment_requests') ? 'active' : '' }}" href="{{ route('admin.wallets.pending_payment_requests') }}">
+                <i class="nav-icon fa fa-wallet"></i>
+                <span>@lang("admin/sidebar.menu.pending_payment_requests")</span>
+              </a>
+            </li>
+
+
+
+            <li class="nav-item {{ Route::is('admin.wallets.paid_payment_requests') ? 'active' : '' }}">
+              <a class="nav-link {{ Route::is('admin.wallets.paid_payment_requests') ? 'active' : '' }}" href="{{ route('admin.wallets.paid_payment_requests') }}">
+                <i class="nav-icon fa fa-wallet"></i>
+                <span>@lang("admin/sidebar.menu.paid_payment_requests")</span>
+              </a>
+            </li>
+
+            
             <li class="nav-item {{ Route::is('admin.ratings.index') ? 'active' : '' }}">
               <a class="nav-link {{ Route::is('admin.ratings.index') ? 'active' : '' }}" href="{{ route('admin.ratings.index') }}">
                 <i class="nav-icon fa fa-star" aria-hidden="true"></i>
@@ -113,6 +146,11 @@
                 <span>@lang("admin/sidebar.menu.admins")</span>
               </a>
             </li>
+
+
+
+    
+
     
             <li>
               <a class="nav-link" href="nav-item {{ route('admin.logout') }}">

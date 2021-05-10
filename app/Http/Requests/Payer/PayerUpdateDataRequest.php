@@ -33,6 +33,9 @@ class PayerUpdateDataRequest extends FormRequest
             'old_password'      => 'required_with:password',
             'password'          => 'nullable',
             'password_confrim'  => 'required_with:password|same:password',
+            'full_name' => 'required_with:bank_name,account_number',
+            'bank_name' => 'required_with:full_name,bank_name',
+            'account_number' => 'required_with:bank_name,full_name',
         ];
     }
 }

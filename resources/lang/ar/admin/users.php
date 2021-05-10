@@ -18,6 +18,13 @@ return [
         "prev_work"    => 'الاعمال السابقه',
         "prev_work_help" => 'يرجل الفصل بين كل عمل والاخر بفاصله',    
         "bio"          => 'نبذه',
+        "bank_account" => [
+            "details" => 'البيانات البنكيه',
+            "full_name" => 'الاسم بالكامل',
+            "bank_name" => 'اسم البنك',
+            "account_number" => 'رقم الحساب',    
+        ]
+        
     ],
     "services" => [
         "name" => 'اسم الخدمه',

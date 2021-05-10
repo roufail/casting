@@ -66,6 +66,23 @@ Route::group(['namespace' => 'Admin','as'=>'admin.'],function(){
         Route::get('outgoings/response', 'OutgoingController@response')->name('outgoings.response');
         Route::resource('outgoings', 'OutgoingController');
 
+        
+        
+        Route::get('wallets/download-payment-requests/{ids?}', 'WalletController@download_payment_requests')->name('wallets.download_payment_requests');
+        Route::get('wallets/ajax_data', 'WalletController@ajaxData')->name('wallets.ajax_data');
+        Route::get('wallets/{wallet}/items_ajax_data', 'WalletController@itemsAjaxData')->name('wallets.items_ajax_data');
+        Route::get('wallets/payment_requets_ajax_data/{status?}', 'WalletController@paymentRequetsAjaxData')->name('wallets.payment_requets_ajax_data');
+        Route::get('wallet/pay/{wallet}', 'WalletController@pay')->name('wallets.pay');
+        Route::get('wallet/{payment_request}/pay', 'WalletController@payment_request_pay')->name('wallets.payment_request_pay');
+        Route::post('wallet/bank-account-details', 'WalletController@bank_account_details')->name('wallets.bank_account_details');
+        Route::get('wallet/{wallet}/get-items', 'WalletController@get_items')->name('wallets.get_items');
+        Route::get('wallet/payment-requests', 'WalletController@payment_requests')->name('wallets.payment_requests');
+        Route::get('wallets/payment-requests/paid', 'WalletController@paid_payment_requests')->name('wallets.paid_payment_requests');
+        Route::get('wallets/payment-requests/pending', 'WalletController@pending_payment_requests')->name('wallets.pending_payment_requests');
+        
+        Route::resource('wallets', 'WalletController');
+
+
         Route::get('ratings/ajax_data', 'RatingController@ajaxData')->name('ratings.ajax_data');
         Route::resource('ratings', 'RatingController');
         

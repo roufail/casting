@@ -86,7 +86,16 @@ class UserController extends Controller
                 'prev_work'             => $request->prev_work,
                 'bio'                   => $request->bio,    
             ]);
-            
+
+            if($request->bank_account){
+                $user->bank_account_details()->create([
+                    'full_name'             => $request->bank_account_full_name,
+                    'bank_name'             => $request->bank_account_bank_name,
+                    'account_number'        => $request->bank_account_account_number,    
+                ]);
+            }
+
+
             Alert::toast('<h4>تم انشاء المستخدم بنجاح</h4>','success');
         }else{
             Alert::toast('<h4>حدث خطأ ما , يرجي المحاوله لاحقاً</h4>','error');
@@ -167,6 +176,18 @@ class UserController extends Controller
                 'prev_work'             => $request->prev_work,
                 'bio'                   => $request->bio,    
             ]);
+
+
+            if($request->bank_account_full_name){
+                $user->bank_account_details()->updateOrCreate(['user_id' => $user->id],[
+                    'full_name'             => $request->bank_account_full_name,
+                    'bank_name'             => $request->bank_account_bank_name,
+                    'account_number'        => $request->bank_account_account_number,    
+                ]);    
+            }else {
+                $user->bank_account_details()->delete();
+            }
+
 
             Alert::toast('<h4>تم تحديث المستخدم بنجاح</h4>','success');
         }else{

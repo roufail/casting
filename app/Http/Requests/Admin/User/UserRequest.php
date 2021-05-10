@@ -38,7 +38,10 @@ class UserRequest extends FormRequest
             'services.*.price'      => "required|numeric",
             'work_images'          => "nullable|array",
             'work_images.*'        => "required|String",
-            'services.*.work_type'  => "string"
+            'services.*.work_type' => "string",
+            'full_name' => 'required_with:bank_name,account_number',
+            'bank_name' => 'required_with:full_name,bank_name',
+            'account_number' => 'required_with:bank_name,full_name',
         ];
         if(!$this->user){
             $rules['password'] = 'required|string|min:6';

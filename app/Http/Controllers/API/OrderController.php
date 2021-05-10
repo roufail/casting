@@ -9,6 +9,7 @@ use App\Models\UserService;
 use App\Models\Rate;
 use App\Models\Outgoing;
 use App\Models\Setting;
+use App\Models\Wallet;
 
 use App\Http\Requests\Order\OrderRequest;
 use App\Jobs\Payer\ServiceRequestJob;
@@ -119,7 +120,10 @@ class OrderController extends BaseController
             return  $this->success($order,'Invalid order number');
         }
         if($this->status_ar[$status] == 'done') {
-            $order->update(['status' => $status]);
+            if($order->status == 'done') {
+                return  $this->success($order,'order status already done');
+            }
+            $order->update(['status' => $this->status_ar[$status]]);
             $order->load('incoming');
             OrderStatusUpdateJob::dispatch($order);
 
@@ -131,6 +135,28 @@ class OrderController extends BaseController
                 'fees'        => $fees,
                 'total'       => $order->price - $fees
             ]);
+
+            $wallet = Wallet::firstOrNew(['user_id' => $order->user->id,'status' => 'unpaid']);
+            $wallet->total_price = ($wallet->total_price + $order->price);
+            $wallet->total_fees = ($wallet->total_fees + $fees);
+            $total_amount = $order->price - $fees;
+            $wallet->total_amount = ($wallet->total_amount + $total_amount);
+            $wallet->save();
+
+
+            $wallet->items()->create([
+                'order_id'            => $order->id,
+                'user_id'             => $order->user->id,
+                'service_id'          => $order->userservice->service->id,
+                'user_service_id'     => $order->userservice->id,
+                'service_title'       => $order->userservice->service->title,
+                'system_fees'         => $fees,
+                'system_fees_percent' => $settings['percentage'],
+                'service_price'       => $order->price,
+                'service_total_amount'=> $total_amount,
+                'client_id'           => $order->user->id
+            ]);
+
             // send notification to the admin
             return  $this->success($order,'Order updated successfully');
         }else {

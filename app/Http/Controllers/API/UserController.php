@@ -10,6 +10,7 @@ use App\Http\Requests\Payer\PayerRegisterRequest;
 use App\Http\Requests\Payer\PayerActivateRequest;
 use App\Http\Requests\Payer\PayerRecoveryRequest;
 use App\Models\User;
+
 use App\Http\Resources\PayerResource;
 
 use App\Http\Resources\Notifications\NotificationCollection;
@@ -21,7 +22,7 @@ use Illuminate\Support\Facades\Hash;
 
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-
+use App\Jobs\Admin\PaymentRequestJob;
 use Storage;
 class UserController extends BaseController
 {
@@ -123,7 +124,11 @@ class UserController extends BaseController
         }
 
 
+
+
         if($user->update($validated)){
+
+
             return $this->success(new PayerResource($user),'Profile updated successfully');
         }else {
             return $this->error([],'some thing went wrong');
@@ -303,6 +308,11 @@ class UserController extends BaseController
             $request_arr['password'] = bcrypt($request_arr['password']);
         }
 
+        if($request->full_name) {
+            $payer->bank_account_details()->updateOrCreate(["user_id" => $payer->id],$request->only("full_name","bank_name","account_number"));
+        }
+
+
         $payer->update($request_arr);
         return $this->success([],'payer data updated successfully');
     }
@@ -372,6 +382,54 @@ class UserController extends BaseController
             return $this->success(new PayerImagesCollection($images),'Payer images retrived successfully');
         }
         return $this->success(null,'this user has no images');
+    }
+
+
+    public function account_balance(Request $request){
+        $wallet = auth()->user()->wallet;
+        $balance = [
+            'total_price' => 0,
+            'total_fees' => 0,
+            'total_amount' => 0,
+    ];
+        if($wallet) {
+            $balance = [
+                'total_price' => $wallet->total_price,
+                'total_fees' => $wallet->total_fees,
+                'total_amount' => $wallet->total_amount,
+            ];
+        }
+        return $this->success(['balance' => $balance],'Account balance retrived successfully');
+    }
+
+    public function payment_request(Request $request){
+        $user   = auth()->user();
+        $wallet = auth()->user()->wallet;
+
+        if(!$wallet){
+            return $this->error([],'Sorry you don\'t have any balance to request payment'); 
+        }
+
+        $bank_account_details = auth()->user()->bank_account_details;
+
+        if(!$bank_account_details) {
+            return $this->error([],'Please insert your bank account details and try again'); 
+        }
+        $payment_request = $user->payment_requests()->where('status','unpaid')->first();
+
+        if($payment_request) {
+            return $this->error([],'You already have payment request'); 
+        }
+        $new_payment_request = $user->payment_requests()->create([
+            'wallet_id' => $wallet->id
+        ]);
+
+        if($new_payment_request){
+            PaymentRequestJob::dispatch($new_payment_request);
+
+            return $this->success([],'Payment request created');
+        }
+
     }
 
 }

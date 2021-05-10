@@ -48,6 +48,29 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+
+    public function wallet() {
+        return $this->hasOne(Wallet::class)->where('status','unpaid');
+    }
+
+    public function pendingWallet() {
+        return $this->hasOne(Wallet::class)->where('status','pending');
+    }
+
+
+    public function paidWallet() {
+        return $this->hasOne(Wallet::class)->where('status','paid');
+    }
+
+    public function payment_requests() {
+        return $this->hasMany(PaymentRequest::class);
+    }
+
+    public function bank_account_details() {
+        return $this->hasOne(BankAccount::class);
+    }
+
+
     public function services() {
         return $this->hasMany(UserService::class);
     }

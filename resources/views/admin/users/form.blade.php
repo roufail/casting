@@ -103,6 +103,26 @@
               </div>
 
 
+                <ul class="list-unstyled">
+                <li><label>@lang('admin/users.form.bank_account.details')</label></li>
+                <li class="form-group">
+                  <label for="bank_account_full_name">@lang('admin/users.form.bank_account.full_name')</label>
+                  <input value="{{old('bank_account_full_name') ? old('bank_account_full_name') : ( $user->bank_account_details ? $user->bank_account_details->full_name : "")}}" type="input" id="bank_account_full_name" name="bank_account_full_name" class="form-control"  placeholder="@lang('admin/users.form.bank_account.full_name')">
+                </li>
+                <li class="form-group">
+                  <label for="bank_account_bank_name">@lang('admin/users.form.bank_account.bank_name')</label>
+                  <input value="{{old('bank_account_bank_name') ? old('bank_account_bank_name') : ( $user->bank_account_details ? $user->bank_account_details->bank_name : "")}}" type="input" id="bank_account_bank_name" name="bank_account_bank_name" class="form-control"  placeholder="@lang('admin/users.form.bank_account.bank_name')">
+                </li>
+                <li class="form-group">
+                  <label for="bank_account_account_number">@lang('admin/users.form.bank_account.account_number')</label>
+                  <input value="{{old('bank_account_account_number') ? old('bank_account_account_number') : ( $user->bank_account_details ? $user->bank_account_details->account_number : "")}}" type="input" id="bank_account_account_number" name="bank_account_account_number" class="form-control"  placeholder="@lang('admin/users.form.bank_account.account_number')">
+                </li>
+              </ul>
+
+
+
+
+
               {{-- <div class="form-group">
                 <label for="exampleInputEmail1">@lang('admin/users.form.bio')</label>
                 <textarea type="text" name="bio" class="form-control">{{old_value('bio',$user)}}</textarea>  
