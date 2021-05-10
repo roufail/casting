@@ -31,7 +31,8 @@ class ChatMessageResource extends JsonResource
         // ];
 
         $message = [
-            'user_id'      =>  $this->user_type == "client" ? auth('client-api')->user()->id : auth()->user()->id,
+            'id'           =>  $this->id,
+            'user_id'      =>  $this->user_id,
             'user_type'    =>  $this->user_type,
             'message'      =>  $this->message,
             'message_type' =>  $this->message_type,
