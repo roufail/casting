@@ -13,6 +13,8 @@ class Order extends Model
             "client_id",
             "service_id",
             "user_service_id",
+            "charge_id",
+            "source_id",
             "status",
             "price",
     ];

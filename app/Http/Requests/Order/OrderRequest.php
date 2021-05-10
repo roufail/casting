@@ -27,6 +27,8 @@ class OrderRequest extends FormRequest
             //'user_id'        => 'required|exists:users,id',
             // 'client_id'        => 'required|exists:clients,id',
             'payer_service_id' => 'required|exists:user_services,id',
+            'charge_id'        => 'required|string',
+            'source_id'        => 'required|string',
             // 'status'           => 'required|in:'.implode(",",get_status()),
             // 'price'         => 'required|numaric',
         ];

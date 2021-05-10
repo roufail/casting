@@ -23,6 +23,8 @@ class CreateOrdersTable extends Migration
             $table->foreign('user_service_id')->references('id')->on('user_services')->onDelete('cascade');
             $table->unsignedBiginteger('client_id');
             $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
+            $table->string('charge_id')->nullable();
+            $table->string('source_id')->nullable();
             // paid the client paid to work with this service
             // failed the payment faild
             // processign the freelancer start to work with this service.

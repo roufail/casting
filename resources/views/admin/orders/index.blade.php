@@ -22,6 +22,8 @@
                     <th>@lang('admin/orders.list.price')</th>
                     <th>@lang('admin/orders.list.status')</th>
                     <th>@lang('admin/orders.list.chat')</th>
+                    <th>@lang('admin/orders.list.charge_id')</th>
+                    <th>@lang('admin/orders.list.source_id')</th>
                 </tr>
             </thead>
         </table>
@@ -44,8 +46,9 @@
                 { data: 'client', name: 'client', searchable: true },
                 { data: 'price', name: 'price' },
                 { data: 'status', name: 'status' },
-                { data: 'chat', name: 'chat'}
-
+                { data: 'chat', name: 'chat'},
+                { data: 'charge_id', name: 'charge_id'},
+                { data: 'source_id', name: 'source_id'}
             ],
             "order": [[ 0, "desc" ]]
 

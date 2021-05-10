@@ -65,22 +65,28 @@ class OrderController extends BaseController
 
 
     public function place_order(OrderRequest $request){
-        $userService = UserService::findOrFail($request->payer_service_id);
+        $userService = UserService::find($request->payer_service_id);
 
-        // make payment 
+        if(!$userService)
+        {
+            return  $this->error([],'service not exists');
+        }
+        // make order 
         $order = auth('client-api')->user()->orders()->create([
                 'user_id'         => $userService->user_id,
                 'service_id'      => $userService->service_id,
                 'user_service_id' => $userService->id,
-                "status"          => 'pending',
+                "status"          => 'paid',
                 "price"           => $userService->price,
+                "charge_id"       => $request->charge_id,
+                "source_id"       => $request->source_id,
         ]);
        
 
         // pay to website
-        $payment = true;
+        // $payment = true;
 
-        if($payment){    
+        // if($payment){    
 
            $order->incoming()->create([
                 'received' => 1,
@@ -88,29 +94,28 @@ class OrderController extends BaseController
             ]);
 
 
-            $updated = $order->update([
-                'status' => 'paid'
-            ]);
+            // $updated = $order->update([
+            //     'status' => 'paid'
+            // ]);
 
  
 
            
-            if($updated){
+            if($order){
                 AdminPaymentJob::dispatch($order);
                 ServiceRequestJob::dispatch(auth('client-api')->user(),$userService->user,$userService->service);
             }
-
-
             return  $this->success(new OrderResource($order),'Order created successfully');
-        } else {
-            $order->update([
-                'status' => 'faild'
-            ]);
-            return  $this->error([],'payment faild');
-        }
+        // } else {
+        //     $order->update([
+        //         'status' => 'faild'
+        //     ]);
+        //     return  $this->error([],'payment faild');
+        // }
 
 
     }
+    
 
 
 
