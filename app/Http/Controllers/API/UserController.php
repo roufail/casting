@@ -22,6 +22,9 @@ use Illuminate\Support\Facades\Hash;
 
 use Illuminate\Http\Exceptions\HttpResponseException;
 
+
+use App\Http\Resources\PayerBankAccountDetailsResource;
+
 use App\Jobs\Admin\PaymentRequestJob;
 use Storage;
 class UserController extends BaseController
@@ -386,19 +389,25 @@ class UserController extends BaseController
 
 
     public function account_balance(Request $request){
-        $wallet = auth()->user()->wallet;
+        $user   = auth()->user();
+        $wallet = $user->wallet;
+        $payment_request = $user->payment_requests()->whereIn('status',['unpaid','pending'])->first();
         $balance = [
             'total_price' => 0,
             'total_fees' => 0,
             'total_amount' => 0,
+            'payment_in_progress' => 0,
+            "bank_account_details" => $user->bank_account_details ? new PayerBankAccountDetailsResource($user->bank_account_details) : null,
         ];
         if($wallet) {
             $balance = [
                 'total_price' => $wallet->total_price,
                 'total_fees' => $wallet->total_fees,
                 'total_amount' => $wallet->total_amount,
+                "bank_account_details" => $user->bank_account_details ? new PayerBankAccountDetailsResource($user->bank_account_details) : null,
             ];
         }
+        $balance['payment_in_progress'] = $payment_request ? true : false;
         return $this->success(['balance' => $balance],'Account balance retrived successfully');
     }
 
@@ -426,7 +435,6 @@ class UserController extends BaseController
 
         if($new_payment_request){
             PaymentRequestJob::dispatch($new_payment_request);
-
             return $this->success([],'Payment request created');
         }
 

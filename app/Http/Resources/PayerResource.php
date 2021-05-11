@@ -16,21 +16,21 @@ class PayerResource extends JsonResource
 
     public function toArray($request)
     {
-        $wallet = $this->wallet;
-        $balance = [];
-        if($wallet) {
-            $balance = [
-                'total_price' => $wallet->total_price,
-                'total_fees' => $wallet->total_fees,
-                'total_amount' => $wallet->total_amount,
-            ];
-        }else {
-            $balance = [
-                'total_price' => 0,
-                'total_fees' => 0,
-                'total_amount' => 0,
-            ];
-        }
+        // $wallet = $this->wallet;
+        // $balance = [];
+        // if($wallet) {
+        //     $balance = [
+        //         'total_price' => $wallet->total_price,
+        //         'total_fees' => $wallet->total_fees,
+        //         'total_amount' => $wallet->total_amount,
+        //     ];
+        // }else {
+        //     $balance = [
+        //         'total_price' => 0,
+        //         'total_fees' => 0,
+        //         'total_amount' => 0,
+        //     ];
+        // }
         
         return [
             "id"             => $this->id,
@@ -42,7 +42,7 @@ class PayerResource extends JsonResource
             "active"         => $this->active,
             "payer_data"    => new PayerDataResource($this->payer_data),
             "bank_account_details" => new PayerBankAccountDetailsResource($this->bank_account_details),
-            "account_blance" => $balance,
+            //"account_blance" => $balance,
             "video_url"      => new PayerVideoResource($this->whenLoaded("work_video")), 
             //"images_urls"    => new PayerImagesCollection($this->work_images()->paginate(15)), 
             "rating"         => $this->rating_stars(),

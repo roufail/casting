@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class PaymentRequest extends Model
 {
     use HasFactory;
-    protected $fillable = ['user_id ','status','paid_at'];
+    protected $fillable = ['user_id ','status','wallet_id','paid_at'];
 
     public function user() {
         return $this->belongsTo(User::class);
