@@ -11,6 +11,9 @@ use App\Events\Message;
 use Google\Cloud\Firestore\FirestoreClient;
 
 use App\Http\Resources\Chat\ChatResource;
+
+//use Benwilkins\FCM\FcmMessage;
+
 use Storage,Auth;
 class ChatController extends BaseController
 {
@@ -86,7 +89,16 @@ class ChatController extends BaseController
         $this->collection->document($order->id)->collection('chat')->document($this->milliseconds())->set($message_data);
         broadcast(new Message($order->client_id,$message_data,$order->id,'client'));
 
-        // fire the event
+        $firebase_token = $order->user->firebase_token;
+        if($firebase_token){
+            $fb_message_data = [
+                'title'          => $payer->name."@ order".$order->id,
+                'body'           => $request->message,
+                'order_id'       => $order->id,
+                'firebase_token' => $firebase_token,
+            ];
+            $this->sendMessageNotification($fb_message_data);
+        }
 
         return $this->success($message_data, 'message send successfully');
     }
@@ -152,7 +164,17 @@ class ChatController extends BaseController
 
         // fire the event
         broadcast(new Message($order->user_id,$message_data,$order->id,'payer'));
-
+        
+        $firebase_token = $order->user->firebase_token;
+        if($firebase_token){
+            $fb_message_data = [
+                'title'          => $client->name."@ order".$order->id,
+                'body'           => $request->message,
+                'order_id'       => $order->id,
+                'firebase_token' => $firebase_token,
+            ];
+            $this->sendMessageNotification($fb_message_data);
+        }
 
         return $this->success($message_data, 'message send successfully');    
     }
@@ -176,5 +198,49 @@ class ChatController extends BaseController
         $chat->load_messages = true;
         return $this->success(new ChatResource($chat), 'chat loaded successfully');
     }
+
+
+    public function sendMessageNotification($message_data){
+        // $message = new FcmMessage();
+        // $message->content([
+        //     'title'        => $message_data['title'], 
+        //     'body'         => $message_data['body'], 
+        // ])->data([
+        //     'order_id'     => $message_data['order_id'] // Optional
+        // ])->to($message_data['firebase_token']); // Optional - Default is 'normal'.
+        // return $message;    
+
+
+        $SERVER_API_KEY = env('FCM_SECRET_KEY');
+  
+        $data = [
+            "registration_ids" => array($message_data['firebase_token']),
+            "notification" => [
+                "title" => $message_data['title'],
+                "body" =>$message_data['body'],  
+            ]
+        ];
+        $dataString = json_encode($data);
+    
+        $headers = [
+            'Authorization' => 'key='.$SERVER_API_KEY,
+            'Content-Type'  => 'application/json',
+        ];
+    	
+
+
+
+
+        $client = new \GuzzleHttp\Client();
+        $request = $client->post('https://fcm.googleapis.com/fcm/send',[
+            'headers' => $headers,
+            "body" => $dataString,
+        ]);
+        $response = $request->getBody();
+
+    }
+
+
+
 
 }

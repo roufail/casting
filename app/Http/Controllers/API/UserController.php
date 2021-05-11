@@ -391,7 +391,7 @@ class UserController extends BaseController
             'total_price' => 0,
             'total_fees' => 0,
             'total_amount' => 0,
-    ];
+        ];
         if($wallet) {
             $balance = [
                 'total_price' => $wallet->total_price,
