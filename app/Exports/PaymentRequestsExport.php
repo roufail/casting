@@ -20,6 +20,7 @@ class PaymentRequestsExport implements FromView,ShouldAutoSize
     */
     public function view(): View
     {
+
         return view('admin.wallets.payment_requests_exports', [
             'payment_requests' => json_decode($this->payment_requests)
         ]);

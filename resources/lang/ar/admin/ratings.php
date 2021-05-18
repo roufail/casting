@@ -1,4 +1,4 @@
-<?php 
+<?php
 return [
     "list" => [
         "service" => "الخدمه",

@@ -44,20 +44,20 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">{{ __('admin\wallets.modal.account_details_for') }}<span class="account-full-name account-data"></span></h5>
+          <h5 class="modal-title" id="exampleModalLabel">@lang('admin\wallets.modal.account_details_for')<span class="account-full-name account-data"></span></h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
           <ul class="list-unstyled">
-            <li>{{ __('admin\wallets.modal.full_name') }}: <span class="account-full-name account-data"></span></li>
-            <li>{{ __('admin\wallets.modal.bank_name') }}: <span class="account-bank-name account-data"></span></li>
-            <li>{{ __('admin\wallets.modal.account_number') }}: <span class="account-account-number account-data"></span></li>
+            <li>@lang('admin\wallets.modal.full_name'): <span class="account-full-name account-data"></span></li>
+            <li>@lang('admin\wallets.modal.bank_name'): <span class="account-bank-name account-data"></span></li>
+            <li>@lang('admin\wallets.modal.account_number'): <span class="account-account-number account-data"></span></li>
         </ul>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('admin\wallets.modal.close') }}</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang('admin\wallets.modal.close')</button>
         </div>
       </div>
     </div>

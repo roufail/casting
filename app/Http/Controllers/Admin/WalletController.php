@@ -82,16 +82,16 @@ class WalletController extends Controller
         $ids = $request->ids;
         $ids = explode(",",$ids);
         if(empty($ids)) return abort(404);
-        $payment_requests = PaymentRequest::with(['user.wallet','user.bank_account_details'])->where('status','unpaid')->whereIn('id',$ids);
+        $payment_requests = PaymentRequest::where('status','unpaid')->whereIn('id',$ids);
         $payment_requests->each(function($payment_request){
             $wallet = $payment_request->user->wallet;
             $wallet->items()->update(['status' => 'pending']);
             $wallet->update(['status' => 'pending']);
         });
-
         $payment_requests->update(['status' => 'pending']);
-
-        return Excel::download(new PaymentRequestsExport(json_encode($payment_requests->get())), 'payment-requests-'.date('d-m-Y').'.xlsx',null, [\Maatwebsite\Excel\Excel::XLSX]);
+        
+        $payment_requests_pending = PaymentRequest::with(['user.pendingWallet','user.bank_account_details'])->where('status','pending')->whereIn('id',$ids)->get();
+        return Excel::download(new PaymentRequestsExport(json_encode($payment_requests_pending)), 'payment-requests-'.date('d-m-Y').'.xlsx',null, [\Maatwebsite\Excel\Excel::XLSX]);
     }
 
     public function paymentRequetsAjaxData($status = "unpaid") {
@@ -105,6 +105,8 @@ class WalletController extends Controller
             case 'paid':
                 $rel = 'user.paidWallet';
                 break;
+            default:
+            $rel = 'user.wallet';
         }
         $rel_ar = explode('.',$rel);
 
@@ -125,12 +127,12 @@ class WalletController extends Controller
             return '<a style="float:right" href="javascript:;" data-id="'.$request->id.'" class="account-details-btn btn btn-xs btn-primary"><i class="fa fa-money" aria-hidden="true"></i> '.__("admin/wallets.request_payments_list.bank_account_details").'</a>';
         })
         ->addColumn('user.wallet.total_amount', function ($request) use($rel_ar) {
-            return $request->user->{$rel_ar[1]}->total_amount;
+            return $request->user->{$rel_ar[1]} ? $request->user->{$rel_ar[1]}->total_amount : 0;
         })
         ->addColumn('checkbox', function ($request) {
             return '<input type="checkbox" class="payment-requests" name="payment_request_ids" value="'.$request->id.'"/>';
         })
-        ->rawColumns(['items','checkbox','bank_account_details','action'])
+        ->rawColumns(['user.wallet.total_amount','items','checkbox','bank_account_details','action'])
         ->make(true);
     }
 
@@ -149,9 +151,9 @@ class WalletController extends Controller
         $items = $wallet->items->load(['user','client']);
         return Datatables::of($items)
         ->with([
-            'total_price'=> $wallet->items->sum('service_price'),
-            'total_fees'=> $wallet->items->sum('system_fees'),
-            'total_amount'=> $wallet->items->sum('service_total_amount'),
+            'total_price'=> $wallet->items ? $wallet->items->sum('service_price') : 0 ,
+            'total_fees'=> $wallet->items ? $wallet->items->sum('system_fees') : 0 ,
+            'total_amount'=> $wallet->items ? $wallet->items->sum('service_total_amount') : 0 ,
         ])
         ->make(true);
     }

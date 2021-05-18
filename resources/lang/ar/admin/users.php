@@ -1,4 +1,4 @@
-<?php 
+<?php
 return [
     "form" => [
         "edit_user"    => 'تعديل',

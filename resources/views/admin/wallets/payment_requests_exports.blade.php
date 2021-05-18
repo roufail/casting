@@ -17,7 +17,7 @@
             <td align="left" valign="top">{{ $payment_request->user->bank_account_details->full_name }}</td>
             <td align="left" valign="top">{{ $payment_request->user->bank_account_details->bank_name }}</td>
             <td align="left" valign="top">{{ $payment_request->user->bank_account_details->account_number }}</td>
-            <td align="left" valign="top">{{ $payment_request->user->wallet->total_amount }}</td>
+            <td align="left" valign="top">{{ $payment_request->user->pending_wallet->total_amount }}</td>
         </tr>
         @endforeach
     </tbody>
