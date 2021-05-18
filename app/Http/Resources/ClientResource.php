@@ -21,7 +21,7 @@ class ClientResource extends JsonResource
             "country"        => $this->country,
             "image"          => $this->image ? \Storage::disk("clients")->url($this->image) : null,
             "name"           => $this->name,
-            "country"        => $this->country,
+            // "country"        => $this->country,
             "active"         => $this->active,
             "firebase_token" => $this->firebase_token,
         ];
