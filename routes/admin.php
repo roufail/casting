@@ -95,6 +95,10 @@ Route::group(['namespace' => 'Admin','as'=>'admin.'],function(){
         Route::resource('admins', 'AdminController');
 
 
+
+        Route::get('notifications', 'NotificationController@index');
+
+
     });
 });
 
