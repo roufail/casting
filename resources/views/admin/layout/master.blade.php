@@ -50,9 +50,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-left notifications-dropdown-menu" style="left: 0px; right: inherit;">
           <span class="dropdown-item dropdown-header"><span class="count-pupple">0</span> نوتیفیکیشن</span>
-        
-        
+          <span class="dropdown-item dropdown-header"><a href="{{ route('admin.notifications') }}"> كل التنبهات </a></span>
         </div>
+
 
 
 
@@ -177,10 +177,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 
 @stack('js-files')
-<!-- Optionally, you can add Slimscroll and FastClick plugins.
-     Both of these plugins are recommended to enhance the
-     user experience. Slimscroll is required when using the
-     fixed layout. -->
 @yield('extra-js')
 @include('sweetalert::alert')
 

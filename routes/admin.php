@@ -96,7 +96,7 @@ Route::group(['namespace' => 'Admin','as'=>'admin.'],function(){
 
 
 
-        Route::get('notifications', 'NotificationController@index');
+        Route::get('notifications', 'NotificationController@index')->name('notifications');
 
 
     });
