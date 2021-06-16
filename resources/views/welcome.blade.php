@@ -84,16 +84,20 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-6 pt-2 pt-lg-0 order-2 order-lg-1 d-flex flex-column justify-content-center">
-          <h1>Easy Marketing Solutions For Your Business</h1>
+          <h1 class="text-end">تطبيق كاستنيق</h1>
           <ul>
-            <li><i class="ri-check-line"></i> Dolorem ratione dolorum</li>
-            <li><i class="ri-check-line"></i> Quo nihil natus ea non pariatur optio occaecati</li>
-            <li><i class="ri-check-line"></i> Duis aute irure dolor in reprehenderit in</li>
+            <li class="text-end">
+              <i class="ri-check-line"></i> 
+              تطبيق مختص بالعمل الفني  يقدم فرص تخص :مصورين . مونتجين ، مواقع تصوير ، موديل اعلاني ، مخرجين
+              اذا كنت تمتلك مهارة فنية وتسعى لزيادة دخلك ، فنحن بانتظارك
+              يتيح لك التطبيق حجز وتنسيق واتمام العمل الفني 
+              مع العميل بشكل سريع
+            </li>
           </ul>
-          <div class="mt-3">
+          {{-- <div class="mt-3">
             <a href="#about" class="btn-get-started scrollto">Get Started</a>
             <a href="" class="btn-get-quote">Request a Quote</a>
-          </div>
+          </div> --}}
         </div>
         <div class="col-lg-6 order-1 order-lg-2 hero-img">
           <img src="{{ asset('frontend-assets/img/hero-img.png') }}" class="img-fluid" alt="">
@@ -109,7 +113,7 @@
     <section id="about" class="about">
       <div class="container">
 
-        <div class="row content">
+        {{-- <div class="row content">
           <div class="col-lg-6">
             <h2>Eum ipsam laborum deleniti velitena</h2>
             <h3>Voluptatem dignissimos provident quasi corporis voluptates sit assum perenda sruen jonee trave</h3>
@@ -130,7 +134,7 @@
               magna aliqua.
             </p>
           </div>
-        </div>
+        </div> --}}
 
       </div>
     </section><!-- End About Section -->
@@ -141,7 +145,7 @@
 
         <div class="row">
 
-          <div class="col-lg-4">
+          {{-- <div class="col-lg-4">
             <div class="box">
               <span>01</span>
               <h4>Lorem Ipsum</h4>
@@ -163,14 +167,14 @@
               <h4> Ad ad velit qui</h4>
               <p>Molestiae officiis omnis illo asperiores. Aut doloribus vitae sunt debitis quo vel nam quis</p>
             </div>
-          </div>
+          </div> --}}
 
         </div>
 
       </div>
     </section><!-- End Why Us Section -->
 
-    <!-- ======= Counts Section ======= -->
+    <!-- 
     <section id="counts" class="counts section-bg">
       <div class="container">
 
@@ -211,7 +215,7 @@
         </div>
 
       </div>
-    </section><!-- End Counts Section -->
+    </section>End Counts Section -->
 
     <!-- ======= Services Section ======= 
     <section id="services" class="services">
@@ -288,7 +292,7 @@
       </div>
     </section><!-- End Services Section -->
 
-    <!-- ======= Features Section ======= -->
+    <!-- ======= Features Section ======= 
     <section id="features" class="features">
       <div class="container">
 
@@ -368,7 +372,7 @@
         </div>
 
       </div>
-    </section><!-- End Features Section -->
+    </section>End Features Section -->
 
     <!-- ======= Portfolio Section ======= 
     <section id="portfolio" class="portfolio">
@@ -662,7 +666,7 @@
       </div>
     </section>End Pricing Section -->
 
-    <!-- ======= Frequently Asked Questions Section ======= -->
+    <!-- ======= Frequently Asked Questions Section ======= 
     <section id="faq" class="faq">
       <div class="container">
 
@@ -729,9 +733,9 @@
         </ul>
 
       </div>
-    </section><!-- End Frequently Asked Questions Section -->
+    </section> End Frequently Asked Questions Section -->
 
-    <!-- ======= Contact Section ======= -->
+    <!-- 
     <section id="contact" class="contact section-bg">
       <div class="container">
 
@@ -798,11 +802,11 @@
         </div>
 
       </div>
-    </section><!-- End Contact Section -->
+    </section>End Contact Section -->
 
   </main><!-- End #main -->
 
-  <!-- ======= Footer ======= -->
+  <!-- ======= Footer ======= 
   <footer id="footer">
 
     <div class="footer-top">
@@ -852,20 +856,20 @@
 
         </div>
       </div>
-    </div>
+    </div>-->
 
     <div class="container d-md-flex py-4">
 
       <div class="me-md-auto text-center text-md-start">
-        <div class="copyright">
+        {{-- <div class="copyright">
           &copy; Copyright <strong><span>Resi</span></strong>. All Rights Reserved
-        </div>
+        </div> --}}
         <div class="credits">
           <!-- All the links in the footer should remain intact. -->
           <!-- You can delete the links only if you purchased the pro version. -->
           <!-- Licensing information: https://bootstrapmade.com/license/ -->
           <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/resi-free-bootstrap-html-template/ -->
-          Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+          {{-- Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a> --}}
         </div>
       </div>
       <div class="social-links text-center text-md-right pt-3 pt-md-0">
